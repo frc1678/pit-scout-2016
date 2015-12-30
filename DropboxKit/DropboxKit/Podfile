@@ -1,0 +1,5 @@
+  platform :ios, '8.0'
+  use_frameworks!
+
+  pod 'SwiftyDropbox', '~> 2.0.0'
+  xcodeproj ‘/DropboxKit/DropboxKit.xcodeproj’

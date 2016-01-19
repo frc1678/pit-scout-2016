@@ -11,7 +11,7 @@ import Foundation
 class TableViewController: UITableViewController {
     
     let cellReuseId = "teamCell"
-    let data = ["1678 - Circus Circus", "254 - Chezy Poffs"]
+    let data = ["1678-Circus Circus", "254-Chezy Poffs"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,19 +41,17 @@ class TableViewController: UITableViewController {
     // MARK:  UITableViewDelegate Methods
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-        let row = indexPath.row
-        print(data[row])
-            }
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.identifier == "teamView") {
-            var vc = segue.destinationViewController as! ViewController
-            if let indexPath =
-                self.tableView.indexPathForCell(sender as! UITableViewCell) {
-                    vc.teamNumber.text = data[indexPath.row]
-            }
+        if segue.identifier == "Team View Segue" {
+            let teamViewController = segue.destinationViewController as! ViewController
+            let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
+            let numNameArray = data[indexPath!.row].characters.split("-")
+            print(String(numNameArray[1]))
+            teamViewController.teamNum = String(numNameArray[0])
+            teamViewController.teamNam = String(numNameArray[1])
+            
         }
-        
     }
 }

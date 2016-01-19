@@ -15,9 +15,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var teamNumber: UILabel!
     @IBOutlet weak var numWheels: UITextField!
     @IBOutlet weak var pitOrgSelect: UISegmentedControl!
+    var teamNum : String = "-1"
+    var teamNam : String = "-1"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        teamNumber.text = teamNum
+        teamName.text = teamNam
+        //teamNumber.text = "Team Number"
+        //teamName.text = "Team Name"
         // Do any additional setup after loading the view, typically from a nib.
     }
 

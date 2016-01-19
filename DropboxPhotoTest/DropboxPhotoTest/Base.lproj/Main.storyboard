@@ -14,6 +14,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="teamCell" id="jFv-Zd-GGk">
                                 <rect key="frame" x="0.0" y="28" width="600" height="44"/>
@@ -22,6 +23,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" identifier="Team View Segue" modalTransitionStyle="coverVertical" id="5jj-4C-ZHg"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -85,6 +89,17 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="A8o-ew-msr">
+                                <rect key="frame" x="20" y="204" width="560" height="56"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="Wd7-dC-BkE"/>
+                                    <constraint firstAttribute="height" constant="56" id="xit-9Y-MR5"/>
+                                </constraints>
+                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pit Organization:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUp-3w-JBx">
                                 <rect key="frame" x="15" y="139" width="127" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -101,17 +116,17 @@
                                     <segment title="Great"/>
                                 </segments>
                             </segmentedControl>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="A8o-ew-msr">
-                                <rect key="frame" x="20" y="204" width="560" height="56"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hkM-IS-CDO">
+                                <rect key="frame" x="539" y="20" width="37" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="Wd7-dC-BkE"/>
-                                    <constraint firstAttribute="height" constant="56" id="xit-9Y-MR5"/>
+                                    <constraint firstAttribute="width" constant="37" id="bRL-hn-JRd"/>
+                                    <constraint firstAttribute="height" constant="30" id="r4R-HH-NhR"/>
                                 </constraints>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <segue destination="fdG-1E-SZt" kind="presentation" modalTransitionStyle="crossDissolve" id="5cQ-Yi-En1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -121,7 +136,9 @@
                             <constraint firstItem="G5X-fB-GJG" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="7Cq-Qq-dsj"/>
                             <constraint firstItem="G5X-fB-GJG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="98W-R8-ztL"/>
                             <constraint firstItem="G5X-fB-GJG" firstAttribute="centerX" secondItem="A8o-ew-msr" secondAttribute="centerX" id="ASP-ba-8kQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hkM-IS-CDO" secondAttribute="trailing" constant="4" id="EFD-nO-gMZ"/>
                             <constraint firstItem="PgT-Be-aad" firstAttribute="leading" secondItem="VUp-3w-JBx" secondAttribute="leading" id="GbI-iq-Wga"/>
+                            <constraint firstItem="hkM-IS-CDO" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="GnD-W5-4il"/>
                             <constraint firstItem="A8o-ew-msr" firstAttribute="centerX" secondItem="P1w-Gz-Cls" secondAttribute="centerX" id="HCt-Bk-1bk"/>
                             <constraint firstItem="P1w-Gz-Cls" firstAttribute="top" secondItem="1xE-6C-o2z" secondAttribute="bottom" constant="8" symbolic="YES" id="L8D-L4-rDc"/>
                             <constraint firstItem="1xE-6C-o2z" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="VJT-Nm-w9n"/>
@@ -147,7 +164,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="931" y="-349"/>
+            <point key="canvasLocation" x="867" y="-349"/>
         </scene>
     </scenes>
 </document>

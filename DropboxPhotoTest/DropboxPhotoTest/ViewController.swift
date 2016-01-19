@@ -11,6 +11,11 @@ import AVFoundation
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    @IBOutlet weak var teamName: UILabel!
+    @IBOutlet weak var teamNumber: UILabel!
+    @IBOutlet weak var numWheels: UITextField!
+    @IBOutlet weak var pitOrgSelect: UISegmentedControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

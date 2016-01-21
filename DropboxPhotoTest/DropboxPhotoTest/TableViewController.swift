@@ -49,7 +49,7 @@ class TableViewController: UITableViewController {
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
             let numNameArray = data[indexPath!.row].characters.split("-")
             print(String(numNameArray[1]))
-            teamViewController.teamNum = String(numNameArray[0])
+            teamViewController.teamNum = Int(String(numNameArray[0]))!
             teamViewController.teamNam = String(numNameArray[1])
             
         }

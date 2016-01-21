@@ -9,42 +9,42 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
+    
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var teamName: UILabel!
     @IBOutlet weak var teamNumber: UILabel!
     @IBOutlet weak var numWheels: UITextField!
     @IBOutlet weak var pitOrgSelect: UISegmentedControl!
-    var teamNum : String = "-1"
+    @IBOutlet weak var bottomScrollViewConstraint: NSLayoutConstraint!
+    var teamNum : Int = -1
     var teamNam : String = "-1"
+    var numberOfWheels : Int  = -1
+    var pitOrg : String = "-1"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        teamNumber.text = teamNum
+        teamNumber.text = String(teamNum)
         teamName.text = teamNam
-        //teamNumber.text = "Team Number"
-        //teamName.text = "Team Name"
-        // Do any additional setup after loading the view, typically from a nib.
+        self.scrollView.scrollEnabled = true
+        self.scrollView.contentSize.width = self.scrollView.frame.width
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
     }
-
+    @IBAction func numWheelsEditingEnded(sender: UITextField) {
+        if(sender.text != "") { self.numberOfWheels = Int(sender.text!)! }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func shareButtonPressed(sender: AnyObject) {
-        let textToShare = "Swift is awesome!  Check out this website about it!"
-        
-        if let myWebsite = NSURL(string: "http://www.codingexplorer.com/")
-        {
-            let objectsToShare = [textToShare, myWebsite]
-            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            
-            self.presentViewController(activityVC, animated: true, completion: nil)
-        }
+    @IBAction func pitOrgValueChanged(sender: UISegmentedControl) {
+        let pitOrgValues = ["Terrible", "Bad", "OK", "Good", "Great"]
+        self.pitOrg = pitOrgValues[sender.selectedSegmentIndex]
     }
-    
-    
 
     @IBAction func cameraButtonPressed(sender: AnyObject) {
         
@@ -53,9 +53,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.sourceType = .Camera
         picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.Camera)!
         picker.delegate = self
-        presentViewController(picker, animated: true, completion: nil)
+        presentViewController(picker, animated: true, completion: {
+            print("picker done")
+        })
         
         
+    }
+    
+    func keyboardWasShown(notification: NSNotification) {
+        var info = notification.userInfo!
+        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.bottomScrollViewConstraint.constant = keyboardFrame.size.height + 20
+        })
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {

@@ -1,0 +1,6 @@
+framework module Pods_DropboxPhotoTestTests {
+  umbrella header "Pods-DropboxPhotoTestTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,3 @@
+[submodule "firebase-schema-2016-ios"]
+	path = DropboxPhotoTest/DropboxPhotoTest/firebase-schema-2016-ios
+	url = https://github.com/frc1678/firebase-schema-2016-ios.git

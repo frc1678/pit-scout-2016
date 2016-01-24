@@ -1,0 +1,22 @@
+PODS:
+  - Firebase (2.5.0)
+  - firebase-schema-2016-ios (0.0.1)
+
+DEPENDENCIES:
+  - Firebase (>= 2.5.0)
+  - firebase-schema-2016-ios (from `https://github.com/frc1678/firebase-schema-2016-ios.git`)
+
+EXTERNAL SOURCES:
+  firebase-schema-2016-ios:
+    :git: https://github.com/frc1678/firebase-schema-2016-ios.git
+
+CHECKOUT OPTIONS:
+  firebase-schema-2016-ios:
+    :commit: 3f64f55974bddf3f0019fb00a28119962a4573ba
+    :git: https://github.com/frc1678/firebase-schema-2016-ios.git
+
+SPEC CHECKSUMS:
+  Firebase: 744617c0733b45198f9486ebd5cac64ec2d10d79
+  firebase-schema-2016-ios: 3ee73936bf1205c9d55dd0bd21663dae839e7f3c
+
+COCOAPODS: 0.39.0

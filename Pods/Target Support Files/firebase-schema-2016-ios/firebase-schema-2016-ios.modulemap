@@ -1,0 +1,6 @@
+framework module firebase_schema_2016_ios {
+  umbrella header "firebase-schema-2016-ios-umbrella.h"
+
+  export *
+  module * { export * }
+}

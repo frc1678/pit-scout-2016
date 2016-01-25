@@ -7,206 +7,336 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		190DBEB71C5592A800C4D1C2 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190DBEB61C5592A800C4D1C2 /* Firebase.framework */; };
-		1AC8F005A5CEC76A6E28C8915C4C248D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		2B7136FD44A0055BD3FDA4E7B4770EC2 /* Pods-DropboxPhotoTestTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C37E5FB6A9C8AFE850102738352D10E /* Pods-DropboxPhotoTestTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		310ED77EE4D9B1F6B62C49B8CBFC1A48 /* firebase-schema-2016-ios-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 883D0C4EC77F4144D497752C5CF52FAD /* firebase-schema-2016-ios-dummy.m */; };
-		505DC1EDADB97AE183E2F80DBD915AB4 /* firebase-schema-2016-ios.podspec in Sources */ = {isa = PBXBuildFile; fileRef = 08971021C80F9CA665FD028EA9AD0545 /* firebase-schema-2016-ios.podspec */; };
-		861B361C6AAFA8BF650044AD29116BFE /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFA67655BD59CDBE17EED1237BB74A /* Schema.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		A01A86EE989BB814E28BA21A1F4E9577 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		A5D316868F37C47AB5CBE2E2C3EAC17D /* firebase-schema-2016-ios-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 10C5031A7580E2D5099038A08567798E /* firebase-schema-2016-ios-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D052C1A1F78FE395E7F1673E1796552A /* Pods-DropboxPhotoTestTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A94C1997757C17DEDB03EE14B2B1DED0 /* Pods-DropboxPhotoTestTests-dummy.m */; };
+		012A7E018F3D34F159894EBD7EACACF9 /* Empty.m in Sources */ = {isa = PBXBuildFile; fileRef = CC400B4B84718503C446C38A9EE3C518 /* Empty.m */; };
+		191DE2EB9A35585AE0A88BA9F833A1F4 /* FTransactionResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 9750263D729AA4016445A0A4DECF4E86 /* FTransactionResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C04A7CD5B70C4561F6D98C882731C65 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6204446BD9150A17B12E81B4A6F9CA8 /* Security.framework */; };
+		1C3EF85CD30E6FF2E51471BD5B3CEB29 /* Firebase.h in Headers */ = {isa = PBXBuildFile; fileRef = A31B60AFA86809ABC364A06AA13E7E65 /* Firebase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1D925BB011B04DDED982C7946571A67A /* FAuthType.h in Headers */ = {isa = PBXBuildFile; fileRef = 347BADD30D142BB97245F933EF51A171 /* FAuthType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1D9D7FF5237C8CC91EF58DC45AC274FB /* Firebase-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBC0EEB6D905EC82C2CA2CCA193F23D /* Firebase-dummy.m */; };
+		239B10F388840841389B7F09648735B1 /* FEventType.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828D8013676F908CB12C31A6DCB7163 /* FEventType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2F1496011DBBB75777645194AAAFE92D /* FirebaseApp.h in Headers */ = {isa = PBXBuildFile; fileRef = B6C8B2C837C7719D10971E6B527322D1 /* FirebaseApp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		35B4200CF89F22225286D15CF534BFBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C49D928448B31FB9A7D5AE5C8D6C4E /* Foundation.framework */; };
+		3A20DD94EEAD62F60000F782D64202A0 /* Pods-DropboxPhotoTest-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FE49127ACAD967AAF580B3ED2037A9 /* Pods-DropboxPhotoTest-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		45B85EE60EA04052111056246E618DEA /* Pods-DropboxPhotoTest-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8474A9CC21BD5D4A25F4AB6079993F5D /* Pods-DropboxPhotoTest-dummy.m */; };
+		4B0EFAAA29109D9A705A27EFFA10FAE2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C49D928448B31FB9A7D5AE5C8D6C4E /* Foundation.framework */; };
+		4D75CF0089B20355B17A851513C4A002 /* FQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8A146D8D09ADE250AA44A9A94C0AAD /* FQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		60F9139BDD38565B78214C4FC5F5729D /* Firebase-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C804A48C5ADC926DA899F45545E57DD /* Firebase-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6646DA26298257396C7FFE141BB84CC3 /* FirebaseServerValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 575E60195B53634B6AB34BF02E0AD1E7 /* FirebaseServerValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F947FC85C3063743BC4C554E4254020 /* firebase-schema-2016-ios-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 78EE6FC9FBCD6B0708FDD986CB1C9076 /* firebase-schema-2016-ios-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7F5B3E22C712C3ABA57A40D4D46E1DA8 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63718142171D097E774A00E2494F0D48 /* Schema.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		8B60E5EBE1E56A9614172D83C6303C27 /* firebase-schema-2016-ios-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4452627184C4F685F148123131242D /* firebase-schema-2016-ios-dummy.m */; };
+		A5A5B3A68E1B4F473923222A9A14DBA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C49D928448B31FB9A7D5AE5C8D6C4E /* Foundation.framework */; };
+		C23FCF31260D47CEC1494A292DAA1A1E /* FAuthData.h in Headers */ = {isa = PBXBuildFile; fileRef = 57B7348BED105ACBE9947276D037018B /* FAuthData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB05A9DD8244D10C28B6915C514AE15F /* FMutableData.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F5D0E72E1CE503D16E7E09B69E37D05 /* FMutableData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E1A883FEBDEED9B85D90D6BE2080F218 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6166BE40C18BC6BF0EED92CAB212EC33 /* SystemConfiguration.framework */; };
+		E3FBB5B462A14E8ACC9B340227DE4BE1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F85758B54CB0D843A3E97DFFB2F21F /* CFNetwork.framework */; };
+		E60FA42EEC3ECC48701DB55986D25D69 /* FConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = DA2A89321A3AABF6796699C6F13F1123 /* FConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E8B534D15D2B25919ACD898217266891 /* FDataSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A81BFACFADAD332134667128E5BBC198 /* FDataSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		23B003FB61A95DAC654518B6D22AFEFD /* PBXContainerItemProxy */ = {
+		04FBEE8B318A198B116D6DD28282B3DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 489297334CAD93479024B01A5B1A2E5E;
+			remoteGlobalIDString = B7AC9326D819482593FE118E915409D7;
+			remoteInfo = Firebase;
+		};
+		8061958646C277FCF94CD63921A66BF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 897BBE9242B234142DAA48F80380F809;
 			remoteInfo = "firebase-schema-2016-ios";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		08971021C80F9CA665FD028EA9AD0545 /* firebase-schema-2016-ios.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "firebase-schema-2016-ios.podspec"; sourceTree = "<group>"; };
-		10C5031A7580E2D5099038A08567798E /* firebase-schema-2016-ios-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "firebase-schema-2016-ios-umbrella.h"; sourceTree = "<group>"; };
-		15A012DEA9F5AAD99C34E84995FA26FF /* Pods-DropboxPhotoTestTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DropboxPhotoTestTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		190DBEB61C5592A800C4D1C2 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = Firebase/Firebase.framework; sourceTree = "<group>"; };
-		3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		576499CF50E4495A2746505A987DF9C4 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6B25D394B51634C48D4725B084FA4D64 /* Pods_DropboxPhotoTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropboxPhotoTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		75A9165C0460050F6F3CE550869F1540 /* Pods-DropboxPhotoTestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DropboxPhotoTestTests.release.xcconfig"; sourceTree = "<group>"; };
-		7C37E5FB6A9C8AFE850102738352D10E /* Pods-DropboxPhotoTestTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DropboxPhotoTestTests-umbrella.h"; sourceTree = "<group>"; };
-		7D8824EB6D64932F84B717CB44EC0E8A /* Pods-DropboxPhotoTestTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DropboxPhotoTestTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		883D0C4EC77F4144D497752C5CF52FAD /* firebase-schema-2016-ios-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "firebase-schema-2016-ios-dummy.m"; sourceTree = "<group>"; };
-		900222AC2DBEC89486CE27FBEA747B5A /* Pods-DropboxPhotoTestTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DropboxPhotoTestTests-resources.sh"; sourceTree = "<group>"; };
-		A48B9E6061C35DFD07C5843FE073BCEF /* firebase-schema-2016-ios.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "firebase-schema-2016-ios.modulemap"; sourceTree = "<group>"; };
-		A94C1997757C17DEDB03EE14B2B1DED0 /* Pods-DropboxPhotoTestTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DropboxPhotoTestTests-dummy.m"; sourceTree = "<group>"; };
+		11B4AB8D2875C3DC1218D8616ABC5A30 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11F85D963B824E423D2942E1B787C256 /* firebase-schema-2016-ios.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "firebase-schema-2016-ios.xcconfig"; sourceTree = "<group>"; };
+		27D51AF9279D054A99A01440D5FAAC80 /* libFirebaseStatic.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; path = libFirebaseStatic.a; sourceTree = "<group>"; };
+		2A1042C0357169EBE3EDDB9A07AB7A05 /* Pods_DropboxPhotoTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropboxPhotoTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		347BADD30D142BB97245F933EF51A171 /* FAuthType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FAuthType.h; sourceTree = "<group>"; };
+		38AA81592CACB31FB13976FBD2F57BED /* Pods-DropboxPhotoTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DropboxPhotoTest.debug.xcconfig"; sourceTree = "<group>"; };
+		447C633E448BE774DF8943BD0E1A9BA5 /* firebase-schema-2016-ios.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "firebase-schema-2016-ios.modulemap"; sourceTree = "<group>"; };
+		55FE49127ACAD967AAF580B3ED2037A9 /* Pods-DropboxPhotoTest-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DropboxPhotoTest-umbrella.h"; sourceTree = "<group>"; };
+		56F677D480ED3B46D3587C700822B53A /* Pods-DropboxPhotoTest-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DropboxPhotoTest-acknowledgements.plist"; sourceTree = "<group>"; };
+		575E60195B53634B6AB34BF02E0AD1E7 /* FirebaseServerValue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FirebaseServerValue.h; sourceTree = "<group>"; };
+		57B7348BED105ACBE9947276D037018B /* FAuthData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FAuthData.h; sourceTree = "<group>"; };
+		5828D8013676F908CB12C31A6DCB7163 /* FEventType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FEventType.h; sourceTree = "<group>"; };
+		5CF58FB2948A33C112776387A6C01320 /* Pods-DropboxPhotoTest-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DropboxPhotoTest-frameworks.sh"; sourceTree = "<group>"; };
+		5DBC0EEB6D905EC82C2CA2CCA193F23D /* Firebase-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Firebase-dummy.m"; sourceTree = "<group>"; };
+		60F85758B54CB0D843A3E97DFFB2F21F /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		6166BE40C18BC6BF0EED92CAB212EC33 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		63718142171D097E774A00E2494F0D48 /* Schema.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
+		6C8BC8CB63AC6D2340A976A0C20CE4E0 /* Firebase.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Firebase.modulemap; sourceTree = "<group>"; };
+		6F3E38F011CAC1618AEF9D7367F0AEE5 /* Pods-DropboxPhotoTest-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DropboxPhotoTest-resources.sh"; sourceTree = "<group>"; };
+		76F03D7A69E298FAA1D544DD0E9C4F42 /* Firebase-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Firebase-prefix.pch"; sourceTree = "<group>"; };
+		77C49D928448B31FB9A7D5AE5C8D6C4E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		78EE6FC9FBCD6B0708FDD986CB1C9076 /* firebase-schema-2016-ios-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "firebase-schema-2016-ios-umbrella.h"; sourceTree = "<group>"; };
+		7AF590FD5BAEDC8267769B081982BAC6 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = firebase_schema_2016_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8474A9CC21BD5D4A25F4AB6079993F5D /* Pods-DropboxPhotoTest-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DropboxPhotoTest-dummy.m"; sourceTree = "<group>"; };
+		8C804A48C5ADC926DA899F45545E57DD /* Firebase-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Firebase-umbrella.h"; sourceTree = "<group>"; };
+		96CA896B421087B753DDABD6000EAF2B /* Firebase.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Firebase.xcconfig; sourceTree = "<group>"; };
+		9750263D729AA4016445A0A4DECF4E86 /* FTransactionResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FTransactionResult.h; sourceTree = "<group>"; };
+		9F5D0E72E1CE503D16E7E09B69E37D05 /* FMutableData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FMutableData.h; sourceTree = "<group>"; };
+		A289D1B427764183AFBE0E28ABB5A83B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A31B60AFA86809ABC364A06AA13E7E65 /* Firebase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		A81BFACFADAD332134667128E5BBC198 /* FDataSnapshot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FDataSnapshot.h; sourceTree = "<group>"; };
+		B6C8B2C837C7719D10971E6B527322D1 /* FirebaseApp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FirebaseApp.h; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		BF69503261B92D5CD87BAE77E5758998 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C36DF73EDA3FCB42E414352CB0FABE27 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = firebase_schema_2016_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4A5C74673BE4199A8056BC95F365F74 /* Pods-DropboxPhotoTestTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DropboxPhotoTestTests.modulemap"; sourceTree = "<group>"; };
-		CE2E1ABADD987E5C0927B148501AF19E /* firebase-schema-2016-ios-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "firebase-schema-2016-ios-prefix.pch"; sourceTree = "<group>"; };
-		DB14380387FF9543711B2FAF855091A0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DropboxPhotoTestTests.debug.xcconfig"; sourceTree = "<group>"; };
-		EDDFA67655BD59CDBE17EED1237BB74A /* Schema.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
-		F4BAAB73937A12E01477F131EAF796E0 /* firebase-schema-2016-ios.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "firebase-schema-2016-ios.xcconfig"; sourceTree = "<group>"; };
-		FFEB9765D8F4E036A56082CA81D32B6A /* Pods-DropboxPhotoTestTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DropboxPhotoTestTests-frameworks.sh"; sourceTree = "<group>"; };
+		BD1EB703678B699349BFBBDBB576C6DD /* Pods-DropboxPhotoTest-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DropboxPhotoTest-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C1F89996288DBA129FF0CD11CA1AD432 /* firebase-schema-2016-ios-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "firebase-schema-2016-ios-prefix.pch"; sourceTree = "<group>"; };
+		C6204446BD9150A17B12E81B4A6F9CA8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		CC400B4B84718503C446C38A9EE3C518 /* Empty.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Empty.m; sourceTree = "<group>"; };
+		CC8A146D8D09ADE250AA44A9A94C0AAD /* FQuery.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FQuery.h; sourceTree = "<group>"; };
+		CE4452627184C4F685F148123131242D /* firebase-schema-2016-ios-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "firebase-schema-2016-ios-dummy.m"; sourceTree = "<group>"; };
+		CFBD37B0FF79D825C9B52510130EF45D /* Pods-DropboxPhotoTest.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DropboxPhotoTest.modulemap"; sourceTree = "<group>"; };
+		DA061ACAF6B185233749298CE98421F3 /* Firebase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Firebase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA2A89321A3AABF6796699C6F13F1123 /* FConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FConfig.h; sourceTree = "<group>"; };
+		DE4E108C65A72FF948969524B844652F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DEA43CEAA3D53F3F1A9A45B02D973318 /* Pods-DropboxPhotoTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DropboxPhotoTest.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		516F88C9A1EF78361B118F6CB160BA09 /* Frameworks */ = {
+		8CE62F1DF7A1013DF20700C6EF2CED47 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AC8F005A5CEC76A6E28C8915C4C248D /* Foundation.framework in Frameworks */,
-				190DBEB71C5592A800C4D1C2 /* Firebase.framework in Frameworks */,
+				A5A5B3A68E1B4F473923222A9A14DBA6 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5351D1AC12CD4E330D0D07F29C70FB75 /* Frameworks */ = {
+		A514F0DB582F7FDB73090DA3B2EA04C9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A01A86EE989BB814E28BA21A1F4E9577 /* Foundation.framework in Frameworks */,
+				35B4200CF89F22225286D15CF534BFBA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7E10F383DCD59079712A57B50DCF88E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3FBB5B462A14E8ACC9B340227DE4BE1 /* CFNetwork.framework in Frameworks */,
+				4B0EFAAA29109D9A705A27EFFA10FAE2 /* Foundation.framework in Frameworks */,
+				1C04A7CD5B70C4561F6D98C882731C65 /* Security.framework in Frameworks */,
+				E1A883FEBDEED9B85D90D6BE2080F218 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04DB91B0023B06B4A6D72FB0174212FA /* Firebase */ = {
+		14B8B9B15ECBE87983FF987239AB2D7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				843A690C4A272ACCFA5202DC4499C74E /* iOS */,
 			);
-			path = Firebase;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		06F9A2E1E67A94E18861D8F3BC3DB0DA /* Support Files */ = {
+		196C22C724A8F55C06BFD4BB84F0EF8B /* firebase-schema-2016-ios */ = {
 			isa = PBXGroup;
 			children = (
-				A48B9E6061C35DFD07C5843FE073BCEF /* firebase-schema-2016-ios.modulemap */,
-				F4BAAB73937A12E01477F131EAF796E0 /* firebase-schema-2016-ios.xcconfig */,
-				883D0C4EC77F4144D497752C5CF52FAD /* firebase-schema-2016-ios-dummy.m */,
-				CE2E1ABADD987E5C0927B148501AF19E /* firebase-schema-2016-ios-prefix.pch */,
-				10C5031A7580E2D5099038A08567798E /* firebase-schema-2016-ios-umbrella.h */,
-				576499CF50E4495A2746505A987DF9C4 /* Info.plist */,
+				63718142171D097E774A00E2494F0D48 /* Schema.swift */,
+				5B0139A074B2ACD26337D712268F9DDB /* Support Files */,
+			);
+			path = "firebase-schema-2016-ios";
+			sourceTree = "<group>";
+		};
+		218A1A660A8963D096BBDE46C4DC8D74 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C7209167FC6C46273EFF5AF3106063F6 /* Pods-DropboxPhotoTest */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		5B0139A074B2ACD26337D712268F9DDB /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				447C633E448BE774DF8943BD0E1A9BA5 /* firebase-schema-2016-ios.modulemap */,
+				11F85D963B824E423D2942E1B787C256 /* firebase-schema-2016-ios.xcconfig */,
+				CE4452627184C4F685F148123131242D /* firebase-schema-2016-ios-dummy.m */,
+				C1F89996288DBA129FF0CD11CA1AD432 /* firebase-schema-2016-ios-prefix.pch */,
+				78EE6FC9FBCD6B0708FDD986CB1C9076 /* firebase-schema-2016-ios-umbrella.h */,
+				A289D1B427764183AFBE0E28ABB5A83B /* Info.plist */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/firebase-schema-2016-ios";
 			sourceTree = "<group>";
 		};
-		09D6D48C9A3CE2632E5C481806D11FBA /* firebase-schema-2016-ios */ = {
+		6E4F920E8BF0CF49DE8CBEB18CF186D9 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				08971021C80F9CA665FD028EA9AD0545 /* firebase-schema-2016-ios.podspec */,
-				EDDFA67655BD59CDBE17EED1237BB74A /* Schema.swift */,
-				06F9A2E1E67A94E18861D8F3BC3DB0DA /* Support Files */,
+				CC400B4B84718503C446C38A9EE3C518 /* Empty.m */,
+				57B7348BED105ACBE9947276D037018B /* FAuthData.h */,
+				347BADD30D142BB97245F933EF51A171 /* FAuthType.h */,
+				DA2A89321A3AABF6796699C6F13F1123 /* FConfig.h */,
+				A81BFACFADAD332134667128E5BBC198 /* FDataSnapshot.h */,
+				5828D8013676F908CB12C31A6DCB7163 /* FEventType.h */,
+				A31B60AFA86809ABC364A06AA13E7E65 /* Firebase.h */,
+				B6C8B2C837C7719D10971E6B527322D1 /* FirebaseApp.h */,
+				575E60195B53634B6AB34BF02E0AD1E7 /* FirebaseServerValue.h */,
+				9F5D0E72E1CE503D16E7E09B69E37D05 /* FMutableData.h */,
+				CC8A146D8D09ADE250AA44A9A94C0AAD /* FQuery.h */,
+				9750263D729AA4016445A0A4DECF4E86 /* FTransactionResult.h */,
+				C1B0AB2BE82C2F98CB51F92659318A11 /* Frameworks */,
+				C9345DBE8F4BD9147E33D96BBD32381B /* Support Files */,
 			);
-			path = "firebase-schema-2016-ios";
+			path = Firebase;
 			sourceTree = "<group>";
 		};
-		0C4339ADA791BAD2E2E2C17937AA954E /* Targets Support Files */ = {
+		6F9DCF849849D701D3B089E187C4AFCE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				350A84B4AE14AEB6DD1E5D038F20C0D1 /* Pods-DropboxPhotoTestTests */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		18552BA8EB2DEF6A5CC390B29B7D62D1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				04DB91B0023B06B4A6D72FB0174212FA /* Firebase */,
-				09D6D48C9A3CE2632E5C481806D11FBA /* firebase-schema-2016-ios */,
+				6E4F920E8BF0CF49DE8CBEB18CF186D9 /* Firebase */,
+				196C22C724A8F55C06BFD4BB84F0EF8B /* firebase-schema-2016-ios */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		350A84B4AE14AEB6DD1E5D038F20C0D1 /* Pods-DropboxPhotoTestTests */ = {
-			isa = PBXGroup;
-			children = (
-				BF69503261B92D5CD87BAE77E5758998 /* Info.plist */,
-				C4A5C74673BE4199A8056BC95F365F74 /* Pods-DropboxPhotoTestTests.modulemap */,
-				15A012DEA9F5AAD99C34E84995FA26FF /* Pods-DropboxPhotoTestTests-acknowledgements.markdown */,
-				7D8824EB6D64932F84B717CB44EC0E8A /* Pods-DropboxPhotoTestTests-acknowledgements.plist */,
-				A94C1997757C17DEDB03EE14B2B1DED0 /* Pods-DropboxPhotoTestTests-dummy.m */,
-				FFEB9765D8F4E036A56082CA81D32B6A /* Pods-DropboxPhotoTestTests-frameworks.sh */,
-				900222AC2DBEC89486CE27FBEA747B5A /* Pods-DropboxPhotoTestTests-resources.sh */,
-				7C37E5FB6A9C8AFE850102738352D10E /* Pods-DropboxPhotoTestTests-umbrella.h */,
-				DB14380387FF9543711B2FAF855091A0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */,
-				75A9165C0460050F6F3CE550869F1540 /* Pods-DropboxPhotoTestTests.release.xcconfig */,
-			);
-			name = "Pods-DropboxPhotoTestTests";
-			path = "Target Support Files/Pods-DropboxPhotoTestTests";
-			sourceTree = "<group>";
-		};
-		458474C52D5947C455093A381FA978AA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C36DF73EDA3FCB42E414352CB0FABE27 /* firebase_schema_2016_ios.framework */,
-				6B25D394B51634C48D4725B084FA4D64 /* Pods_DropboxPhotoTestTests.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				18552BA8EB2DEF6A5CC390B29B7D62D1 /* Pods */,
-				458474C52D5947C455093A381FA978AA /* Products */,
-				0C4339ADA791BAD2E2E2C17937AA954E /* Targets Support Files */,
+				14B8B9B15ECBE87983FF987239AB2D7B /* Frameworks */,
+				6F9DCF849849D701D3B089E187C4AFCE /* Pods */,
+				B4EF22F079F9142D86626A60877DEC0C /* Products */,
+				218A1A660A8963D096BBDE46C4DC8D74 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+		843A690C4A272ACCFA5202DC4499C74E /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */,
+				60F85758B54CB0D843A3E97DFFB2F21F /* CFNetwork.framework */,
+				77C49D928448B31FB9A7D5AE5C8D6C4E /* Foundation.framework */,
+				C6204446BD9150A17B12E81B4A6F9CA8 /* Security.framework */,
+				6166BE40C18BC6BF0EED92CAB212EC33 /* SystemConfiguration.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		B4EF22F079F9142D86626A60877DEC0C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA061ACAF6B185233749298CE98421F3 /* Firebase.framework */,
+				7AF590FD5BAEDC8267769B081982BAC6 /* firebase_schema_2016_ios.framework */,
+				2A1042C0357169EBE3EDDB9A07AB7A05 /* Pods_DropboxPhotoTest.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C1B0AB2BE82C2F98CB51F92659318A11 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				27D51AF9279D054A99A01440D5FAAC80 /* libFirebaseStatic.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */ = {
+		C7209167FC6C46273EFF5AF3106063F6 /* Pods-DropboxPhotoTest */ = {
 			isa = PBXGroup;
 			children = (
-				190DBEB61C5592A800C4D1C2 /* Firebase.framework */,
-				3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */,
+				DE4E108C65A72FF948969524B844652F /* Info.plist */,
+				CFBD37B0FF79D825C9B52510130EF45D /* Pods-DropboxPhotoTest.modulemap */,
+				BD1EB703678B699349BFBBDBB576C6DD /* Pods-DropboxPhotoTest-acknowledgements.markdown */,
+				56F677D480ED3B46D3587C700822B53A /* Pods-DropboxPhotoTest-acknowledgements.plist */,
+				8474A9CC21BD5D4A25F4AB6079993F5D /* Pods-DropboxPhotoTest-dummy.m */,
+				5CF58FB2948A33C112776387A6C01320 /* Pods-DropboxPhotoTest-frameworks.sh */,
+				6F3E38F011CAC1618AEF9D7367F0AEE5 /* Pods-DropboxPhotoTest-resources.sh */,
+				55FE49127ACAD967AAF580B3ED2037A9 /* Pods-DropboxPhotoTest-umbrella.h */,
+				38AA81592CACB31FB13976FBD2F57BED /* Pods-DropboxPhotoTest.debug.xcconfig */,
+				DEA43CEAA3D53F3F1A9A45B02D973318 /* Pods-DropboxPhotoTest.release.xcconfig */,
 			);
-			name = iOS;
+			name = "Pods-DropboxPhotoTest";
+			path = "Target Support Files/Pods-DropboxPhotoTest";
+			sourceTree = "<group>";
+		};
+		C9345DBE8F4BD9147E33D96BBD32381B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6C8BC8CB63AC6D2340A976A0C20CE4E0 /* Firebase.modulemap */,
+				96CA896B421087B753DDABD6000EAF2B /* Firebase.xcconfig */,
+				5DBC0EEB6D905EC82C2CA2CCA193F23D /* Firebase-dummy.m */,
+				76F03D7A69E298FAA1D544DD0E9C4F42 /* Firebase-prefix.pch */,
+				8C804A48C5ADC926DA899F45545E57DD /* Firebase-umbrella.h */,
+				11B4AB8D2875C3DC1218D8616ABC5A30 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Firebase";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		BFF6B342F6D79452DC4AFC675AE30E9E /* Headers */ = {
+		2FDCAAB615C287D16BF7F1F2AA978246 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5D316868F37C47AB5CBE2E2C3EAC17D /* firebase-schema-2016-ios-umbrella.h in Headers */,
+				C23FCF31260D47CEC1494A292DAA1A1E /* FAuthData.h in Headers */,
+				1D925BB011B04DDED982C7946571A67A /* FAuthType.h in Headers */,
+				E60FA42EEC3ECC48701DB55986D25D69 /* FConfig.h in Headers */,
+				E8B534D15D2B25919ACD898217266891 /* FDataSnapshot.h in Headers */,
+				239B10F388840841389B7F09648735B1 /* FEventType.h in Headers */,
+				60F9139BDD38565B78214C4FC5F5729D /* Firebase-umbrella.h in Headers */,
+				1C3EF85CD30E6FF2E51471BD5B3CEB29 /* Firebase.h in Headers */,
+				2F1496011DBBB75777645194AAAFE92D /* FirebaseApp.h in Headers */,
+				6646DA26298257396C7FFE141BB84CC3 /* FirebaseServerValue.h in Headers */,
+				DB05A9DD8244D10C28B6915C514AE15F /* FMutableData.h in Headers */,
+				4D75CF0089B20355B17A851513C4A002 /* FQuery.h in Headers */,
+				191DE2EB9A35585AE0A88BA9F833A1F4 /* FTransactionResult.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DBB2B12A367954811E3F5EC45E7E2F2F /* Headers */ = {
+		49902C9EFFDFE6B03EED6D6A671BA7F4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B7136FD44A0055BD3FDA4E7B4770EC2 /* Pods-DropboxPhotoTestTests-umbrella.h in Headers */,
+				3A20DD94EEAD62F60000F782D64202A0 /* Pods-DropboxPhotoTest-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4149AC78A10D27D905EF4620F2F67AA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F947FC85C3063743BC4C554E4254020 /* firebase-schema-2016-ios-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		489297334CAD93479024B01A5B1A2E5E /* firebase-schema-2016-ios */ = {
+		603E32BD37CC086F69479AEFB190CA12 /* Pods-DropboxPhotoTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BCFF8FBCFD2087A6EA44CC80D84B231B /* Build configuration list for PBXNativeTarget "firebase-schema-2016-ios" */;
+			buildConfigurationList = 16D0840DBF1A20701215ADDDE1D3D89A /* Build configuration list for PBXNativeTarget "Pods-DropboxPhotoTest" */;
 			buildPhases = (
-				5AEFD1C92F900AE9008594205C7048B6 /* Sources */,
-				516F88C9A1EF78361B118F6CB160BA09 /* Frameworks */,
-				BFF6B342F6D79452DC4AFC675AE30E9E /* Headers */,
+				C14D02B91FF5C81F169F6234A1C4B279 /* Sources */,
+				A514F0DB582F7FDB73090DA3B2EA04C9 /* Frameworks */,
+				49902C9EFFDFE6B03EED6D6A671BA7F4 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7376C26E8958287671AA476DECCC9498 /* PBXTargetDependency */,
+				11FB0B6D4927E49354C2C1AE0596212A /* PBXTargetDependency */,
+			);
+			name = "Pods-DropboxPhotoTest";
+			productName = "Pods-DropboxPhotoTest";
+			productReference = 2A1042C0357169EBE3EDDB9A07AB7A05 /* Pods_DropboxPhotoTest.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		897BBE9242B234142DAA48F80380F809 /* firebase-schema-2016-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6D0F5FC499DBCC0DC7FCCE3880720B30 /* Build configuration list for PBXNativeTarget "firebase-schema-2016-ios" */;
+			buildPhases = (
+				4DE963707D1ED7E09CE5DE9AC7A1BDCA /* Sources */,
+				8CE62F1DF7A1013DF20700C6EF2CED47 /* Frameworks */,
+				E4149AC78A10D27D905EF4620F2F67AA /* Headers */,
 			);
 			buildRules = (
 			);
@@ -214,25 +344,24 @@
 			);
 			name = "firebase-schema-2016-ios";
 			productName = "firebase-schema-2016-ios";
-			productReference = C36DF73EDA3FCB42E414352CB0FABE27 /* firebase_schema_2016_ios.framework */;
+			productReference = 7AF590FD5BAEDC8267769B081982BAC6 /* firebase_schema_2016_ios.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		7A9BBCB9C60914DF2005EB12B84E7111 /* Pods-DropboxPhotoTestTests */ = {
+		B7AC9326D819482593FE118E915409D7 /* Firebase */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE0907E68B58DF6A7EDF44E80803B87F /* Build configuration list for PBXNativeTarget "Pods-DropboxPhotoTestTests" */;
+			buildConfigurationList = 49B346C14D532324DCD14D0FA1347BC6 /* Build configuration list for PBXNativeTarget "Firebase" */;
 			buildPhases = (
-				1B5F4CBA4E501D092A1D954226C9E22C /* Sources */,
-				5351D1AC12CD4E330D0D07F29C70FB75 /* Frameworks */,
-				DBB2B12A367954811E3F5EC45E7E2F2F /* Headers */,
+				46E052D320E3B778B76D8393E0BAFE0F /* Sources */,
+				A7E10F383DCD59079712A57B50DCF88E /* Frameworks */,
+				2FDCAAB615C287D16BF7F1F2AA978246 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B716CC652CA55F5A89FF708A157439D3 /* PBXTargetDependency */,
 			);
-			name = "Pods-DropboxPhotoTestTests";
-			productName = "Pods-DropboxPhotoTestTests";
-			productReference = 6B25D394B51634C48D4725B084FA4D64 /* Pods_DropboxPhotoTestTests.framework */;
+			name = Firebase;
+			productName = Firebase;
+			productReference = DA061ACAF6B185233749298CE98421F3 /* Firebase.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -242,7 +371,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -252,50 +381,65 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 458474C52D5947C455093A381FA978AA /* Products */;
+			productRefGroup = B4EF22F079F9142D86626A60877DEC0C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				489297334CAD93479024B01A5B1A2E5E /* firebase-schema-2016-ios */,
-				7A9BBCB9C60914DF2005EB12B84E7111 /* Pods-DropboxPhotoTestTests */,
+				B7AC9326D819482593FE118E915409D7 /* Firebase */,
+				897BBE9242B234142DAA48F80380F809 /* firebase-schema-2016-ios */,
+				603E32BD37CC086F69479AEFB190CA12 /* Pods-DropboxPhotoTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1B5F4CBA4E501D092A1D954226C9E22C /* Sources */ = {
+		46E052D320E3B778B76D8393E0BAFE0F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D052C1A1F78FE395E7F1673E1796552A /* Pods-DropboxPhotoTestTests-dummy.m in Sources */,
+				012A7E018F3D34F159894EBD7EACACF9 /* Empty.m in Sources */,
+				1D9D7FF5237C8CC91EF58DC45AC274FB /* Firebase-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5AEFD1C92F900AE9008594205C7048B6 /* Sources */ = {
+		4DE963707D1ED7E09CE5DE9AC7A1BDCA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				310ED77EE4D9B1F6B62C49B8CBFC1A48 /* firebase-schema-2016-ios-dummy.m in Sources */,
-				505DC1EDADB97AE183E2F80DBD915AB4 /* firebase-schema-2016-ios.podspec in Sources */,
-				861B361C6AAFA8BF650044AD29116BFE /* Schema.swift in Sources */,
+				8B60E5EBE1E56A9614172D83C6303C27 /* firebase-schema-2016-ios-dummy.m in Sources */,
+				7F5B3E22C712C3ABA57A40D4D46E1DA8 /* Schema.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C14D02B91FF5C81F169F6234A1C4B279 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45B85EE60EA04052111056246E618DEA /* Pods-DropboxPhotoTest-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B716CC652CA55F5A89FF708A157439D3 /* PBXTargetDependency */ = {
+		11FB0B6D4927E49354C2C1AE0596212A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "firebase-schema-2016-ios";
-			target = 489297334CAD93479024B01A5B1A2E5E /* firebase-schema-2016-ios */;
-			targetProxy = 23B003FB61A95DAC654518B6D22AFEFD /* PBXContainerItemProxy */;
+			target = 897BBE9242B234142DAA48F80380F809 /* firebase-schema-2016-ios */;
+			targetProxy = 8061958646C277FCF94CD63921A66BF3 /* PBXContainerItemProxy */;
+		};
+		7376C26E8958287671AA476DECCC9498 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Firebase;
+			target = B7AC9326D819482593FE118E915409D7 /* Firebase */;
+			targetProxy = 04FBEE8B318A198B116D6DD28282B3DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0EF28BC9863843E8BE77AABA7E87CC9E /* Release */ = {
+		189BD1C1CE43B03BD249EC910DA7C395 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4BAAB73937A12E01477F131EAF796E0 /* firebase-schema-2016-ios.xcconfig */;
+			baseConfigurationReference = 11F85D963B824E423D2942E1B787C256 /* firebase-schema-2016-ios.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -304,10 +448,6 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Firebase",
-				);
 				GCC_PREFIX_HEADER = "Target Support Files/firebase-schema-2016-ios/firebase-schema-2016-ios-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/firebase-schema-2016-ios/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -315,7 +455,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/firebase-schema-2016-ios/firebase-schema-2016-ios.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = firebase_schema_2016_ios;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -324,38 +463,6 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
-		};
-		383DDAA811700EDC5844CA814389C483 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB14380387FF9543711B2FAF855091A0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-DropboxPhotoTestTests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_DropboxPhotoTestTests;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
 		};
 		5CE5176205D06FF3FFE3DDDA9291E44B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -375,7 +482,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -394,6 +500,33 @@
 				ONLY_ACTIVE_ARCH = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		628C2422DA58797615468EA5084795F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96CA896B421087B753DDABD6000EAF2B /* Firebase.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Firebase/Firebase-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Firebase/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Firebase/Firebase.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = Firebase;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
@@ -431,9 +564,9 @@
 			};
 			name = Release;
 		};
-		9CF59AC6CE6D6F23062DBA6660291428 /* Release */ = {
+		832A35C4D4E6795C70EA25ED98E0183E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 75A9165C0460050F6F3CE550869F1540 /* Pods-DropboxPhotoTestTests.release.xcconfig */;
+			baseConfigurationReference = 96CA896B421087B753DDABD6000EAF2B /* Firebase.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -442,18 +575,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-DropboxPhotoTestTests/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/Firebase/Firebase-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Firebase/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Firebase/Firebase.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_DropboxPhotoTestTests;
+				PRODUCT_NAME = Firebase;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -462,9 +591,9 @@
 			};
 			name = Release;
 		};
-		BC9C24240EF6A702D1F1D941EAE43E9E /* Debug */ = {
+		84F3547884E198622DABDED2A9EECAEE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4BAAB73937A12E01477F131EAF796E0 /* firebase-schema-2016-ios.xcconfig */;
+			baseConfigurationReference = 38AA81592CACB31FB13976FBD2F57BED /* Pods-DropboxPhotoTest.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -473,10 +602,67 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Firebase",
-				);
+				INFOPLIST_FILE = "Target Support Files/Pods-DropboxPhotoTest/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DropboxPhotoTest/Pods-DropboxPhotoTest.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_DropboxPhotoTest;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ACA26C4C7F3E06F5757F0453727CA324 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEA43CEAA3D53F3F1A9A45B02D973318 /* Pods-DropboxPhotoTest.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-DropboxPhotoTest/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DropboxPhotoTest/Pods-DropboxPhotoTest.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_DropboxPhotoTest;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		CDC969B1F91020E7CE6228616789C3DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11F85D963B824E423D2942E1B787C256 /* firebase-schema-2016-ios.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/firebase-schema-2016-ios/firebase-schema-2016-ios-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/firebase-schema-2016-ios/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -484,7 +670,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/firebase-schema-2016-ios/firebase-schema-2016-ios.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = firebase_schema_2016_ios;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -498,6 +683,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		16D0840DBF1A20701215ADDDE1D3D89A /* Build configuration list for PBXNativeTarget "Pods-DropboxPhotoTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84F3547884E198622DABDED2A9EECAEE /* Debug */,
+				ACA26C4C7F3E06F5757F0453727CA324 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -507,20 +701,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE0907E68B58DF6A7EDF44E80803B87F /* Build configuration list for PBXNativeTarget "Pods-DropboxPhotoTestTests" */ = {
+		49B346C14D532324DCD14D0FA1347BC6 /* Build configuration list for PBXNativeTarget "Firebase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				383DDAA811700EDC5844CA814389C483 /* Debug */,
-				9CF59AC6CE6D6F23062DBA6660291428 /* Release */,
+				628C2422DA58797615468EA5084795F2 /* Debug */,
+				832A35C4D4E6795C70EA25ED98E0183E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BCFF8FBCFD2087A6EA44CC80D84B231B /* Build configuration list for PBXNativeTarget "firebase-schema-2016-ios" */ = {
+		6D0F5FC499DBCC0DC7FCCE3880720B30 /* Build configuration list for PBXNativeTarget "firebase-schema-2016-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BC9C24240EF6A702D1F1D941EAE43E9E /* Debug */,
-				0EF28BC9863843E8BE77AABA7E87CC9E /* Release */,
+				CDC969B1F91020E7CE6228616789C3DF /* Debug */,
+				189BD1C1CE43B03BD249EC910DA7C395 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

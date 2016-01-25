@@ -6,7 +6,7 @@
 use_frameworks!
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'DropboxPhotoTestTests' do
+target 'DropboxPhotoTest' do
     pod 'Firebase', '>= 2.5.0'
     pod 'firebase-schema-2016-ios', :git => 'https://github.com/frc1678/firebase-schema-2016-ios.git'
 end
@@ -14,4 +14,3 @@ end
 target 'DropboxPhotoTestUITests' do
 
 end
-

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CBCDDDF8F17DD782E234D15 /* Pods_DropboxPhotoTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3ADB9605E4D968741BD5889 /* Pods_DropboxPhotoTestTests.framework */; };
 		192BEAC21C3463B900992A8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAC11C3463B900992A8A /* AppDelegate.swift */; };
 		192BEAC41C3463B900992A8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAC31C3463B900992A8A /* ViewController.swift */; };
 		192BEAC71C3463B900992A8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 192BEAC51C3463B900992A8A /* Main.storyboard */; };
@@ -20,6 +19,8 @@
 		19A669801C51E9F00044D1F2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697F1C51E9F00044D1F2 /* Security.framework */; };
 		19A669821C51E9F80044D1F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A669811C51E9F80044D1F2 /* SystemConfiguration.framework */; };
 		19E2FB371C4DB3D900BA4075 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E2FB361C4DB3D900BA4075 /* TableViewController.swift */; };
+		971AB448DDF7A74188393752 /* Pods_DropboxPhotoTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBFA0221510E539E01E0876 /* Pods_DropboxPhotoTest.framework */; };
+		B41168AAE964A47E999B6CF3 /* Pods_DropboxPhotoTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0465E00D20FD1FF80F75A94 /* Pods_DropboxPhotoTestTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		190DBEC01C55988900C4D1C2 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = firebase_schema_2016_ios.framework; path = "Pods/../build/Debug-iphoneos/firebase_schema_2016_ios.framework"; sourceTree = "<group>"; };
+		190DBEC71C5598FC00C4D1C2 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = firebase_schema_2016_ios.framework; path = "Pods/../build/Debug-iphoneos/firebase_schema_2016_ios.framework"; sourceTree = "<group>"; };
+		190DBED01C5599B200C4D1C2 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		190DBED21C5599D200C4D1C2 /* libicucore.A.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.A.tbd; path = usr/lib/libicucore.A.tbd; sourceTree = SDKROOT; };
 		192BEABE1C3463B900992A8A /* DropboxPhotoTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropboxPhotoTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		192BEAC11C3463B900992A8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		192BEAC31C3463B900992A8A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,9 +67,12 @@
 		19CD3CEF1C557F8300BB31A6 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = firebase_schema_2016_ios.framework; path = "Pods/../build/Debug-iphoneos/firebase_schema_2016_ios.framework"; sourceTree = "<group>"; };
 		19CD3CF01C557F8300BB31A6 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = "Pods/../build/Debug-iphoneos/Firebase.framework"; sourceTree = "<group>"; };
 		19E2FB361C4DB3D900BA4075 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		4EFFA2B44ECDB79CF3BF2C62 /* Pods-DropboxPhotoTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPhotoTestTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AE7B76728FD0BE66930D6ED9 /* Pods-DropboxPhotoTestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPhotoTestTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests.release.xcconfig"; sourceTree = "<group>"; };
-		E3ADB9605E4D968741BD5889 /* Pods_DropboxPhotoTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropboxPhotoTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		52C9A7C66FD082E114F1FFA0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPhotoTestTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7B881B9D7AB30B1D44E0A41C /* Pods-DropboxPhotoTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPhotoTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropboxPhotoTest/Pods-DropboxPhotoTest.release.xcconfig"; sourceTree = "<group>"; };
+		8A28F83AA5ED247221F07CA2 /* Pods-DropboxPhotoTestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPhotoTestTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests.release.xcconfig"; sourceTree = "<group>"; };
+		CCBFA0221510E539E01E0876 /* Pods_DropboxPhotoTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropboxPhotoTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0465E00D20FD1FF80F75A94 /* Pods_DropboxPhotoTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropboxPhotoTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2F590A2504C8898CCA5AC8F /* Pods-DropboxPhotoTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropboxPhotoTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropboxPhotoTest/Pods-DropboxPhotoTest.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +84,7 @@
 				19A669801C51E9F00044D1F2 /* Security.framework in Frameworks */,
 				19A6697E1C51E9E50044D1F2 /* CFNetwork.framework in Frameworks */,
 				19A6697C1C51E9D60044D1F2 /* libc++.tbd in Frameworks */,
+				971AB448DDF7A74188393752 /* Pods_DropboxPhotoTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CBCDDDF8F17DD782E234D15 /* Pods_DropboxPhotoTestTests.framework in Frameworks */,
+				B41168AAE964A47E999B6CF3 /* Pods_DropboxPhotoTestTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +106,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CB9E7D665B23BC71838F9C0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				52C9A7C66FD082E114F1FFA0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */,
+				8A28F83AA5ED247221F07CA2 /* Pods-DropboxPhotoTestTests.release.xcconfig */,
+				F2F590A2504C8898CCA5AC8F /* Pods-DropboxPhotoTest.debug.xcconfig */,
+				7B881B9D7AB30B1D44E0A41C /* Pods-DropboxPhotoTest.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		192BEAB51C3463B900992A8A = {
 			isa = PBXGroup;
 			children = (
@@ -104,8 +124,8 @@
 				192BEAD51C3463BA00992A8A /* DropboxPhotoTestTests */,
 				192BEAE01C3463BA00992A8A /* DropboxPhotoTestUITests */,
 				192BEABF1C3463B900992A8A /* Products */,
-				FDFCCBD8C884C4DC8514DC3E /* Pods */,
 				3BC125DF03FD1D3B53A9678F /* Frameworks */,
+				0CB9E7D665B23BC71838F9C0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -154,6 +174,10 @@
 		3BC125DF03FD1D3B53A9678F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				190DBED21C5599D200C4D1C2 /* libicucore.A.tbd */,
+				190DBED01C5599B200C4D1C2 /* libicucore.tbd */,
+				190DBEC71C5598FC00C4D1C2 /* firebase_schema_2016_ios.framework */,
+				190DBEC01C55988900C4D1C2 /* firebase_schema_2016_ios.framework */,
 				19CD3CEF1C557F8300BB31A6 /* firebase_schema_2016_ios.framework */,
 				19CD3CF01C557F8300BB31A6 /* Firebase.framework */,
 				19CD3CE91C5561D700BB31A6 /* Firebase.framework */,
@@ -162,18 +186,10 @@
 				19A6697F1C51E9F00044D1F2 /* Security.framework */,
 				19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */,
 				19A6697B1C51E9D60044D1F2 /* libc++.tbd */,
-				E3ADB9605E4D968741BD5889 /* Pods_DropboxPhotoTestTests.framework */,
+				E0465E00D20FD1FF80F75A94 /* Pods_DropboxPhotoTestTests.framework */,
+				CCBFA0221510E539E01E0876 /* Pods_DropboxPhotoTest.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		FDFCCBD8C884C4DC8514DC3E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				4EFFA2B44ECDB79CF3BF2C62 /* Pods-DropboxPhotoTestTests.debug.xcconfig */,
-				AE7B76728FD0BE66930D6ED9 /* Pods-DropboxPhotoTestTests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,9 +199,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 192BEAE61C3463BA00992A8A /* Build configuration list for PBXNativeTarget "DropboxPhotoTest" */;
 			buildPhases = (
+				40E532CA3D4C245709F4F453 /* Check Pods Manifest.lock */,
 				192BEABA1C3463B900992A8A /* Sources */,
 				192BEABB1C3463B900992A8A /* Frameworks */,
 				192BEABC1C3463B900992A8A /* Resources */,
+				C59714F493F2426A97996210 /* Embed Pods Frameworks */,
+				71E685A771CDD51152FA3E23 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -200,12 +219,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 192BEAE91C3463BA00992A8A /* Build configuration list for PBXNativeTarget "DropboxPhotoTestTests" */;
 			buildPhases = (
-				C4B19EEA01592A2641D6E8B6 /* Check Pods Manifest.lock */,
+				F61A02FF3D4E040B3156CFC6 /* Check Pods Manifest.lock */,
 				192BEACE1C3463BA00992A8A /* Sources */,
 				192BEACF1C3463BA00992A8A /* Frameworks */,
 				192BEAD01C3463BA00992A8A /* Resources */,
-				A839066EF57E077DDB1CCA01 /* Embed Pods Frameworks */,
-				AD51FFC0340FA3B5C24621F5 /* Copy Pods Resources */,
+				CF72DF5B336397FC1366AF05 /* Embed Pods Frameworks */,
+				69B450D74AC1AB5E300F8E2C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -305,22 +324,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A839066EF57E077DDB1CCA01 /* Embed Pods Frameworks */ = {
+		40E532CA3D4C245709F4F453 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		AD51FFC0340FA3B5C24621F5 /* Copy Pods Resources */ = {
+		69B450D74AC1AB5E300F8E2C /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -335,7 +354,52 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C4B19EEA01592A2641D6E8B6 /* Check Pods Manifest.lock */ = {
+		71E685A771CDD51152FA3E23 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropboxPhotoTest/Pods-DropboxPhotoTest-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C59714F493F2426A97996210 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropboxPhotoTest/Pods-DropboxPhotoTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF72DF5B336397FC1366AF05 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropboxPhotoTestTests/Pods-DropboxPhotoTestTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F61A02FF3D4E040B3156CFC6 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -503,9 +567,9 @@
 		};
 		192BEAE71C3463BA00992A8A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F2F590A2504C8898CCA5AC8F /* Pods-DropboxPhotoTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
@@ -519,9 +583,9 @@
 		};
 		192BEAE81C3463BA00992A8A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B881B9D7AB30B1D44E0A41C /* Pods-DropboxPhotoTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
@@ -535,7 +599,7 @@
 		};
 		192BEAEA1C3463BA00992A8A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4EFFA2B44ECDB79CF3BF2C62 /* Pods-DropboxPhotoTestTests.debug.xcconfig */;
+			baseConfigurationReference = 52C9A7C66FD082E114F1FFA0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = DropboxPhotoTestTests/Info.plist;
@@ -548,7 +612,7 @@
 		};
 		192BEAEB1C3463BA00992A8A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE7B76728FD0BE66930D6ED9 /* Pods-DropboxPhotoTestTests.release.xcconfig */;
+			baseConfigurationReference = 8A28F83AA5ED247221F07CA2 /* Pods-DropboxPhotoTestTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = DropboxPhotoTestTests/Info.plist;

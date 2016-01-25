@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-DropboxPhotoTestTests.xcscheme</key>
+		<key>Firebase.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-DropboxPhotoTest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>489297334CAD93479024B01A5B1A2E5E</key>
+		<key>603E32BD37CC086F69479AEFB190CA12</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7A9BBCB9C60914DF2005EB12B84E7111</key>
+		<key>897BBE9242B234142DAA48F80380F809</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7AC9326D819482593FE118E915409D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

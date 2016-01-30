@@ -85,9 +85,11 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-DropboxPhotoTest/Firebase.framework"
+  install_framework "Pods-DropboxPhotoTest/SwiftyJSON.framework"
   install_framework "Pods-DropboxPhotoTest/firebase_schema_2016_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-DropboxPhotoTest/Firebase.framework"
+  install_framework "Pods-DropboxPhotoTest/SwiftyJSON.framework"
   install_framework "Pods-DropboxPhotoTest/firebase_schema_2016_ios.framework"
 fi

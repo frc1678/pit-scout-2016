@@ -9,6 +9,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'DropboxPhotoTest' do
     pod 'Firebase', '>= 2.5.0'
     pod 'firebase-schema-2016-ios', :git => 'https://github.com/frc1678/firebase-schema-2016-ios.git'
+    pod 'SwiftyJSON'
 end
 
 target 'DropboxPhotoTestUITests' do

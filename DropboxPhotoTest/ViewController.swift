@@ -8,8 +8,7 @@
 
 import UIKit
 import AVFoundation
-import Firebase
-import firebase_schema_2016_ios
+
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     
@@ -26,8 +25,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var numberOfWheels : Int  = -1
     var pitOrg : String = "-1"
     var origionalBottomScrollViewConstraint : CGFloat = 0.0
-    let firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/")
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.scrollEnabled = true
@@ -35,16 +33,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         self.origionalBottomScrollViewConstraint = self.bottomScrollViewConstraint.constant
-        self.firebase.authUser("jenny@example.com", password: "correcthorsebatterystaple") {
-            error, authData in
-            if error != nil {
-                print("Firebase Login Successful")
-            } else {
-                // user is logged in, check authData for data
-                print("Firebase Login Failed")
-            }
-        }
+        
     }
+    
+    
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
         if(sender.text != "") { self.numberOfWheels = Int(sender.text!)! }
     }

@@ -7,17 +7,33 @@
 //
 import UIKit
 import Foundation
+import Firebase
+import firebase_schema_2016_ios
+import SwiftyJSON
 
 class TableViewController: UITableViewController {
     
     let cellReuseId = "teamCell"
     let data = ["1678-Circus Circus", "254-Chezy Poffs"]
-    
+    let firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/")
+    var comp = Competition()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.delegate = self
         tableView.dataSource = self
+        self.firebase.authUser("jenny@example.com", password: "correcthorsebatterystaple") {
+            error, authData in
+            if error != nil {
+                print("Firebase Login Successful")
+                self.firebase.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    self.comp = Competition(jsonStr: String(JSON(snapshot.value)))
+                })
+            } else {
+                // user is logged in, check authData for data
+                print("Firebase Login Failed")
+            }
+        }
     }
     
     // MARK:  UITextFieldDelegate Methods

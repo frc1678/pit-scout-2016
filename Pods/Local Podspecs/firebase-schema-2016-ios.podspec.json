@@ -20,7 +20,8 @@
   "source_files": "*",
   "exclude_files": [
     "README.md",
-    ".gitignore"
+    ".gitignore",
+    "*.podspec"
   ],
   "frameworks": "Foundation"
 }

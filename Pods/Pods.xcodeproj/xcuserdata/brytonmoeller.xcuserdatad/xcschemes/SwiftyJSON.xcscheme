@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7AC9326D819482593FE118E915409D7"
-               BuildableName = "Firebase.framework"
-               BlueprintName = "Firebase"
+               BlueprintIdentifier = "A6F8DE550C8EC6079EC08466BE137B75"
+               BuildableName = "SwiftyJSON.framework"
+               BlueprintName = "SwiftyJSON"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B7AC9326D819482593FE118E915409D7"
-            BuildableName = "Firebase.framework"
-            BlueprintName = "Firebase"
+            BlueprintIdentifier = "A6F8DE550C8EC6079EC08466BE137B75"
+            BuildableName = "SwiftyJSON.framework"
+            BlueprintName = "SwiftyJSON"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

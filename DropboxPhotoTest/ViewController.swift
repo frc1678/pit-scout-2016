@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import Firebase
+//import PitTeamDataSource
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
@@ -21,11 +23,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var otherImageURLs: UITextField!
     @IBOutlet weak var bottomScrollViewConstraint: NSLayoutConstraint!
     var teamNum : Int = -1
+    let pitOrgValues = ["Terrible", "Bad", "OK", "Good", "Great"]
     var teamNam : String = "-1"
     var numberOfWheels : Int  = -1
-    var pitOrg : String = "-1"
+    var pitOrg : String = "-1" {
+        didSet {
+            self.pitOrgSelect.selectedSegmentIndex = self.pitOrgValues.indexOf(self.pitOrg)!
+        }
+    }
     var origionalBottomScrollViewConstraint : CGFloat = 0.0
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.scrollEnabled = true
@@ -34,7 +41,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         self.origionalBottomScrollViewConstraint = self.bottomScrollViewConstraint.constant
         
+       // var pitTeamDataSource : PitTeamDataSource = PitTeamDataSource(teamNumber: self.teamNum, firebaseTeamRef: Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams/\(self.teamNum)"))
+
     }
+    
+    
     
     
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
@@ -55,8 +66,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func pitOrgValueChanged(sender: UISegmentedControl) {
-        let pitOrgValues = ["Terrible", "Bad", "OK", "Good", "Great"]
-        self.pitOrg = pitOrgValues[sender.selectedSegmentIndex]
+        if self.pitOrg != self.pitOrgValues[sender.selectedSegmentIndex] {
+            self.pitOrg = self.pitOrgValues[sender.selectedSegmentIndex]
+        }
     }
 
     @IBAction func cameraButtonPressed(sender: AnyObject) {

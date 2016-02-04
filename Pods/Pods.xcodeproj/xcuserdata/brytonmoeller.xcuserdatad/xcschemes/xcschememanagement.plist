@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FirebaseUI.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JSONHelper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-DropboxPhotoTest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,7 +37,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>03623B064804237BD12B5737C0FA3D63</key>
+		<key>06B450636FEDF47BECCC9DFEE60942ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>24FB1BB0AB4B68388EB65B09AB3B9A67</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,12 +52,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A6F8DE550C8EC6079EC08466BE137B75</key>
+		<key>B7AC9326D819482593FE118E915409D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B7AC9326D819482593FE118E915409D7</key>
+		<key>CDA7A7A15C9ACC0C36E5CE75E343F13B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F25A39724C1F236915EF8279D2B63339</key>
 		<dict>
 			<key>primary</key>
 			<true/>

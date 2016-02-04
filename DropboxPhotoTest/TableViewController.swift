@@ -10,24 +10,28 @@ import Foundation
 import Firebase
 import firebase_schema_2016_ios
 import SwiftyJSON
+import FirebaseUI
 
 class TableViewController: UITableViewController {
     
     let cellReuseId = "teamCell"
     let data = ["1678-Circus Circus", "254-Chezy Poffs"]
-    let firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/")
-    var comp = Competition()
+    var comp : Competition?
+    var firebase : Firebase?
+    var teams : [NSDictionary] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams")
+
         tableView.delegate = self
         tableView.dataSource = self
-        self.firebase.authUser("jenny@example.com", password: "correcthorsebatterystaple") {
+        self.firebase!.authUser("jenny@example.com", password: "correcthorsebatterystaple") {
             error, authData in
             if error != nil {
                 print("Firebase Login Successful")
-                self.firebase.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    self.comp = Competition(jsonStr: String(JSON(snapshot.value)))
+                self.firebase?.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
+                    self.teams.append(snapshot.value as! [String: AnyObject])
                 })
             } else {
                 // user is logged in, check authData for data
@@ -61,6 +65,7 @@ class TableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "Team View Segue" {
+            
             let teamViewController = segue.destinationViewController as! ViewController
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
             let numNameArray = data[indexPath!.row].characters.split("-")
@@ -68,6 +73,7 @@ class TableViewController: UITableViewController {
             teamViewController.teamNum = Int(String(numNameArray[0]))!
             teamViewController.teamNam = String(numNameArray[1])
             teamViewController.title = data[indexPath!.row]
+            //teamViewController.pitOrg =
         }
     }
 }

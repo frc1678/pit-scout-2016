@@ -1,66 +1,53 @@
 import Foundation
+import JSONHelper
 // iOS Schema 2016
 
-class Competition : NSObject {
+class Competition : Deserializable {
     var code = ""
-    var Teams : [Team] = []
-    var Matches : [Match] = []
-    var TeamInMatchDatas : [TeamInMatchData] = []
+    var teams = [Team]()
+    var matches = [Match]()
+    var teamInMatchDatas = [TeamInMatchData]()
     var averageScore : Int = -1
-    func setCitrusValueForKey(key: String, value: AnyObject, higherUpData: [String: AnyObject], higherUpObject: AnyObject) -> AnyObject {
-
-        
-            // Loop
-            for (key, value) in higherUpData {
-                //print("Value: \(object_getClass(value)) :: \(value)")
-                let keyName = key as String
-                // If property exists
-                
-                //if (self.respondsToSelector(NSSelectorFromString(keyName))) { //Makes this safer
-                if(String(object_getClass(value)) != "__NSCFDictionary") {
-                    self.setValue(value, forKeyPath: keyName)
-                } else {
-                    return self.setCitrusValueForKey(keyName, value: value, higherUpData: value as! [String : AnyObject], higherUpObject: higherUpObject.valueForKey(key)!)
-                }
-                //}
-                
-            }
-        
-        return value
+    required init(data: JSONDictionary) {
+        code <-- data["code"]
+        teams <-- data["Teams"]
+        teamInMatchDatas <-- data["TeamInMatchDatas"]
+        matches <-- data["Matches"]
+        averageScore <-- data["averageScore"]
     }
-    convenience init(jsonStr: String) {
-        self.init()
-        if let jsonData = jsonStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        {
-            do {
-                let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: []) as! [String: AnyObject]
-                
-                // Loop
-                for (key, value) in json {
-                    //print("Value: \(object_getClass(value)) :: \(value)")
-                    let keyName = key as String
-                    // If property exists
-                    
-                    //if (self.respondsToSelector(NSSelectorFromString(keyName))) { //Makes this safer
-                    if(String(object_getClass(value)) != "__NSCFDictionary") {
-                        self.setValue(value, forKeyPath: keyName)
-                    } else {
-                        self.setValue(self.setCitrusValueForKey(keyName, value: value, higherUpData: value as! [String : AnyObject], higherUpObject: self.valueForKey(key)!), forKey: keyName)
-                    }
-                    //}
-                    
-                }
-                
-            } catch let error as NSError {
-                print("Failed to load: \(error.localizedDescription)")
-            }
-        }
-        else
-        {
-            print("json is of wrong format!")
-        }
-    }
-
+    
+//    func setCitrusValueForKey(key: String, value: AnyObject?, higherUpData: [String: AnyObject], higherUpObject: AnyObject) -> AnyObject {
+//        if(String(object_getClass(value)) != "__NSCFDictionary") {
+//            setValue(value, forKeyPath: key)
+//        } else {
+//            for (loopKey, loopValue) in value {
+//                return setCitrusValueForKey(loopKey, value: loopValue, higherUpData: value as! [String : AnyObject], higherUpObject: higherUpObject.valueForKey(key)!)
+//            }
+//            
+//        }
+//        
+//        return value!
+//    }
+//    convenience init(jsonStr: String) {
+//        self.init()
+//        if let jsonData = jsonStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+//        {
+//            do {
+//                let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: []) as! [String:AnyObject]
+//                self.setCitrusValueForKey(highKey: "", higherUpData: json, higherUpObject: self)
+//                
+//            }
+//            catch let error as NSError {
+//                print("JSON CITRUS ERROR: \(error)")
+//            }
+//            
+//        }
+//        else
+//        {
+//            print("json is of wrong format!")
+//        }
+//    }
+    
 }
 
 class CalculatedTeamData {
@@ -99,12 +86,19 @@ class CalculatedTeamData {
     var numScaleAndChallangePoints = -1
 }
 
-class Team {
+class Team : Deserializable {
     var name = "noName"
     var number = -1
-    var matches : [Match] = []
-    var teamInMatchDatas : [TeamInMatchData] = []
+    var matches = [Match]()
+    var teamInMatchDatas = [TeamInMatchData]()
     var calculatedData : CalculatedTeamData = CalculatedTeamData()
+    required init(data: JSONDictionary) {
+        name <-- data["name"]
+        number <-- data["number"]
+        matches <-- data["matches"]
+        teamInMatchDatas <-- data["teamInMatchDatas"]
+        calculatedData <-- data["calculatedData"]
+    }
 }
 
 class Match {
@@ -163,5 +157,5 @@ class TeamInMatchData  {
     var didScaleTele = false
     var didChallengeTele = false
     var timesDefensesCrossedTele = ["pc" : -1,"cdf" : -1,"mt" :  -1,"rp" : -1,"sp" : -1,"db" : -1,"lb" : -1,"rw" : -1
-]
+    ]
 }

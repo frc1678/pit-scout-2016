@@ -33,6 +33,9 @@ class TableViewController: UITableViewController {
                 self.firebase?.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
                     self.teams.append(snapshot.value as! [String: AnyObject])
                 })
+                self.firebase?.observeEventType(.Value, withBlock: { (snapshot) -> Void in
+                    self.tableView.reloadData()
+                })
             } else {
                 // user is logged in, check authData for data
                 print("Firebase Login Failed")
@@ -73,7 +76,6 @@ class TableViewController: UITableViewController {
             teamViewController.teamNum = Int(String(numNameArray[0]))!
             teamViewController.teamNam = String(numNameArray[1])
             teamViewController.title = data[indexPath!.row]
-            //teamViewController.pitOrg =
         }
     }
 }

@@ -1,9 +1,12 @@
 PODS:
+  - Alamofire (3.1.5)
   - Firebase (2.5.0)
   - firebase-schema-2016-ios (0.0.1)
   - FirebaseUI/Core (0.3.1):
     - Firebase (~> 2.2)
   - JSONHelper (1.7.0)
+  - SwiftyDropbox (3.0.0):
+    - Alamofire (~> 3.1)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
@@ -11,6 +14,7 @@ DEPENDENCIES:
   - firebase-schema-2016-ios (from `https://github.com/frc1678/firebase-schema-2016-ios.git`)
   - FirebaseUI/Core (~> 0.3)
   - JSONHelper
+  - SwiftyDropbox
   - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -23,10 +27,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/frc1678/firebase-schema-2016-ios.git
 
 SPEC CHECKSUMS:
+  Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
   Firebase: 744617c0733b45198f9486ebd5cac64ec2d10d79
   firebase-schema-2016-ios: 172ffba71ecfd9b77c363c79960458a0e846907d
   FirebaseUI: 62f01e067dcfc5c903d8b9cb7d77d03fa163c71a
   JSONHelper: b71808273ac60fb9e1878eb115370b0faac14a81
+  SwiftyDropbox: e0d4aa3166082ec07ed942e94edb8c732b3376e4
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
 COCOAPODS: 0.39.0

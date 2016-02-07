@@ -15,13 +15,11 @@ import SwiftyDropbox
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     
-    @IBOutlet weak var textView: UITextView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var numWheels: UITextField!
     @IBOutlet weak var pitOrgSelect:UISegmentedControl!
     @IBOutlet weak var selectedImageURL: UITextField!
-    @IBOutlet weak var otherImageURLs: UITextField!
     @IBOutlet weak var bottomScrollViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var baseWidth: UITextField!
     @IBOutlet weak var baseLength: UITextField!
@@ -30,6 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var shotBlockerPotential: UISegmentedControl!
     @IBOutlet weak var lowBarPotential: UISegmentedControl!
     @IBOutlet weak var lowBarSwitch: UISwitch!
+    @IBOutlet weak var pitNotes: UITextField!
     
     var teamNam : String = "-1"
     var numberOfWheels : Int  = -1
@@ -40,27 +39,52 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     var teamNum : Int = -1
     let pitOrgValues = ["Terrible", "Bad", "OK", "Good", "Great"]
+    let numberSelectorValues = ["1", "2", "3", "4", "5"]
     var filesToUpload : [[String : AnyObject]] = []
     var sharedURLs : [[Int: String]] = []
     var timer = NSTimer()
     var origionalBottomScrollViewConstraint : CGFloat = 0.0
-    var firebase : Firebase?
-    var ourTeam : Firebase?
-
+    var firebase : Firebase!
+    var ourTeam : Firebase!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams")
-        self.ourTeam = self.firebase?.childByAppendingPath("1678")
-        self.ourTeam?.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
         
-            self.selectedImageURL.text = snap.childSnapshotForPath("selectedImageUrl").value as? String
-            if((snap.childSnapshotForPath("pitOrganization").value)! as! Int != -1) {
-                self.pitOrgSelect.selectedSegmentIndex = self.pitOrgValues.indexOf((snap.childSnapshotForPath("pitOrganization").value)! as! String)!
-            }
-            let passedLowBarTesting : Bool = snap.childSnapshotForPath("pitLowBarCapability").value as! Bool
-            self.lowBarSwitch.setOn(passedLowBarTesting, animated: true)
+        self.pitNotes.delegate = self
+        self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+            //Updating UI
             
+            self.selectedImageURL.text = snap.childSnapshotForPath("selectedImageUrl").value as? String
+            self.pitNotes.text = snap.childSnapshotForPath("pitNotes").value as? String
+            self.bumperHeight.text = "\(snap.childSnapshotForPath("pitBumperHeight").value as! Float)"
+            self.baseLength.text = "\(snap.childSnapshotForPath("pitDriveBaseLength").value as! Float)"
+            self.baseWidth.text = "\(snap.childSnapshotForPath("pitDriveBaseWidth").value as! Float)"
+            self.numWheels.text = "\(snap.childSnapshotForPath("pitNumberOfWheels").value as! Int)"
+            if let po = snap.childSnapshotForPath("pitOrganization").value as? String {
+                if po != "-1" {
+                    self.pitOrgSelect.selectedSegmentIndex = self.pitOrgValues.indexOf(po)!
+                }
+            }
+            if let po = snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as? String {
+                if po != "-1" {
+                    self.shotBlockerPotential.selectedSegmentIndex = self.numberSelectorValues.indexOf(po)!
+                }
+            }
+            if let po = snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as? String {
+                if po != "-1" {
+                    self.midlineBallCheesecakePotential.selectedSegmentIndex = self.numberSelectorValues.indexOf(po)!
+                }
+            }
+            if let po = snap.childSnapshotForPath("pitPotentialLowBarCapability").value as? String {
+                if po != "-1" {
+                    self.lowBarPotential.selectedSegmentIndex = self.numberSelectorValues.indexOf(po)!
+                }
+            }
+            if let passedLowBarTesting = snap.childSnapshotForPath("pitLowBarCapability").value {
+                let passedLowBar = Bool(passedLowBarTesting as! NSNumber)
+                self.lowBarSwitch.setOn(passedLowBar, animated: true)
+            }
         })
         
         self.scrollView.scrollEnabled = true
@@ -68,12 +92,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         self.origionalBottomScrollViewConstraint = self.bottomScrollViewConstraint.constant
-        
-       // var pitTeamDataSource : PitTeamDataSource = PitTeamDataSource(teamNumber: self.teamNum, firebaseTeamRef: Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams/\(self.teamNum)"))
-
     }
     
-    
+    @IBAction func pitNotesEditingEnded(sender: UITextField) {
+        self.ourTeam?.childByAppendingPath("pitNotes").setValue(self.pitNotes.text)
+    }
     
     
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
@@ -97,15 +120,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func baseLengthDidChange(sender: UITextField) {
         self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(self.baseLength.text!))
     }
-    
-    @IBAction func otherImageEditingEnded(sender: UITextField) {
-        let otherURLsArray = self.otherImageURLs.text?.componentsSeparatedByString(", ")
-        for url in otherURLsArray! {
-            self.ourTeam?.childByAppendingPath("otherImageUrls").setValue([])
-            self.ourTeam?.childByAppendingPath("otherImageUrls").childByAutoId().setValue(url)
-        }
+    @IBAction func shotBlockerPotentialDidChange(sender: UISegmentedControl) {
+        self.ourTeam?.childByAppendingPath("pitPotentialShotBlockerCapability").setValue(self.numberSelectorValues[sender.selectedSegmentIndex])
     }
     
+    @IBAction func lowBarPotentialDidChange(sender: UISegmentedControl) {
+        self.ourTeam?.childByAppendingPath("pitPotentialLowBarCapability").setValue(self.numberSelectorValues[sender.selectedSegmentIndex])
+    }
+    
+    @IBAction func midlineBallCheesecakePotentialDidChange(sender: UISegmentedControl) {
+        self.ourTeam?.childByAppendingPath("pitPotentialMidlineBallCapability").setValue(self.numberSelectorValues[sender.selectedSegmentIndex])
+    }
+    
+    @IBAction func lowBarTestResultChanged(sender: UISwitch) {
+        self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(sender.on)
+    }
+        
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -114,9 +144,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func pitOrgValueChanged(sender: UISegmentedControl) {
         if self.pitOrg != self.pitOrgValues[sender.selectedSegmentIndex] {
             self.pitOrg = self.pitOrgValues[sender.selectedSegmentIndex]
+            print(self.ourTeam?.childByAppendingPath("pitOrganization"))
+            self.ourTeam?.childByAppendingPath("pitOrganization").setValue(self.pitOrgValues[sender.selectedSegmentIndex])
         }
     }
-
+    
     @IBAction func cameraButtonPressed(sender: AnyObject) {
         
         let picker = UIImagePickerController()
@@ -127,6 +159,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         presentViewController(picker, animated: true, completion: nil)
     }
     
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.imageButton.imageView?.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
@@ -136,23 +169,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
             self.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: "\(self.teamNum)--\(NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle)).png", teamNumber: self.teamNum) //The file name has a timestamp
             self.uploadFilesToDropbox()
-
+            
         })
         
     }
     
     /*func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.bottomScrollViewConstraint.constant = keyboardFrame.size.height + 20
-        })
+    var info = notification.userInfo!
+    let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    
+    UIView.animateWithDuration(0.1, animations: { () -> Void in
+    self.bottomScrollViewConstraint.constant = keyboardFrame.size.height + 20
+    })
     }
     func keyboardWillHide(notification: NSNotification) {
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.bottomScrollViewConstraint.constant = self.origionalBottomScrollViewConstraint
-        })
+    UIView.animateWithDuration(0.1, animations: { () -> Void in
+    self.bottomScrollViewConstraint.constant = self.origionalBottomScrollViewConstraint
+    })
     }
     */
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -169,7 +202,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var contentInset:UIEdgeInsets = self.scrollView.contentInset
         contentInset.bottom = keyboardFrame.size.height
         self.scrollView.contentInset = contentInset
-        self.scrollView.scrollRectToVisible(self.textView.frame, animated: true)
+        self.scrollView.scrollRectToVisible(self.pitNotes.frame, animated: true)
     }
     
     func keyboardWillHide(notification:NSNotification){
@@ -178,10 +211,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     /*
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        let activityViewController = UIActivityViewController(activityItems: [tempImage], applicationActivities: nil)
-        presentViewController(activityViewController, animated: true, completion: {})
+    picker.dismissViewControllerAnimated(true, completion: nil)
+    let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+    let activityViewController = UIActivityViewController(activityItems: [tempImage], applicationActivities: nil)
+    presentViewController(activityViewController, animated: true, completion: {})
     }*/
     
     func addFileToLineup(fileData : NSData, fileName : String, teamNumber : Int) {

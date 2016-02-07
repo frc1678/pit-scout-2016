@@ -39,11 +39,20 @@ class TableViewController: UITableViewController {
                 self.teams.addObject(team)
                 self.teamNums.addObject(team.childSnapshotForPath("number").value)
             }
+            self.teamNums.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+                let o = obj1 as! Int
+                let t = obj2 as! Int
+
+                if(o > t) { return NSComparisonResult.OrderedAscending }
+                else if(t > o) { return NSComparisonResult.OrderedDescending }
+                else { return NSComparisonResult.OrderedSame }
+            })
             self.tableView.reloadData()
         })
         
         
     }
+    
     
     // MARK:  UITextFieldDelegate Methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -74,8 +83,11 @@ class TableViewController: UITableViewController {
             if let number : Int = self.teamNums[(indexPath?.row)!] as? Int {
                 let teamViewController = segue.destinationViewController as! ViewController
                 
+                let teamFB = self.firebase?.childByAppendingPath("\(number)")
+                teamViewController.ourTeam = teamFB
+                teamViewController.firebase = self.firebase
                 
-                self.firebase?.childByAppendingPath("\(number)").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                     teamViewController.teamNum = number 
                     teamViewController.teamNam = snap.childSnapshotForPath("name").value as! String
                     teamViewController.title = "\(number)"

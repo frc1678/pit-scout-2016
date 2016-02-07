@@ -15,7 +15,6 @@
 		192BEACC1C3463B900992A8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 192BEACA1C3463B900992A8A /* LaunchScreen.storyboard */; };
 		192BEAD71C3463BA00992A8A /* DropboxPhotoTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAD61C3463BA00992A8A /* DropboxPhotoTestTests.swift */; };
 		192BEAE21C3463BA00992A8A /* DropboxPhotoTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAE11C3463BA00992A8A /* DropboxPhotoTestUITests.swift */; };
-		1938948F1C630DB0008D78AE /* PitTeamDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1938948E1C630DB0008D78AE /* PitTeamDataSource.swift */; };
 		19A6697C1C51E9D60044D1F2 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697B1C51E9D60044D1F2 /* libc++.tbd */; };
 		19A6697E1C51E9E50044D1F2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */; };
 		19A669801C51E9F00044D1F2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697F1C51E9F00044D1F2 /* Security.framework */; };
@@ -61,7 +60,6 @@
 		192BEADD1C3463BA00992A8A /* DropboxPhotoTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropboxPhotoTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		192BEAE11C3463BA00992A8A /* DropboxPhotoTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxPhotoTestUITests.swift; sourceTree = "<group>"; };
 		192BEAE31C3463BA00992A8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1938948E1C630DB0008D78AE /* PitTeamDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PitTeamDataSource.swift; sourceTree = "<group>"; };
 		19A6697B1C51E9D60044D1F2 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		19A6697F1C51E9F00044D1F2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -149,7 +147,6 @@
 				192BEAC11C3463B900992A8A /* AppDelegate.swift */,
 				192BEAC31C3463B900992A8A /* ViewController.swift */,
 				19E2FB361C4DB3D900BA4075 /* TableViewController.swift */,
-				1938948E1C630DB0008D78AE /* PitTeamDataSource.swift */,
 				192BEAC51C3463B900992A8A /* Main.storyboard */,
 				192BEAC81C3463B900992A8A /* Assets.xcassets */,
 				192BEACA1C3463B900992A8A /* LaunchScreen.storyboard */,
@@ -431,7 +428,6 @@
 				19E2FB371C4DB3D900BA4075 /* TableViewController.swift in Sources */,
 				192596BF1C59C51D00C4A8EE /* firebase-schema-2016-ios.swift in Sources */,
 				192BEAC21C3463B900992A8A /* AppDelegate.swift in Sources */,
-				1938948F1C630DB0008D78AE /* PitTeamDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

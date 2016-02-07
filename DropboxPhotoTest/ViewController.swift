@@ -161,7 +161,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        self.imageButton.imageView?.image = image
+        self.imageButton.setImage(image, forState: UIControlState.Normal)
+        //self.imageButton.imageView?.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
         //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         //presentViewController(activityViewController, animated: true, completion: {})
@@ -233,7 +234,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         if let metaData = response {
                             self.filesToUpload = self.filesToUpload.filter({ $0["data"] as! NSData != file["data"] as! NSData }) //Removing the uploaded file from files to upload, this actually works in swift!
                             print("*** Upload file: \(metaData) ****")
-                            let url = "https://dl.dropboxusercontent.com/u/63662632/"
+                            let url = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
                             sharedURL = [number: url]
                             self.putPhotoLinkToFirebase(url, teamNumber: number, selectedImage: true)
                         }

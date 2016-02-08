@@ -23,7 +23,7 @@ class TableViewController: UITableViewController {
     var teamNums : NSMutableArray = []
     var donePitscouting : NSMutableArray = []
     var timer  = NSTimer()
-    
+    var photoUploader : PhotoUploader?
     
     
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ class TableViewController: UITableViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        self.firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams")
+        self.firebase = Firebase(url: "https://1678-dev3-2016.firebaseio.com/Teams")
         firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
             for t in snap.children.enumerate() {
                 let team = t.element
@@ -56,7 +56,7 @@ class TableViewController: UITableViewController {
                 else { return NSComparisonResult.OrderedSame }
             })
             self.tableView.reloadData()
-            
+            self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
         })
         
     }
@@ -67,10 +67,10 @@ class TableViewController: UITableViewController {
         if (snap.childSnapshotForPath("pitDriveBaseLength").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitNotes").value as! String) == "-1" { return false }
         if (snap.childSnapshotForPath("pitNumberOfWheels").value as! Int) <= -1 { return false }
-        if (snap.childSnapshotForPath("pitOrganization").value as! String) == "-1" { return false }
-        if (snap.childSnapshotForPath("pitPotentialLowBarCapability").value as! String) == "-1" { return false }
-        if (snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as! String) == "-1" { return false }
-        if (snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as! String) == "-1" { return false }
+        if (snap.childSnapshotForPath("pitOrganization").value as! Int) == -1 { return false }
+        if (snap.childSnapshotForPath("pitPotentialLowBarCapability").value as! Int) == -1 { return false }
+        if (snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as! Int) == -1 { return false }
+        if (snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as! Int) == -1 { return false }
         return true
     }
     
@@ -93,6 +93,7 @@ class TableViewController: UITableViewController {
                 cell.accessoryType = UITableViewCellAccessoryType.None
             }
         }
+        
         return cell
     }
     
@@ -100,6 +101,7 @@ class TableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "Team View Segue" {
@@ -113,6 +115,7 @@ class TableViewController: UITableViewController {
                 teamViewController.firebase = self.firebase
                 teamViewController.teamNum = number
                 teamViewController.title = "\(number)"
+                teamViewController.photoUploader = self.photoUploader
 
                 teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                     teamViewController.teamNam = snap.childSnapshotForPath("name").value as! String

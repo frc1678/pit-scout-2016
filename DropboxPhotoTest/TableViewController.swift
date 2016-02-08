@@ -25,6 +25,7 @@ class TableViewController: UITableViewController {
     var timer  = NSTimer()
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,7 +58,6 @@ class TableViewController: UITableViewController {
             self.tableView.reloadData()
             
         })
-        
         
     }
     
@@ -111,11 +111,11 @@ class TableViewController: UITableViewController {
                 let teamFB = self.firebase?.childByAppendingPath("\(number)")
                 teamViewController.ourTeam = teamFB
                 teamViewController.firebase = self.firebase
-                
+                teamViewController.teamNum = number
+                teamViewController.title = "\(number)"
+
                 teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-                    teamViewController.teamNum = number 
                     teamViewController.teamNam = snap.childSnapshotForPath("name").value as! String
-                    teamViewController.title = "\(number)"
                 })
             }
         }

@@ -19,12 +19,27 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>HanekeSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>JSONHelper.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-DropboxPhotoTest.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SwiftPhotoGallery-SwiftPhotoGallery.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SwiftPhotoGallery.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,12 +62,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>147F997BE8DBA5B7B7E26F30BA3C6CDB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>24FB1BB0AB4B68388EB65B09AB3B9A67</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>28B8970941DF0AE95F2DF32A84AD5B66</key>
+		<key>4187113204C6DF1FD719ACAEC15EDE3C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,7 +82,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>62A0271A49FA3034A5959E577B18DD88</key>
+		<key>5168204719510DEDDB0DE026BD356D02</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>64CDB55411467BD9155EAD1AB775021D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7DDF79495F24B309AF089ACC99FC1151</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,12 +102,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8C470BA6E9AAB04FB571D9A9F5D3B97C</key>
+		<key>B7AC9326D819482593FE118E915409D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B7AC9326D819482593FE118E915409D7</key>
+		<key>C16842C8AF01C01808978A07DD226D82</key>
 		<dict>
 			<key>primary</key>
 			<true/>

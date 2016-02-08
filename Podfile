@@ -13,6 +13,9 @@ target 'DropboxPhotoTest' do
     pod 'JSONHelper'
     pod 'FirebaseUI/Core', '~> 0.3'
     pod 'SwiftyDropbox'
+    pod 'HanekeSwift'
+    pod 'SwiftPhotoGallery'
+
 end
 
 target 'DropboxPhotoTestUITests' do

@@ -10,10 +10,13 @@ import UIKit
 import AVFoundation
 import Firebase
 import SwiftyDropbox
+import Haneke
+import SwiftPhotoGallery
+
 //import PitTeamDataSource
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate, SwiftPhotoGalleryDataSource, SwiftPhotoGalleryDelegate {
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
@@ -30,6 +33,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var lowBarSwitch: UISwitch!
     @IBOutlet weak var pitNotes: UITextField!
     
+    let dCache = Shared.dataCache //Storing to disk
     var teamNam : String = "-1"
     var numberOfWheels : Int  = -1
     var pitOrg : String = "-1" {
@@ -37,7 +41,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.pitOrgSelect.selectedSegmentIndex = self.pitOrgValues.indexOf(self.pitOrg)!
         }
     }
-    var teamNum : Int = -1
+    var teamNum : Int!
     let pitOrgValues = ["Terrible", "Bad", "OK", "Good", "Great"]
     let numberSelectorValues = ["1", "2", "3", "4", "5"]
     var filesToUpload : [[String : AnyObject]] = []
@@ -46,6 +50,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var origionalBottomScrollViewConstraint : CGFloat = 0.0
     var firebase : Firebase!
     var ourTeam : Firebase!
+    var images : NSMutableArray = []
+    var urls : NSMutableArray = []
     
     
     override func viewDidLoad() {
@@ -92,6 +98,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         self.origionalBottomScrollViewConstraint = self.bottomScrollViewConstraint.constant
+        
+        self.dCache.fetch(key: "\(self.teamNum)").onSuccess { (data) -> () in
+            let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! NSMutableArray
+            if images != self.images {
+                self.images = images
+            }
+            print("Image Fetched")
+        }.onFailure { (E) -> () in
+            print("Image Not Fetched: \(E.debugDescription)")
+        }
     }
     
     @IBAction func pitNotesEditingEnded(sender: UITextField) {
@@ -161,14 +177,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        self.imageButton.setImage(image, forState: UIControlState.Normal)
-        //self.imageButton.imageView?.image = image
+        
+                //self.imageButton.imageView?.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
         //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         //presentViewController(activityViewController, animated: true, completion: {})
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let fileName = "\(self.teamNum)_\(self.images.count).png"
+            self.images.addObject(image)
+            self.dCache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.images), key: "\(self.teamNum)")
+            self.urls.addObject("https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
+            self.dCache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.urls), key: "\(self.teamNum)urls")
+
             
-            self.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: "\(self.teamNum)--\(NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle)).png", teamNumber: self.teamNum) //The file name has a timestamp
+
+            self.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.teamNum)
             self.uploadFilesToDropbox()
             
         })
@@ -236,7 +260,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             print("*** Upload file: \(metaData) ****")
                             let url = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
                             sharedURL = [number: url]
-                            self.putPhotoLinkToFirebase(url, teamNumber: number, selectedImage: true)
+                            self.putPhotoLinkToFirebase(url, teamNumber: number, selectedImage: false)
                         }
                     }
                     self.sharedURLs.append(sharedURL)
@@ -278,6 +302,41 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
             self.selectedImageURL.text = link
         }
+    }
+    
+    
+    
+    @IBAction func didPressShowMeButton(sender:AnyObject) {
+        if self.images.count > 0 {
+            let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
+            presentViewController(gallery, animated: true, completion: nil)
+        }
+        
+    }
+    
+    // MARK: SwiftPhotoGalleryDataSource Methods
+    
+    func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
+        return self.images.count
+    }
+    
+    func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
+        
+        return self.images[forIndex] as? UIImage
+    }
+    
+    // MARK: SwiftPhotoGalleryDelegate Methods
+    
+    func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
+        self.dCache.fetch(key: "\(self.teamNum)urls").onSuccess { (data) -> () in
+            let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! NSMutableArray
+            self.selectedImageURL.text = urls[gallery.currentPage] as? String
+            self.selectedImageEditingEnded(self.selectedImageURL)
+        }.onFailure { (E) -> () in
+            print("Failed To Get URLs: \(E)")
+        }
+        dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
 }

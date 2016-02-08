@@ -47,7 +47,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //let numberSelectorValues = ["1", "2", "3", "4", "5"]
     var filesToUpload : [[String : AnyObject]] = []
     var sharedURLs : [[Int: String]] = []
-    var timer = NSTimer()
     var origionalBottomScrollViewConstraint : CGFloat = 0.0
     var firebase : Firebase!
     var ourTeam : Firebase!

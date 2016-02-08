@@ -22,7 +22,7 @@ class TableViewController: UITableViewController {
     var teams : NSMutableArray = []
     var teamNums : NSMutableArray = []
     var donePitscouting : NSMutableArray = []
-    var timer  = NSTimer()
+    var timer = NSTimer()
     var photoUploader : PhotoUploader?
     
     
@@ -57,6 +57,7 @@ class TableViewController: UITableViewController {
             })
             self.tableView.reloadData()
             self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
+            
         })
         
     }

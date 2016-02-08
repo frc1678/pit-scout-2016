@@ -11,7 +11,7 @@ import SwiftyDropbox
 import Firebase
 import Haneke
 
-class PhotoUploader {
+class PhotoUploader : NSObject {
     let cache = Shared.dataCache
     let teamNumbers : NSMutableArray
     var filesToUpload : [Int : [[String: AnyObject]]] = [-1:[["-1":"-1"]]] {
@@ -20,12 +20,13 @@ class PhotoUploader {
         }
     }
     var sharedURLs : [Int : NSMutableArray] = [-1:["-1"]] {
-        didSet {
+         didSet {
             self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.sharedURLs), key: "sharedURLs")
         }
     }
     var timer : NSTimer = NSTimer()
     var teamsFirebase : Firebase
+    
     init(teamsFirebase : Firebase, teamNumbers : NSMutableArray) {
         self.teamNumbers = teamNumbers
         self.teamsFirebase = teamsFirebase
@@ -33,8 +34,14 @@ class PhotoUploader {
             self.filesToUpload[number as! Int] = []
             self.sharedURLs[number as! Int] = []
         }
+        
+        super.init()
+        
         self.fetchToUpdate()
+        
     }
+    
+    
     
     func fetchToUpdate() {
         self.cache.fetch(key: "photos").onSuccess { (data) -> () in
@@ -49,27 +56,47 @@ class PhotoUploader {
                 }
             }
             print("Images Fetched")
+            self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
+                let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
+                for teamNum in self.teamNumbers {
+                    if let urlsForTeam = urls[teamNum as! Int] {
+                        if self.sharedURLs[teamNum as! Int] != nil {
+                            if urlsForTeam != self.sharedURLs[teamNum as! Int]! {
+                                self.sharedURLs[teamNum as! Int] = urlsForTeam
+                            }
+                        } else {
+                            self.sharedURLs[teamNum as! Int] = urlsForTeam
+                        }
+                        
+                    }
+                }
+                print("URLs Fetched")
+                self.uploadAllPhotos()
+                }.onFailure { (E) -> () in
+                    print("URLs Not Fetched \(E.debugDescription)")
+                    self.sharedURLs = [-2:["-2"]]
+                    self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
+                        let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
+                        for teamNum in self.teamNumbers {
+                            if let urlsForTeam = urls[teamNum as! Int] {
+                                if self.sharedURLs[teamNum as! Int] != nil {
+                                    if urlsForTeam != self.sharedURLs[teamNum as! Int]! {
+                                        self.sharedURLs[teamNum as! Int] = urlsForTeam
+                                    }
+                                } else {
+                                    self.sharedURLs[teamNum as! Int] = urlsForTeam
+                                }
+                                
+                            }
+                        }
+                        print("URLs Fetched")
+                        self.uploadAllPhotos()
+                    }
+            }
             }.onFailure { (E) -> () in
                 print("Images Not Fetched: \(E.debugDescription)")
         }
-        self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
-            let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
-            for teamNum in self.teamNumbers {
-                if let urlsForTeam = urls[teamNum as! Int] {
-                    if self.sharedURLs[teamNum as! Int] != nil {
-                        if urlsForTeam != self.sharedURLs[teamNum as! Int]! {
-                            self.sharedURLs[teamNum as! Int] = urlsForTeam
-                        }
-                    } else {
-                        self.sharedURLs[teamNum as! Int] = urlsForTeam
-                    }
-                    
-                }
-            }
-            print("URLs Fetched")
-        }.onFailure { (E) -> () in
-            print("URLs Not Fetched \(E.debugDescription)")
-        }
+        
     }
     
     func getSharedURLsForTeamNum(number: Int) -> NSMutableArray {
@@ -97,6 +124,10 @@ class PhotoUploader {
                                     sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
                                     self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber as! Int, selectedImage: false)
                                     self.sharedURLs[teamNumber as! Int]![(self.sharedURLs[teamNumber as! Int]?.count)!] = sharedURL //This line is terrible
+                                    print(self.sharedURLs)
+                                } else {
+                                    self.uploadAllPhotos()
+                                    print("Upload Error: \(error?.description)")
                                 }
                             }
                         }

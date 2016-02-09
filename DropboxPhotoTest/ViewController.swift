@@ -114,18 +114,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func bumperHeightDidChange(sender: UITextField) {
-        self.ourTeam?.childByAppendingPath("pitBumperHeight").setValue(Float(self.bumperHeight.text!))
+        if let num = Float(self.bumperHeight.text!)  {
+            self.ourTeam?.childByAppendingPath("pitBumperHeight").setValue(Float(num))
+        } else {
+            self.bumperHeight.backgroundColor = UIColor.redColor()
+        }
     }
     
     
     @IBAction func selectedImageEditingEnded(sender: UITextField) {
         self.ourTeam?.childByAppendingPath("selectedImageUrl").setValue(self.selectedImageURL.text)
     }
+    
     @IBAction func baseWidthDidChange(sender: UITextField) {
-        self.ourTeam?.childByAppendingPath("pitDriveBaseWidth").setValue(Float(self.baseWidth.text!))
+        if let num = Float(self.baseWidth.text!)  {
+            self.ourTeam?.childByAppendingPath("pitDriveBaseWidth").setValue(Float(num))
+        } else {
+            self.baseWidth.backgroundColor = UIColor.redColor()
+        }
     }
     @IBAction func baseLengthDidChange(sender: UITextField) {
-        self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(self.baseLength.text!))
+        if let num = Float(self.baseLength.text!)  {
+            self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(num))
+        } else {
+            self.baseLength.backgroundColor = UIColor.redColor()
+        }
     }
     @IBAction func shotBlockerPotentialDidChange(sender: UISegmentedControl) {
         self.ourTeam?.childByAppendingPath("pitPotentialShotBlockerCapability").setValue(sender.selectedSegmentIndex)

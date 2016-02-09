@@ -13,7 +13,7 @@ import firebase_schema_2016_ios
 import FirebaseUI
 import SwiftyDropbox
 
-class TableViewController: UITableViewController {
+class TableViewController: UITableViewController, UISearchBarDelegate {
     
     let cellReuseId = "teamCell"
     let data = ["1678-Circus Circus", "254-Chezy Poffs"]
@@ -25,6 +25,7 @@ class TableViewController: UITableViewController {
     var timer = NSTimer()
     var photoUploader : PhotoUploader?
     
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,12 +67,13 @@ class TableViewController: UITableViewController {
         if (snap.childSnapshotForPath("pitBumperHeight").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitDriveBaseWidth").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitDriveBaseLength").value as! Int) <= -1 { return false }
-        if (snap.childSnapshotForPath("pitNotes").value as! String) == "-1" { return false }
+        //if (snap.childSnapshotForPath("pitNotes").value as! String) == "-1" { return false }
         if (snap.childSnapshotForPath("pitNumberOfWheels").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitOrganization").value as! Int) == -1 { return false }
         if (snap.childSnapshotForPath("pitPotentialLowBarCapability").value as! Int) == -1 { return false }
         if (snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as! Int) == -1 { return false }
         if (snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as! Int) == -1 { return false }
+        if (snap.childSnapshotForPath("selectedImageUrl").value as! String) == "-1" { return false }
         return true
     }
     

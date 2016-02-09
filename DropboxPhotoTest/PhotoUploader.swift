@@ -116,7 +116,8 @@ class PhotoUploader : NSObject {
                             let name = file["name"] as! String
                             let data = file["data"] as! NSData
                             var sharedURL = "Not Uploaded"
-                            client.files.upload(path: "/Public/\(name)", body: data).response { response, error in
+                            let path = "/Public/\(name)"
+                            client.files.upload(path: path, body: data).response { response, error in
                                 if let metaData = response {
                                     self.filesToUpload[teamNumber as! Int] = self.filesToUpload[teamNumber as! Int]!.filter({$0["name"] as! String != name})
                                     //Removing the uploaded file from files to upload, this actually works in swift!
@@ -124,8 +125,9 @@ class PhotoUploader : NSObject {
                                     sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
                                     self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber as! Int, selectedImage: false)
                                     self.sharedURLs[teamNumber as! Int]![(self.sharedURLs[teamNumber as! Int]?.count)!] = sharedURL //This line is terrible
-                                    print(self.sharedURLs)
+                                    //print(self.sharedURLs)
                                 } else {
+                                    client.files.delete(path: path)
                                     self.uploadAllPhotos()
                                     print("Upload Error: \(error?.description)")
                                 }

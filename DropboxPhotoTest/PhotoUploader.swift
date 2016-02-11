@@ -20,7 +20,7 @@ class PhotoUploader : NSObject {
         }
     }
     var sharedURLs : [Int : NSMutableArray] = [-1:["-1"]] {
-         didSet {
+        didSet {
             self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.sharedURLs), key: "sharedURLs")
         }
     }
@@ -96,7 +96,47 @@ class PhotoUploader : NSObject {
             }.onFailure { (E) -> () in
                 print("Images Not Fetched: \(E.debugDescription)")
         }
-        
+        self.fetchPhotosFromDropbox()
+    }
+    
+    func fetchPhotosFromDropbox() {
+        if self.isConnectedToNetwork() {
+            if let client = Dropbox.authorizedClient {
+                for teamNumber in self.teamNumbers {
+                    client.files.search(path: "/Public", query: "\(teamNumber)_").response({ (response, error) -> Void in
+                        if let result = response {
+                            for match in result.matches {
+                                let name = match.metadata.name
+                                
+                                let destination : (NSURL, NSHTTPURLResponse) -> NSURL = { temporaryURL, response in
+                                    let fileManager = NSFileManager.defaultManager()
+                                    let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+                                    // generate a unique name for this file in case we've seen it before
+                                    let UUID = NSUUID().UUIDString
+                                    let pathComponent = "\(UUID)-\(response.suggestedFilename!)"
+                                    return directoryURL.URLByAppendingPathComponent(pathComponent)
+                                }
+                                
+                                client.files.download(path: "/Public/\(name)", destination: destination).response { (response, error) in
+                                    if let (metadata, url) = response {
+                                        print("*** Download file ***")
+                                        let data = NSData(contentsOfURL: url)
+                                        self.addFileToLineup(data!, fileName: name, teamNumber: teamNumber as! Int)
+                                        print("Downloaded file url: \(url)")
+                                        print("Downloaded file name: \(metadata.name)")
+                                        
+                                    } else {
+                                        print("Download error for name \(name), error: \(error!)")
+                                    }
+                                }
+                            }
+                        } else {
+                            //print("Query Error for team \(teamNumber), Error: \(error?.description)")
+                        }
+                    })
+                }
+            }
+        }
     }
     
     func getSharedURLsForTeamNum(number: Int) -> NSMutableArray {
@@ -180,5 +220,6 @@ class PhotoUploader : NSObject {
             teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
         }
     }
+    
     
 }

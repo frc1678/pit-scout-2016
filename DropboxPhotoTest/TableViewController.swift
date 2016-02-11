@@ -36,7 +36,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         
         tableView.delegate = self
         tableView.dataSource = self
-        self.firebase = Firebase(url: "https://1678-dev3-2016.firebaseio.com/Teams")
+        self.firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams")
         firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
             for t in snap.children.enumerate() {
                 let team = t.element

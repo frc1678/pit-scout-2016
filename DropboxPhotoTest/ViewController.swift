@@ -32,6 +32,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var lowBarPotential: UISegmentedControl!
     @IBOutlet weak var lowBarSwitch: UISwitch!
     @IBOutlet weak var pitNotes: UITextField!
+    @IBOutlet weak var ballReleaseHeight: UITextField!
     
     var photoUploader : PhotoUploader!
     //let dCache = Shared.dataCache //Storing to disk
@@ -65,6 +66,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.baseLength.text = "\(snap.childSnapshotForPath("pitDriveBaseLength").value as! Float)"
             self.baseWidth.text = "\(snap.childSnapshotForPath("pitDriveBaseWidth").value as! Float)"
             self.numWheels.text = "\(snap.childSnapshotForPath("pitNumberOfWheels").value as! Int)"
+            self.ballReleaseHeight.text = "\(snap.childSnapshotForPath("pitHeightOfBallLeavingShooter").value as! Float)"
             if let po = snap.childSnapshotForPath("pitOrganization").value as? Int {
                 if po != -1 {
                     self.pitOrgSelect.selectedSegmentIndex = po
@@ -106,6 +108,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     
+    @IBAction func releaseHeightEditingEnded(sender: AnyObject) {
+        if let num = Float(self.ballReleaseHeight.text!)  {
+            self.ourTeam?.childByAppendingPath("pitHeightOfBallLeavingShooter").setValue(Float(num))
+        } else {
+            self.ballReleaseHeight.backgroundColor = UIColor.redColor()
+        }
+    }
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
         if(sender.text != "") {
             self.numberOfWheels = Int(sender.text!)!

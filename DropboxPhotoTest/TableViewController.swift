@@ -20,35 +20,45 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     var comp : Competition?
     var firebase : Firebase?
     var teams : NSMutableArray = []
-    var teamNums : NSMutableArray = []
+    var teamNums : [Int] = []
     var donePitscouting : NSMutableArray = []
     var timer = NSTimer()
     var photoUploader : PhotoUploader?
-    
-    @IBOutlet weak var searchBar: UISearchBar!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if(Dropbox.authorizedClient == nil) {
             Dropbox.authorizeFromController(self)
         }
-        
         tableView.delegate = self
         tableView.dataSource = self
-        self.firebase = Firebase(url: "https://1678-dev-2016.firebaseio.com/Teams")
+        self.firebase = Firebase(url: "https://1678-dev2-2016.firebaseio.com/Teams")
         firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
+            var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
             for t in snap.children.enumerate() {
                 let team = t.element
                 self.teams.addObject(team)
-                self.teamNums.addObject(team.childSnapshotForPath("number").value)
+                let teamNum = team.childSnapshotForPath("number").value as! Int
+                self.teamNums.append(teamNum)
+                
+                if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
+                    let urlsArr = NSMutableArray()
+                    for (_, value) in urlsForTeam {
+                        urlsArr.addObject(value)
+                    }
+                    urlsDict[teamNum] = urlsArr
+                } else {
+                    urlsDict[teamNum] = NSMutableArray()
+                }
                 if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
                     self.donePitscouting[t.index] = true
                 } else {
                     self.donePitscouting[t.index] = false
                 }
             }
-            self.teamNums.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+            let tempArray : NSMutableArray = NSMutableArray(array: self.teamNums)
+            tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
                 let o = obj1 as! Int
                 let t = obj2 as! Int
 
@@ -56,8 +66,16 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 else if(t > o) { return NSComparisonResult.OrderedDescending }
                 else { return NSComparisonResult.OrderedSame }
             })
+            self.teamNums = tempArray as [AnyObject] as! [Int]
             self.tableView.reloadData()
-            self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
+            
+            if self.photoUploader == nil {
+                self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
+                self.photoUploader?.sharedURLs = urlsDict
+            } else {
+                self.photoUploader?.sharedURLs = urlsDict
+            }
+            
             
         })
         
@@ -88,14 +106,14 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(self.cellReuseId, forIndexPath: indexPath) as UITableViewCell
-        if let text  = self.teamNums[indexPath.row] as? Int {
-            cell.textLabel?.text = "\(text)"
-            if(self.donePitscouting[indexPath.row] as! Bool == true) {
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryType.None
-            }
+        let text  = self.teamNums[indexPath.row]
+        cell.textLabel?.text = "\(text)"
+        if(self.donePitscouting[indexPath.row] as! Bool == true) {
+            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryType.None
         }
+        
         
         return cell
     }
@@ -110,7 +128,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         if segue.identifier == "Team View Segue" {
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
             
-            if let number : Int = self.teamNums[(indexPath?.row)!] as? Int {
+            if let number : Int = self.teamNums[(indexPath?.row)!] {
                 let teamViewController = segue.destinationViewController as! ViewController
                 
                 let teamFB = self.firebase?.childByAppendingPath("\(number)")

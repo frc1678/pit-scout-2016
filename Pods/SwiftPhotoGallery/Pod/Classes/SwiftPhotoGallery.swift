@@ -108,8 +108,9 @@ public class SwiftPhotoGallery: UIViewController, UICollectionViewDataSource, UI
         if pageBeforeRotation > 0 {
             scrollToImage(pageBeforeRotation, animated: false)
         }
-
-        imageCollectionView.reloadItemsAtIndexPaths([desiredIndexPath])
+        if desiredIndexPath.length > 0 {
+            imageCollectionView.reloadItemsAtIndexPaths([desiredIndexPath])
+        }
 
         if let currentCell = imageCollectionView.cellForItemAtIndexPath(desiredIndexPath) as? SwiftPhotoGalleryCell {
             currentCell.configureForNewImage()

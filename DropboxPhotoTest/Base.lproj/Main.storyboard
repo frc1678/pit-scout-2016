@@ -93,6 +93,7 @@
                                                 <variation key="heightClass=regular-widthClass=compact" constant="110"/>
                                             </constraint>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Add Image">
                                             <color key="titleColor" red="0.0" green="0.64787638121546953" blue="0.0080981016962821933" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -381,6 +382,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tYN-HT-L1H">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="View Images">
                                             <color key="titleColor" red="0.0014097907013659614" green="0.64787638121546953" blue="0.071349897953803296" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>

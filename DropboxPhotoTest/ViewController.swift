@@ -51,7 +51,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var origionalBottomScrollViewConstraint : CGFloat = 0.0
     var firebase : Firebase!
     var ourTeam : Firebase!
-    
+    var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,7 +98,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.scrollView.contentSize.width = self.scrollView.frame.width
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
-        self.origionalBottomScrollViewConstraint = self.bottomScrollViewConstraint.constant
         
         
     }
@@ -175,6 +174,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.pitOrg = sender.selectedSegmentIndex
             self.ourTeam?.childByAppendingPath("pitOrganization").setValue(sender.selectedSegmentIndex)
         }
+    
     }
     
     @IBAction func cameraButtonPressed(sender: AnyObject) {
@@ -189,7 +189,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        
+        self.canViewPhotos = false
         //self.imageButton.imageView?.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
         //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
@@ -204,6 +204,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.photoUploader.sharedURLs[self.teamNum] = ["https://dl.dropboxusercontent.com/u/63662632/\(fileName)"]
             }
             self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.teamNum)
+            self.photoUploader.cashedFiles[self.teamNum]?.append(["name": fileName, "data": UIImagePNGRepresentation(image)!])
+            self.canViewPhotos = true
         })
         
     }
@@ -240,7 +242,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func keyboardWillHide(notification:NSNotification){
-        let contentInset:UIEdgeInsets = UIEdgeInsetsZero
+        let contentInset:UIEdgeInsets = UIEdgeInsetsMake(50.0, 0, 0, 0) // Terrible and sketchy, but works.
         self.scrollView.contentInset = contentInset
     }
     /*
@@ -263,7 +265,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     @IBAction func didPressShowMeButton(sender:AnyObject) {
-        if self.photoUploader.getImagesForTeamNum(self.teamNum).count > 0 {
+        if self.photoUploader.getImagesForTeamNum(self.teamNum).count > 0 && self.canViewPhotos  {
             let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
             presentViewController(gallery, animated: true, completion: nil)
         }
@@ -284,10 +286,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
         
         let urls = self.photoUploader.getSharedURLsForTeamNum(self.teamNum)
-        self.selectedImageURL.text = urls[gallery.currentPage] as? String
-        self.selectedImageEditingEnded(self.selectedImageURL)
+        if urls.count >= gallery.currentPage + 1  {
+            self.selectedImageURL.text = urls[gallery.currentPage + 1] as? String
+            self.selectedImageEditingEnded(self.selectedImageURL)
+            dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Image Not Uploaded", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let message = UIAlertAction(title: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", style: UIAlertActionStyle.Default) { (action: UIAlertAction) -> Void in
+                // Do something when message is tapped
+            }
+            alert.addAction(message)
+            dismissViewControllerAnimated(true, completion: nil)
+            presentViewController(alert, animated: true, completion: nil)
+
+
+        }
         
-        dismissViewControllerAnimated(true, completion: nil)
+        
+        
+        
     }
     
 }

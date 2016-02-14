@@ -45,11 +45,65 @@ class PhotoUploader : NSObject {
         self.fetchToUpdate()
     }
     
+    func fetchPhotos(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
+        self.cache.fetch(key: "photos").onSuccess { (data) -> () in
+            let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
+            for teamNum in self.teamNumbers {
+                if let imagesForTeam = images[teamNum] {
+                    if let files = self.cashedFiles[teamNum] {
+                        if imagesForTeam != files {
+                            self.cashedFiles[teamNum] = imagesForTeam
+                        }
+                    }
+                }
+            }
+            print("Images Fetched")
+            additionalSuccessCallback(data)
+            }.onFailure { (E) -> () in
+                failCallback(E)
+        }
+    }
+    
+    func fetchSharedURLs(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
+        self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
+            let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
+            for teamNum in self.teamNumbers {
+                if let urlsForTeam = urls[teamNum] {
+                    if self.sharedURLs[teamNum] != nil {
+                        if urlsForTeam != self.sharedURLs[teamNum]! {
+                            self.sharedURLs[teamNum] = urlsForTeam
+                        }
+                    } else {
+                        self.sharedURLs[teamNum] = urlsForTeam
+                    }
+                    
+                }
+            }
+            print("URLs Fetched")
+            additionalSuccessCallback(data)
+            }.onFailure { (E) -> () in
+                failCallback(E)
+        }
+    }
     
     
     func fetchToUpdate() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
+            self.fetchPhotos({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //We succeded in fetching photos
+                self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
+                    print("URLs Not Fetched \(E.debugDescription)")
+                    self.sharedURLs = [-2:["-2"]]
+                    self.fetchSharedURLs({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //After failing to fetch URLs, we succeeded in fetching URLs
+                        self.uploadAllPhotos()
+                    })
+                    }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
+                        self.uploadAllPhotos()
+                })
+            })
+            
+            
+            /*
             self.cache.fetch(key: "photos").onSuccess { (data) -> () in
                 let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
                 for teamNum in self.teamNumbers {
@@ -102,7 +156,7 @@ class PhotoUploader : NSObject {
                 }.onFailure { (E) -> () in
                     print("Images Not Fetched: \(E.debugDescription)")
             }
-            self.fetchPhotosFromDropbox()
+            self.fetchPhotosFromDropbox()*/
         })
         
     }

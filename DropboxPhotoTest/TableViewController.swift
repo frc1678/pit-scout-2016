@@ -9,15 +9,12 @@ import UIKit
 import Foundation
 import Firebase
 import firebase_schema_2016_ios
-//import SwiftyJSON
 import FirebaseUI
 import SwiftyDropbox
 
 class TableViewController: UITableViewController, UISearchBarDelegate {
     
     let cellReuseId = "teamCell"
-    let data = ["1678-Circus Circus", "254-Chezy Poffs"]
-    var comp : Competition?
     var firebase : Firebase?
     var teams : NSMutableArray = []
     var teamNums : [Int] = []
@@ -31,8 +28,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         if(Dropbox.authorizedClient == nil) {
             Dropbox.authorizeFromController(self)
         }
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
         self.firebase = Firebase(url: "https://1678-dev2-2016.firebaseio.com/Teams")
         firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
             var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
@@ -51,12 +50,14 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 } else {
                     urlsDict[teamNum] = NSMutableArray()
                 }
+                
                 if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
                     self.donePitscouting[t.index] = true
                 } else {
                     self.donePitscouting[t.index] = false
                 }
             }
+            
             let tempArray : NSMutableArray = NSMutableArray(array: self.teamNums)
             tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
                 let o = obj1 as! Int
@@ -67,25 +68,26 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 else { return NSComparisonResult.OrderedSame }
             })
             self.teamNums = tempArray as [AnyObject] as! [Int]
+            
             self.tableView.reloadData()
             
-            if self.photoUploader == nil {
-                self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
-                self.photoUploader?.sharedURLs = urlsDict
-            } else {
-                self.photoUploader?.sharedURLs = urlsDict
-            }
-            
-            
+            self.setupPhotoUploader(urlsDict)
         })
-        
+    }
+    
+    func setupPhotoUploader(urlsDict: [Int : NSMutableArray]) {
+        if self.photoUploader == nil {
+            self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
+            self.photoUploader?.sharedURLs = urlsDict
+        } else {
+            self.photoUploader?.sharedURLs = urlsDict
+        }
     }
     
     func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool {
         if (snap.childSnapshotForPath("pitBumperHeight").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitDriveBaseWidth").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitDriveBaseLength").value as! Int) <= -1 { return false }
-        //if (snap.childSnapshotForPath("pitNotes").value as! String) == "-1" { return false }
         if (snap.childSnapshotForPath("pitNumberOfWheels").value as! Int) <= -1 { return false }
         if (snap.childSnapshotForPath("pitOrganization").value as! Int) == -1 { return false }
         if (snap.childSnapshotForPath("pitPotentialLowBarCapability").value as! Int) == -1 { return false }
@@ -113,8 +115,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             cell.accessoryType = UITableViewCellAccessoryType.None
         }
-        
-        
         return cell
     }
     
@@ -122,7 +122,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "Team View Segue" {
@@ -144,9 +143,4 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             }
         }
     }
-    
-    
-    
-    
-    
 }

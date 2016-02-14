@@ -13,8 +13,6 @@ import SwiftyDropbox
 import Haneke
 import SwiftPhotoGallery
 
-//import PitTeamDataSource
-
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate, SwiftPhotoGalleryDataSource, SwiftPhotoGalleryDelegate {
     
@@ -35,7 +33,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var ballReleaseHeight: UITextField!
     
     var photoUploader : PhotoUploader!
-    //let dCache = Shared.dataCache //Storing to disk
     var teamNam : String = "-1"
     var numberOfWheels : Int  = -1
     var pitOrg : Int = -1 {
@@ -44,11 +41,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     var teamNum : Int!
-    //let pitOrgValues = ["Terrible", "Bad", "OK", "Good", "Great"]
-    //let numberSelectorValues = ["1", "2", "3", "4", "5"]
     var filesToUpload : [[String : AnyObject]] = []
     var sharedURLs : [[Int: String]] = []
-    var origionalBottomScrollViewConstraint : CGFloat = 0.0
     var firebase : Firebase!
     var ourTeam : Firebase!
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
@@ -56,10 +50,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.pitNotes.delegate = self
-        self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-            //Updating UI
-            
+        self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
             self.selectedImageURL.text = snap.childSnapshotForPath("selectedImageUrl").value as? String
             self.pitNotes.text = snap.childSnapshotForPath("pitNotes").value as? String
             self.bumperHeight.text = "\(snap.childSnapshotForPath("pitBumperHeight").value as! Float)"
@@ -76,16 +67,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if let po = snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as? Int {
                 if po != -1 {
                     self.shotBlockerPotential.selectedSegmentIndex = po
+                    self.shotBlockerPotential.selected = true
                 }
             }
             if let po = snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as? Int {
                 if po != -1 {
                     self.midlineBallCheesecakePotential.selectedSegmentIndex = po
+                    self.midlineBallCheesecakePotential.selected = true
                 }
             }
             if let po = snap.childSnapshotForPath("pitPotentialLowBarCapability").value as? Int {
                 if po != -1 {
                     self.lowBarPotential.selectedSegmentIndex = po
+                    self.lowBarPotential.selected = true
                 }
             }
             if let passedLowBarTesting = snap.childSnapshotForPath("pitLowBarCapability").value {
@@ -94,26 +88,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         })
         
-        self.scrollView.scrollEnabled = true
-        self.scrollView.contentSize.width = self.scrollView.frame.width
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         
-        
     }
     
+    //MARK: Responding To UI Actions:
+    //MARK: --> Text Fields
     @IBAction func pitNotesEditingEnded(sender: UITextField) {
         self.ourTeam?.childByAppendingPath("pitNotes").setValue(self.pitNotes.text)
     }
     
-    
-    @IBAction func releaseHeightEditingEnded(sender: AnyObject) {
-        if let num = Float(self.ballReleaseHeight.text!)  {
-            self.ourTeam?.childByAppendingPath("pitHeightOfBallLeavingShooter").setValue(Float(num))
-        } else {
-            self.ballReleaseHeight.backgroundColor = UIColor.redColor()
-        }
-    }
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
         if(sender.text != "") {
             self.numberOfWheels = Int(sender.text!)!
@@ -129,7 +114,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    
     @IBAction func selectedImageEditingEnded(sender: UITextField) {
         self.ourTeam?.childByAppendingPath("selectedImageUrl").setValue(self.selectedImageURL.text)
     }
@@ -141,6 +125,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.baseWidth.backgroundColor = UIColor.redColor()
         }
     }
+    
     @IBAction func baseLengthDidChange(sender: UITextField) {
         if let num = Float(self.baseLength.text!)  {
             self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(num))
@@ -148,6 +133,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.baseLength.backgroundColor = UIColor.redColor()
         }
     }
+    
+    @IBAction func releaseHeightEditingEnded(sender: UITextField) {
+        if let num = Float(self.ballReleaseHeight.text!)  {
+            self.ourTeam?.childByAppendingPath("pitHeightOfBallLeavingShooter").setValue(Float(num))
+        } else {
+            self.ballReleaseHeight.backgroundColor = UIColor.redColor()
+        }
+    }
+    
+    //MARK: --> Segmented Controls
     @IBAction func shotBlockerPotentialDidChange(sender: UISegmentedControl) {
         self.ourTeam?.childByAppendingPath("pitPotentialShotBlockerCapability").setValue(sender.selectedSegmentIndex)
     }
@@ -156,28 +151,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.ourTeam?.childByAppendingPath("pitPotentialLowBarCapability").setValue(sender.selectedSegmentIndex)
     }
     
-    @IBAction func midlineBallCheesecakePotentialDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.childByAppendingPath("pitPotentialMidlineBallCapability").setValue(sender.selectedSegmentIndex)
-    }
-    
-    @IBAction func lowBarTestResultChanged(sender: UISwitch) {
-        self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(sender.on)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func pitOrgValueChanged(sender: UISegmentedControl) {
         if self.pitOrg != sender.selectedSegmentIndex {
             self.pitOrg = sender.selectedSegmentIndex
             self.ourTeam?.childByAppendingPath("pitOrganization").setValue(sender.selectedSegmentIndex)
         }
-    
+        
     }
     
-    @IBAction func cameraButtonPressed(sender: AnyObject) {
+    @IBAction func midlineBallCheesecakePotentialDidChange(sender: UISegmentedControl) {
+        self.ourTeam?.childByAppendingPath("pitPotentialMidlineBallCapability").setValue(sender.selectedSegmentIndex)
+    }
+    
+    //MARK: --> Switches
+    @IBAction func lowBarTestResultChanged(sender: UISwitch) {
+        self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(sender.on)
+    }
+    
+    //MARK: --> Buttons
+    @IBAction func cameraButtonPressed(sender: UIButton) {
         
         let picker = UIImagePickerController()
         
@@ -187,6 +179,47 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         presentViewController(picker, animated: true, completion: nil)
     }
     
+    @IBAction func didPressShowMeButton(sender: UIButton) {
+        if self.photoUploader.getImagesForTeamNum(self.teamNum).count > 0 && self.canViewPhotos  {
+            let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
+            presentViewController(gallery, animated: true, completion: nil)
+        }
+    }
+    
+    //MARK: Keyboard UI Methods
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func keyboardWillShow(notification:NSNotification){
+        
+        var userInfo = notification.userInfo!
+        var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
+        keyboardFrame = self.view.convertRect(keyboardFrame, fromView: nil)
+        
+        var contentInset:UIEdgeInsets = self.scrollView.contentInset
+        contentInset.bottom = keyboardFrame.size.height
+        self.scrollView.contentInset = contentInset
+        self.scrollView.scrollRectToVisible(self.pitNotes.frame, animated: true)
+    }
+    
+    func keyboardWillHide(notification:NSNotification){
+        let contentInset:UIEdgeInsets = UIEdgeInsetsMake(50.0, 0, 0, 0) // Terrible and sketchy, but works.
+        self.scrollView.contentInset = contentInset
+    }
+    
+    // MARK: SwiftPhotoGalleryDataSource Methods
+    
+    func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
+        return self.photoUploader.getImagesForTeamNum(self.teamNum).count
+    }
+    
+    func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
+        return UIImage(data: self.photoUploader.getImagesForTeamNum(self.teamNum)[forIndex]["data"] as! NSData)
+    }
+    
+    // MARK: Swift Photo Gallery Methods
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.canViewPhotos = false
@@ -210,85 +243,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
-    /*func keyboardWillShow(notification: NSNotification) {
-    var info = notification.userInfo!
-    let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-    
-    UIView.animateWithDuration(0.1, animations: { () -> Void in
-    self.bottomScrollViewConstraint.constant = keyboardFrame.size.height + 20
-    })
-    }
-    func keyboardWillHide(notification: NSNotification) {
-    UIView.animateWithDuration(0.1, animations: { () -> Void in
-    self.bottomScrollViewConstraint.constant = self.origionalBottomScrollViewConstraint
-    })
-    }
-    */
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func keyboardWillShow(notification:NSNotification){
-        
-        var userInfo = notification.userInfo!
-        var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
-        keyboardFrame = self.view.convertRect(keyboardFrame, fromView: nil)
-        
-        var contentInset:UIEdgeInsets = self.scrollView.contentInset
-        contentInset.bottom = keyboardFrame.size.height
-        self.scrollView.contentInset = contentInset
-        self.scrollView.scrollRectToVisible(self.pitNotes.frame, animated: true)
-    }
-    
-    func keyboardWillHide(notification:NSNotification){
-        let contentInset:UIEdgeInsets = UIEdgeInsetsMake(50.0, 0, 0, 0) // Terrible and sketchy, but works.
-        self.scrollView.contentInset = contentInset
-    }
-    /*
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-    picker.dismissViewControllerAnimated(true, completion: nil)
-    let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-    let activityViewController = UIActivityViewController(activityItems: [tempImage], applicationActivities: nil)
-    presentViewController(activityViewController, animated: true, completion: {})
-    }*/
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @IBAction func didPressShowMeButton(sender:AnyObject) {
-        if self.photoUploader.getImagesForTeamNum(self.teamNum).count > 0 && self.canViewPhotos  {
-            let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
-            presentViewController(gallery, animated: true, completion: nil)
-        }
-    }
-    
-    // MARK: SwiftPhotoGalleryDataSource Methods
-    
-    func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.photoUploader.getImagesForTeamNum(self.teamNum).count
-    }
-    
-    func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        return UIImage(data: self.photoUploader.getImagesForTeamNum(self.teamNum)[forIndex]["data"] as! NSData)
-    }
-    
-    // MARK: SwiftPhotoGalleryDelegate Methods
-    
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
-        
         let urls = self.photoUploader.getSharedURLsForTeamNum(self.teamNum)
         if urls.count >= gallery.currentPage + 1  {
             self.selectedImageURL.text = urls[gallery.currentPage + 1] as? String
             self.selectedImageEditingEnded(self.selectedImageURL)
+            
             dismissViewControllerAnimated(true, completion: nil)
         } else {
             let alert = UIAlertController(title: "Image Not Uploaded", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
@@ -298,13 +258,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             alert.addAction(message)
             dismissViewControllerAnimated(true, completion: nil)
             presentViewController(alert, animated: true, completion: nil)
-
-
         }
-        
-        
-        
-        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
 }

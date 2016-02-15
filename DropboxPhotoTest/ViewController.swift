@@ -18,6 +18,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
+    @IBOutlet weak var viewImagesButton: UIButton!
     @IBOutlet weak var numWheels: UITextField!
     @IBOutlet weak var pitOrgSelect:UISegmentedControl!
     @IBOutlet weak var selectedImageURL: UITextField!
@@ -41,8 +42,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     var teamNum : Int!
-    var filesToUpload : [[String : AnyObject]] = []
-    var sharedURLs : [[Int: String]] = []
+    var numberOfPhotos : Int = 0
     var firebase : Firebase!
     var ourTeam : Firebase!
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
@@ -91,6 +91,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         
+        self.updatePhotoButtonText()
+    }
+    
+    func updatePhotoButtonText() {
+        self.viewImagesButton.setTitle("View Images: (\(self.photoUploader.getImagesForTeamNum(self.teamNum).count)/5)", forState: UIControlState.Normal)
     }
     
     //MARK: Responding To UI Actions:
@@ -236,26 +241,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             } else {
                 self.photoUploader.sharedURLs[self.teamNum] = ["https://dl.dropboxusercontent.com/u/63662632/\(fileName)"]
             }
-            self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.teamNum)
-            self.photoUploader.cashedFiles[self.teamNum]?.append(["name": fileName, "data": UIImagePNGRepresentation(image)!])
+            self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.teamNum, shouldUpload: true)
             self.canViewPhotos = true
+            dispatch_async(dispatch_get_main_queue(), {
+                self.updatePhotoButtonText()
+            })
         })
         
     }
     
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
         let urls = self.photoUploader.getSharedURLsForTeamNum(self.teamNum)
-        if urls.count >= gallery.currentPage + 1  {
-            self.selectedImageURL.text = urls[gallery.currentPage + 1] as? String
+        if urls.count > gallery.currentPage   {
+            self.selectedImageURL.text = urls[gallery.currentPage] as? String
             self.selectedImageEditingEnded(self.selectedImageURL)
             
             dismissViewControllerAnimated(true, completion: nil)
         } else {
-            let alert = UIAlertController(title: "Image Not Uploaded", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-            let message = UIAlertAction(title: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", style: UIAlertActionStyle.Default) { (action: UIAlertAction) -> Void in
+            let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
                 // Do something when message is tapped
-            }
-            alert.addAction(message)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             dismissViewControllerAnimated(true, completion: nil)
             presentViewController(alert, animated: true, completion: nil)
         }

@@ -21,7 +21,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     var donePitscouting : NSMutableArray = []
     var timer = NSTimer()
     var photoUploader : PhotoUploader?
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,47 +32,54 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.firebase = Firebase(url: "https://1678-dev2-2016.firebaseio.com/Teams")
-        firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
-            var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
-            for t in snap.children.enumerate() {
-                let team = t.element
-                self.teams.addObject(team)
-                let teamNum = team.childSnapshotForPath("number").value as! Int
-                self.teamNums.append(teamNum)
-                
-                if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
-                    let urlsArr = NSMutableArray()
-                    for (_, value) in urlsForTeam {
-                        urlsArr.addObject(value)
+        self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
+        firebase?.authWithCustomToken("qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee", withCompletionBlock: { (E, A) -> Void in
+            self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
+                self.teams = NSMutableArray()
+                self.teamNums = []
+                var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
+                for t in snap.children.enumerate() {
+                    let team = t.element
+                    self.teams.addObject(team)
+                    if let teamNum = team.childSnapshotForPath("number").value as? Int {
+                        self.teamNums.append(teamNum)
+                        
+                        if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
+                            let urlsArr = NSMutableArray()
+                            for (_, value) in urlsForTeam {
+                                urlsArr.addObject(value)
+                            }
+                            urlsDict[teamNum] = urlsArr
+                        } else {
+                            urlsDict[teamNum] = NSMutableArray()
+                        }
+                        
+                        if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
+                            self.donePitscouting[t.index] = true
+                        } else {
+                            self.donePitscouting[t.index] = false
+                        }
                     }
-                    urlsDict[teamNum] = urlsArr
-                } else {
-                    urlsDict[teamNum] = NSMutableArray()
+                    
                 }
                 
-                if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
-                    self.donePitscouting[t.index] = true
-                } else {
-                    self.donePitscouting[t.index] = false
-                }
-            }
-            
-            let tempArray : NSMutableArray = NSMutableArray(array: self.teamNums)
-            tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
-                let o = obj1 as! Int
-                let t = obj2 as! Int
-
-                if(o > t) { return NSComparisonResult.OrderedAscending }
-                else if(t > o) { return NSComparisonResult.OrderedDescending }
-                else { return NSComparisonResult.OrderedSame }
+                let tempArray : NSMutableArray = NSMutableArray(array: self.teamNums)
+                tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+                    let o = obj1 as! Int
+                    let t = obj2 as! Int
+                    
+                    if(o > t) { return NSComparisonResult.OrderedAscending }
+                    else if(t > o) { return NSComparisonResult.OrderedDescending }
+                    else { return NSComparisonResult.OrderedSame }
+                })
+                self.teamNums = tempArray as [AnyObject] as! [Int]
+                
+                self.tableView.reloadData()
+                
+                self.setupPhotoUploader(urlsDict)
             })
-            self.teamNums = tempArray as [AnyObject] as! [Int]
-            
-            self.tableView.reloadData()
-            
-            self.setupPhotoUploader(urlsDict)
         })
+        
     }
     
     func setupPhotoUploader(urlsDict: [Int : NSMutableArray]) {
@@ -103,6 +110,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("There are \(self.teamNums.count) teams.")
         return self.teamNums.count
     }
     
@@ -136,7 +144,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 teamViewController.teamNum = number
                 teamViewController.title = "\(number)"
                 teamViewController.photoUploader = self.photoUploader
-
+                
                 teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                     teamViewController.teamNam = snap.childSnapshotForPath("name").value as! String
                 })

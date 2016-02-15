@@ -14,14 +14,14 @@ import Haneke
 class PhotoUploader : NSObject {
     let cache = Shared.dataCache
     let teamNumbers : [Int]
-    var filesToUpload : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]() {
+    var cashedFiles : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]() {
         didSet {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.filesToUpload), key: "photos")
+                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.cashedFiles), key: "photos")
             })
         }
     }
-    var cashedFiles : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
+    //var photosToUpload : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
     var sharedURLs : [Int : NSMutableArray] = [Int : NSMutableArray]() {
         didSet {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -36,7 +36,7 @@ class PhotoUploader : NSObject {
         self.teamNumbers = teamNumbers
         self.teamsFirebase = teamsFirebase
         for number in teamNumbers {
-            self.filesToUpload[number] = []
+            //self.photosToUpload[number] = []
             self.cashedFiles[number] = []
             self.sharedURLs[number] = []
         }
@@ -101,64 +101,7 @@ class PhotoUploader : NSObject {
                         self.uploadAllPhotos()
                 })
             })
-            
-            
-            /*
-            self.cache.fetch(key: "photos").onSuccess { (data) -> () in
-                let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
-                for teamNum in self.teamNumbers {
-                    if let imagesForTeam = images[teamNum] {
-                        if let files = self.cashedFiles[teamNum] {
-                            if imagesForTeam != files {
-                                self.cashedFiles[teamNum] = imagesForTeam
-                            }
-                        }
-                    }
-                }
-                print("Images Fetched")
-                self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
-                    let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
-                    for teamNum in self.teamNumbers {
-                        if let urlsForTeam = urls[teamNum] {
-                            if self.sharedURLs[teamNum] != nil {
-                                if urlsForTeam != self.sharedURLs[teamNum]! {
-                                    self.sharedURLs[teamNum] = urlsForTeam
-                                }
-                            } else {
-                                self.sharedURLs[teamNum] = urlsForTeam
-                            }
-                            
-                        }
-                    }
-                    print("URLs Fetched")
-                    self.uploadAllPhotos()
-                    }.onFailure { (E) -> () in
-                        print("URLs Not Fetched \(E.debugDescription)")
-                        self.sharedURLs = [-2:["-2"]]
-                        self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
-                            let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
-                            for teamNum in self.teamNumbers {
-                                if let urlsForTeam = urls[teamNum] {
-                                    if self.sharedURLs[teamNum] != nil {
-                                        if urlsForTeam != self.sharedURLs[teamNum]! {
-                                            self.sharedURLs[teamNum] = urlsForTeam
-                                        }
-                                    } else {
-                                        self.sharedURLs[teamNum] = urlsForTeam
-                                    }
-                                    
-                                }
-                            }
-                            print("URLs Fetched")
-                            self.uploadAllPhotos()
-                        }
-                }
-                }.onFailure { (E) -> () in
-                    print("Images Not Fetched: \(E.debugDescription)")
-            }
-            self.fetchPhotosFromDropbox()*/
         })
-        
     }
     
     func fetchPhotosFromDropbox() {
@@ -183,7 +126,7 @@ class PhotoUploader : NSObject {
                                     if let (metadata, url) = response {
                                         print("*** Download file ***")
                                         let data = NSData(contentsOfURL: url)
-                                        self.addFileToLineup(data!, fileName: name, teamNumber: teamNumber )
+                                        self.addFileToLineup(data!, fileName: name, teamNumber: teamNumber, shouldUpload: false)
                                         print("Downloaded file url: \(url)")
                                         print("Downloaded file name: \(metadata.name)")
                                         
@@ -213,28 +156,35 @@ class PhotoUploader : NSObject {
         if(self.isConnectedToNetwork()) {
             if let client = Dropbox.authorizedClient {
                 for teamNumber in self.teamNumbers {
-                    if let filesForTeam = self.filesToUpload[teamNumber] {
+                    if let filesForTeam = self.cashedFiles[teamNumber] {
                         for file in filesForTeam {
+                            if((file["shouldUpload"] as! Bool == false)) { break }
+                            
                             let name = file["name"] as! String
                             let data = file["data"] as! NSData
                             var sharedURL = "Not Uploaded"
                             let path = "/Public/\(name)"
-                            client.files.upload(path: path, body: data).response { response, error in
-                                if let metaData = response {
-                                    self.filesToUpload[teamNumber] = self.filesToUpload[teamNumber]!.filter({$0["name"] as! String != name})
-                                    
-                                    //Removing the uploaded file from files to upload, this actually works in swift!
-                                    print("*** Upload file: \(metaData) ****")
-                                    sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
-                                    self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
-                                    self.sharedURLs[teamNumber]![(self.sharedURLs[teamNumber]?.count)!] = sharedURL //This line is terrible
-                                    //print(self.sharedURLs)
-                                } else {
-                                    client.files.delete(path: path)
-                                    self.uploadAllPhotos()
-                                    print("Upload Error: \(error?.description)")
+                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                                client.files.upload(path: path, body: data).response { response, error in
+                                    if let metaData = response {
+                                        for var file in self.cashedFiles[teamNumber]! {
+                                            file["shouldUpload"] = false
+                                        }
+                                        
+                                        //Removing the uploaded file from files to upload, this actually works in swift!
+                                        print("*** Upload file: \(metaData) ****")
+                                        sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
+                                        self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
+                                        self.sharedURLs[teamNumber]![(self.sharedURLs[teamNumber]?.count)!] = sharedURL //This line is terrible
+                                        //print(self.sharedURLs)
+                                    } else {
+                                        client.files.delete(path: path)
+                                        self.uploadAllPhotos()
+                                        print("Upload Error: \(error?.description)")
+                                    }
                                 }
-                            }
+
+                            })
                         }
                     }
                     
@@ -245,21 +195,19 @@ class PhotoUploader : NSObject {
         }
         
     }
-    func addFileToLineup(fileData : NSData, fileName : String, teamNumber : Int) {
-        let fileDict = ["name" : fileName, "data" : fileData]
-        if self.filesToUpload[teamNumber] != nil {
-            self.filesToUpload[teamNumber]!.append(fileDict)
+    func addFileToLineup(fileData : NSData, fileName : String, teamNumber : Int, shouldUpload : Bool) {
+        let fileDict = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
+        if self.cashedFiles[teamNumber] != nil {
+            self.cashedFiles[teamNumber]!.append(fileDict)
         } else {
-            self.filesToUpload[teamNumber] = [fileDict]
+            self.cashedFiles[teamNumber] = [fileDict]
         }
         self.uploadAllPhotos()
     }
     
     func isConnectedToNetwork() -> Bool  {
         let url = NSURL(string: "https://www.google.com/")
-        
         let data = NSData(contentsOfURL: url!)
-        
         if (data != nil) {
             return(true)
         }

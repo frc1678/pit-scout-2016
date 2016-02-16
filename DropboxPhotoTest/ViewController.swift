@@ -19,72 +19,50 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var viewImagesButton: UIButton!
-    @IBOutlet weak var numWheels: UITextField!
-    @IBOutlet weak var pitOrgSelect:UISegmentedControl!
-    @IBOutlet weak var selectedImageURL: UITextField!
+    @IBOutlet weak var pitNumberOfWheels: UITextField!
+    @IBOutlet weak var pitOrganization:UISegmentedControl!
+    @IBOutlet weak var selectedImageUrl: UITextField!
     @IBOutlet weak var bottomScrollViewConstraint: NSLayoutConstraint!
-    @IBOutlet weak var baseWidth: UITextField!
-    @IBOutlet weak var baseLength: UITextField!
-    @IBOutlet weak var bumperHeight: UITextField!
-    @IBOutlet weak var midlineBallCheesecakePotential: UISegmentedControl!
-    @IBOutlet weak var shotBlockerPotential: UISegmentedControl!
-    @IBOutlet weak var lowBarPotential: UISegmentedControl!
-    @IBOutlet weak var lowBarSwitch: UISwitch!
+    @IBOutlet weak var pitDriveBaseWidth: UITextField!
+    @IBOutlet weak var pitDriveBaseLength: UITextField!
+    @IBOutlet weak var pitBumperHeight: UITextField!
+    @IBOutlet weak var pitPotentialMidlineBallCapability: UISegmentedControl!
+    @IBOutlet weak var pitPotentialShotBlockerCapability: UISegmentedControl!
+    @IBOutlet weak var pitPotentialLowBarCapability: UISegmentedControl!
+    @IBOutlet weak var pitLowBarCapability: UISwitch!
     @IBOutlet weak var pitNotes: UITextField!
-    @IBOutlet weak var ballReleaseHeight: UITextField!
+    @IBOutlet weak var pitHeightOfBallLeavingShooter: UITextField!
     
     var photoUploader : PhotoUploader!
-    var teamNam : String = "-1"
+    var name : String = "-1"
     var numberOfWheels : Int  = -1
-    var pitOrg : Int = -1 {
-        didSet {
-            self.pitOrgSelect.selectedSegmentIndex = self.pitOrg
-        }
-    }
-    var teamNum : Int!
+    var pitOrg : Int = -1
+    var number : Int!
     var numberOfPhotos : Int = 0
     var firebase : Firebase!
     var ourTeam : Firebase!
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
+    var firebaseKeys = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
-            self.selectedImageURL.text = snap.childSnapshotForPath("selectedImageUrl").value as? String
-            self.pitNotes.text = snap.childSnapshotForPath("pitNotes").value as? String
-            self.bumperHeight.text = "\(snap.childSnapshotForPath("pitBumperHeight").value as! Float)"
-            self.baseLength.text = "\(snap.childSnapshotForPath("pitDriveBaseLength").value as! Float)"
-            self.baseWidth.text = "\(snap.childSnapshotForPath("pitDriveBaseWidth").value as! Float)"
-            self.numWheels.text = "\(snap.childSnapshotForPath("pitNumberOfWheels").value as! Int)"
-            self.ballReleaseHeight.text = "\(snap.childSnapshotForPath("pitHeightOfBallLeavingShooter").value as! Float)"
-            if let po = snap.childSnapshotForPath("pitOrganization").value as? Int {
-                if po != -1 {
-                    self.pitOrgSelect.selectedSegmentIndex = po
-                    self.pitOrgSelect.selected = true
+            self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)")
+            for key in self.firebaseKeys {
+                if let value = snap.childSnapshotForPath(key).value {
+                    let myObj = self.valueForKey(key)
+                    if object_getClass(myObj) == object_getClass(UITextField()) {
+                        myObj?.setValue("\(value)", forKey: "text")
+                    } else if object_getClass(myObj) == object_getClass(UISegmentedControl()) {
+                        myObj?.setValue(value as! Int, forKey: "selectedSegmentIndex")
+                        myObj?.setValue(true, forKey: "selected")
+                    } else if object_getClass(myObj) == object_getClass(UISwitch()) {
+                        (myObj as! UISwitch).setOn(Bool(value as! NSNumber), animated: true)
+                    } else {
+                        print("This should not happen")
+                    }
                 }
-            }
-            if let po = snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as? Int {
-                if po != -1 {
-                    self.shotBlockerPotential.selectedSegmentIndex = po
-                    self.shotBlockerPotential.selected = true
-                }
-            }
-            if let po = snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as? Int {
-                if po != -1 {
-                    self.midlineBallCheesecakePotential.selectedSegmentIndex = po
-                    self.midlineBallCheesecakePotential.selected = true
-                }
-            }
-            if let po = snap.childSnapshotForPath("pitPotentialLowBarCapability").value as? Int {
-                if po != -1 {
-                    self.lowBarPotential.selectedSegmentIndex = po
-                    self.lowBarPotential.selected = true
-                }
-            }
-            if let passedLowBarTesting = snap.childSnapshotForPath("pitLowBarCapability").value {
-                let passedLowBar = Bool(passedLowBarTesting as! NSNumber)
-                self.lowBarSwitch.setOn(passedLowBar, animated: true)
             }
         })
         
@@ -95,7 +73,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func updatePhotoButtonText() {
-        self.viewImagesButton.setTitle("View Images: (\(self.photoUploader.getImagesForTeamNum(self.teamNum).count)/5)", forState: UIControlState.Normal)
+        self.viewImagesButton.setTitle("View Images: (\(self.photoUploader.getImagesForTeamNum(self.number).count)/5)", forState: UIControlState.Normal)
     }
     
     //MARK: Responding To UI Actions:
@@ -112,38 +90,38 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func bumperHeightDidChange(sender: UITextField) {
-        if let num = Float(self.bumperHeight.text!)  {
+        if let num = Float(self.pitBumperHeight.text!)  {
             self.ourTeam?.childByAppendingPath("pitBumperHeight").setValue(Float(num))
         } else {
-            self.bumperHeight.backgroundColor = UIColor.redColor()
+            self.pitBumperHeight.backgroundColor = UIColor.redColor()
         }
     }
     
     @IBAction func selectedImageEditingEnded(sender: UITextField) {
-        self.ourTeam?.childByAppendingPath("selectedImageUrl").setValue(self.selectedImageURL.text)
+        self.ourTeam?.childByAppendingPath("selectedImageUrl").setValue(self.selectedImageUrl.text)
     }
     
     @IBAction func baseWidthDidChange(sender: UITextField) {
-        if let num = Float(self.baseWidth.text!)  {
+        if let num = Float(self.pitDriveBaseWidth.text!)  {
             self.ourTeam?.childByAppendingPath("pitDriveBaseWidth").setValue(Float(num))
         } else {
-            self.baseWidth.backgroundColor = UIColor.redColor()
+            self.pitDriveBaseWidth.backgroundColor = UIColor.redColor()
         }
     }
     
     @IBAction func baseLengthDidChange(sender: UITextField) {
-        if let num = Float(self.baseLength.text!)  {
+        if let num = Float(self.pitDriveBaseLength.text!)  {
             self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(num))
         } else {
-            self.baseLength.backgroundColor = UIColor.redColor()
+            self.pitDriveBaseLength.backgroundColor = UIColor.redColor()
         }
     }
     
     @IBAction func releaseHeightEditingEnded(sender: UITextField) {
-        if let num = Float(self.ballReleaseHeight.text!)  {
+        if let num = Float(self.pitHeightOfBallLeavingShooter.text!)  {
             self.ourTeam?.childByAppendingPath("pitHeightOfBallLeavingShooter").setValue(Float(num))
         } else {
-            self.ballReleaseHeight.backgroundColor = UIColor.redColor()
+            self.pitHeightOfBallLeavingShooter.backgroundColor = UIColor.redColor()
         }
     }
     
@@ -185,7 +163,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {
-        if self.photoUploader.getImagesForTeamNum(self.teamNum).count > 0 && self.canViewPhotos  {
+        if self.photoUploader.getImagesForTeamNum(self.number).count > 0 && self.canViewPhotos  {
             let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
             presentViewController(gallery, animated: true, completion: nil)
         }
@@ -217,11 +195,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: SwiftPhotoGalleryDataSource Methods
     
     func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.photoUploader.getImagesForTeamNum(self.teamNum).count
+        return self.photoUploader.getImagesForTeamNum(self.number).count
     }
     
     func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        return UIImage(data: self.photoUploader.getImagesForTeamNum(self.teamNum)[forIndex]["data"] as! NSData)
+        return UIImage(data: self.photoUploader.getImagesForTeamNum(self.number)[forIndex]["data"] as! NSData)
     }
     
     // MARK: Swift Photo Gallery Methods
@@ -235,13 +213,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
-            let fileName = "\(self.teamNum)_\(self.photoUploader.getImagesForTeamNum(self.teamNum).count).png"
-            if let _ = self.photoUploader.sharedURLs[self.teamNum] {
-                self.photoUploader.sharedURLs[self.teamNum]!.addObject("https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
+            let fileName = "\(self.number)_\(self.photoUploader.getImagesForTeamNum(self.number).count).png"
+            if let _ = self.photoUploader.sharedURLs[self.number] {
+                self.photoUploader.sharedURLs[self.number]!.addObject("https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
             } else {
-                self.photoUploader.sharedURLs[self.teamNum] = ["https://dl.dropboxusercontent.com/u/63662632/\(fileName)"]
+                self.photoUploader.sharedURLs[self.number] = ["https://dl.dropboxusercontent.com/u/63662632/\(fileName)"]
             }
-            self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.teamNum, shouldUpload: true)
+            self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
             self.canViewPhotos = true
             dispatch_async(dispatch_get_main_queue(), {
                 self.updatePhotoButtonText()
@@ -251,10 +229,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
-        let urls = self.photoUploader.getSharedURLsForTeamNum(self.teamNum)
-        if urls.count > gallery.currentPage   {
-            self.selectedImageURL.text = urls[gallery.currentPage] as? String
-            self.selectedImageEditingEnded(self.selectedImageURL)
+        let urls = self.photoUploader.getSharedURLsForTeamNum(self.number)
+        if urls.count - 1 > gallery.currentPage   { // the -1 is because of the initial "-1" url
+            self.selectedImageUrl.text = urls[gallery.currentPage] as? String
+            self.selectedImageEditingEnded(self.selectedImageUrl)
             
             dismissViewControllerAnimated(true, completion: nil)
         } else {

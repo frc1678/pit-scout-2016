@@ -106,12 +106,11 @@ public extension UIButton {
         
         if let succeed = succeed {
             succeed(image)
-        } else if animated {
-            UIView.transitionWithView(self, duration: HanekeGlobals.UIKit.SetImageAnimationDuration, options: .TransitionCrossDissolve, animations: {
+        } else {
+            let duration : NSTimeInterval = animated ? 0.1 : 0
+            UIView.transitionWithView(self, duration: duration, options: .TransitionCrossDissolve, animations: {
                 self.setImage(image, forState: state)
                 }, completion: nil)
-        } else {
-            self.setImage(image, forState: state)
         }
     }
     
@@ -216,12 +215,11 @@ public extension UIButton {
         
         if let succeed = succeed {
             succeed(image)
-        } else if animated {
-            UIView.transitionWithView(self, duration: HanekeGlobals.UIKit.SetImageAnimationDuration, options: .TransitionCrossDissolve, animations: {
+        } else {
+            let duration : NSTimeInterval = animated ? 0.1 : 0
+            UIView.transitionWithView(self, duration: duration, options: .TransitionCrossDissolve, animations: {
                 self.setBackgroundImage(image, forState: state)
                 }, completion: nil)
-        } else {
-            self.setBackgroundImage(image, forState: state)
         }
     }
     

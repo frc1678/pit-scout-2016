@@ -13,13 +13,13 @@ public class Fetcher<T : DataConvertible> {
 
     public let key: String
     
-    public init(key: String) {
+    init(key: String) {
         self.key = key
     }
     
-    public func fetch(failure fail: ((NSError?) -> ()), success succeed: (T.Result) -> ()) {}
+    func fetch(failure fail: ((NSError?) -> ()), success succeed: (T.Result) -> ()) {}
     
-    public func cancelFetch() {}
+    func cancelFetch() {}
 }
 
 class SimpleFetcher<T : DataConvertible> : Fetcher<T> {

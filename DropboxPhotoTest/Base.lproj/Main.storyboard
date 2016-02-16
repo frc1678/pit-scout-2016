@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mjW-bw-bM2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mjW-bw-bM2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -787,21 +787,21 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="ballReleaseHeight" destination="VWJ-Uv-3NR" id="Rbo-Pk-aHs"/>
-                        <outlet property="baseLength" destination="KtU-q4-aqr" id="yHy-wM-ZnD"/>
-                        <outlet property="baseWidth" destination="G0j-IL-FB6" id="X4J-aU-ogw"/>
                         <outlet property="bottomScrollViewConstraint" destination="Zgz-zM-2bm" id="2GW-VR-RAU"/>
-                        <outlet property="bumperHeight" destination="ixC-Sr-q93" id="uTJ-WL-njW"/>
                         <outlet property="imageButton" destination="75B-wp-da5" id="dzW-QY-Ied"/>
-                        <outlet property="lowBarPotential" destination="mEY-XQ-S4T" id="px8-NB-9CG"/>
-                        <outlet property="lowBarSwitch" destination="yFW-rn-nHk" id="upL-DN-Kp7"/>
-                        <outlet property="midlineBallCheesecakePotential" destination="Rap-vO-fRG" id="Dup-Vc-Qti"/>
-                        <outlet property="numWheels" destination="nck-Zp-qiT" id="PZF-j5-Jkq"/>
+                        <outlet property="pitBumperHeight" destination="ixC-Sr-q93" id="ECO-Zd-oUI"/>
+                        <outlet property="pitDriveBaseLength" destination="KtU-q4-aqr" id="K7b-8R-IIY"/>
+                        <outlet property="pitDriveBaseWidth" destination="G0j-IL-FB6" id="oE2-TW-mk5"/>
+                        <outlet property="pitHeightOfBallLeavingShooter" destination="VWJ-Uv-3NR" id="5Vb-m1-7Wn"/>
+                        <outlet property="pitLowBarCapability" destination="yFW-rn-nHk" id="fpy-ZN-a0o"/>
                         <outlet property="pitNotes" destination="Wp0-mx-4TP" id="uCd-5n-Bwc"/>
-                        <outlet property="pitOrgSelect" destination="PJM-VC-GKB" id="ak7-7u-CU9"/>
+                        <outlet property="pitNumberOfWheels" destination="nck-Zp-qiT" id="kQH-bD-v9Q"/>
+                        <outlet property="pitOrganization" destination="PJM-VC-GKB" id="NDH-mc-4zY"/>
+                        <outlet property="pitPotentialLowBarCapability" destination="mEY-XQ-S4T" id="5mo-eo-Zw8"/>
+                        <outlet property="pitPotentialMidlineBallCapability" destination="Rap-vO-fRG" id="COo-aZ-sQ0"/>
+                        <outlet property="pitPotentialShotBlockerCapability" destination="NYR-Wu-PMC" id="9Dn-aC-Ion"/>
                         <outlet property="scrollView" destination="qah-pQ-L5G" id="H2y-Wr-Rjb"/>
-                        <outlet property="selectedImageURL" destination="4bC-9T-71V" id="nlL-rF-sWt"/>
-                        <outlet property="shotBlockerPotential" destination="NYR-Wu-PMC" id="nKV-cr-t6C"/>
+                        <outlet property="selectedImageUrl" destination="4bC-9T-71V" id="3Wo-yz-EDU"/>
                         <outlet property="viewImagesButton" destination="tYN-HT-L1H" id="Fbg-zN-fkP"/>
                     </connections>
                 </viewController>

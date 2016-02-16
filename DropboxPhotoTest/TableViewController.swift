@@ -9,8 +9,12 @@ import UIKit
 import Foundation
 import Firebase
 import firebase_schema_2016_ios
-import FirebaseUI
 import SwiftyDropbox
+
+let dev3Token = "AEduO6VFlZKD4v10eW81u9j3ZNopr5h2R32SPpeq"
+let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
+
+let firebaseKeys = ["pitBumperHeight", "pitDriveBaseWidth", "pitDriveBaseLength", "pitNumberOfWheels", "pitOrganization", "pitPotentialLowBarCapability", "pitPotentialMidlineBallCapability", "pitPotentialShotBlockerCapability", "selectedImageUrl"]
 
 class TableViewController: UITableViewController, UISearchBarDelegate {
     
@@ -32,8 +36,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
-        firebase?.authWithCustomToken("qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee", withCompletionBlock: { (E, A) -> Void in
+        self.firebase = Firebase(url: "https://1678-dev3-2016.firebaseio.com/Teams")
+        firebase?.authWithCustomToken(dev3Token, withCompletionBlock: { (E, A) -> Void in
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
                 self.teams = NSMutableArray()
                 self.teamNums = []
@@ -92,15 +96,11 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool {
-        if (snap.childSnapshotForPath("pitBumperHeight").value as! Int) <= -1 { return false }
-        if (snap.childSnapshotForPath("pitDriveBaseWidth").value as! Int) <= -1 { return false }
-        if (snap.childSnapshotForPath("pitDriveBaseLength").value as! Int) <= -1 { return false }
-        if (snap.childSnapshotForPath("pitNumberOfWheels").value as! Int) <= -1 { return false }
-        if (snap.childSnapshotForPath("pitOrganization").value as! Int) == -1 { return false }
-        if (snap.childSnapshotForPath("pitPotentialLowBarCapability").value as! Int) == -1 { return false }
-        if (snap.childSnapshotForPath("pitPotentialMidlineBallCapability").value as! Int) == -1 { return false }
-        if (snap.childSnapshotForPath("pitPotentialShotBlockerCapability").value as! Int) == -1 { return false }
-        if (snap.childSnapshotForPath("selectedImageUrl").value as! String) == "-1" { return false }
+        for key in firebaseKeys {
+            if snap.childSnapshotForPath(key).value == nil {
+                return false
+            }
+        }
         return true
     }
     
@@ -141,12 +141,12 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 let teamFB = self.firebase?.childByAppendingPath("\(number)")
                 teamViewController.ourTeam = teamFB
                 teamViewController.firebase = self.firebase
-                teamViewController.teamNum = number
+                teamViewController.number = number
                 teamViewController.title = "\(number)"
                 teamViewController.photoUploader = self.photoUploader
-                
+                teamViewController.firebaseKeys = firebaseKeys
                 teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-                    teamViewController.teamNam = snap.childSnapshotForPath("name").value as! String
+                    teamViewController.name = snap.childSnapshotForPath("name").value as! String
                 })
             }
         }

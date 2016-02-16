@@ -7,11 +7,10 @@ use_frameworks!
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'DropboxPhotoTest' do
-    pod 'Firebase', '>= 2.2.0'
+    pod 'Firebase'
     pod 'firebase-schema-2016-ios', :git => 'https://github.com/frc1678/firebase-schema-2016-ios.git'
     pod 'SwiftyJSON'
     pod 'JSONHelper'
-    pod 'FirebaseUI/Core', '~> 0.3'
     pod 'SwiftyDropbox'
     pod 'HanekeSwift'
     pod 'SwiftPhotoGallery'

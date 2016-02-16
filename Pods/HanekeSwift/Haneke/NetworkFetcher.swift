@@ -73,13 +73,18 @@ public class NetworkFetcher<T : DataConvertible> : Fetcher<T> {
             return
         }
         
-        if let httpResponse = response as? NSHTTPURLResponse where !httpResponse.hnk_isValidStatusCode() {
+        guard let httpResponse = response as? NSHTTPURLResponse else {
+            Log.debug("Request \(URL.absoluteString) received unknown response \(response)")
+            return
+        }
+        
+        if httpResponse.statusCode != 200 {
             let description = NSHTTPURLResponse.localizedStringForStatusCode(httpResponse.statusCode)
             self.failWithCode(.InvalidStatusCode, localizedDescription: description, failure: fail)
             return
         }
-
-        if !response.hnk_validateLengthOfData(data) {
+        
+        if !httpResponse.hnk_validateLengthOfData(data) {
             let localizedFormat = NSLocalizedString("Request expected %ld bytes and received %ld bytes", comment: "Error description")
             let description = String(format:localizedFormat, response.expectedContentLength, data.length)
             self.failWithCode(.MissingData, localizedDescription: description, failure: fail)

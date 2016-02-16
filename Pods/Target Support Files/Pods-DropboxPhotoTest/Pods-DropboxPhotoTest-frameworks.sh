@@ -86,7 +86,6 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-DropboxPhotoTest/Alamofire.framework"
   install_framework "Pods-DropboxPhotoTest/Firebase.framework"
-  install_framework "Pods-DropboxPhotoTest/FirebaseUI.framework"
   install_framework "Pods-DropboxPhotoTest/Haneke.framework"
   install_framework "Pods-DropboxPhotoTest/JSONHelper.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftPhotoGallery.framework"
@@ -97,7 +96,6 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-DropboxPhotoTest/Alamofire.framework"
   install_framework "Pods-DropboxPhotoTest/Firebase.framework"
-  install_framework "Pods-DropboxPhotoTest/FirebaseUI.framework"
   install_framework "Pods-DropboxPhotoTest/Haneke.framework"
   install_framework "Pods-DropboxPhotoTest/JSONHelper.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftPhotoGallery.framework"

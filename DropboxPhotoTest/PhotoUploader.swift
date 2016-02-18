@@ -159,7 +159,9 @@ class PhotoUploader : NSObject {
                 for teamNumber in self.teamNumbers {
                     if let filesForTeam = self.cashedFiles[teamNumber] {
                         for file in filesForTeam {
-                            if((file["shouldUpload"] as! Bool == false)) { break }
+                            if((file["shouldUpload"] as! Bool == false)) {
+                                break
+                            }
                             
                             let name = file["name"] as! String
                             let data = file["data"] as! NSData
@@ -176,7 +178,7 @@ class PhotoUploader : NSObject {
                                         print("*** Upload file: \(metaData) ****")
                                         sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
                                         self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
-                                        self.sharedURLs[teamNumber]![(self.sharedURLs[teamNumber]?.count)!] = sharedURL //This line is terrible
+                                        self.addUrlToList(teamNumber, url: sharedURL)
                                         //print(self.sharedURLs)
                                     } else {
                                         client.files.delete(path: path)
@@ -196,6 +198,10 @@ class PhotoUploader : NSObject {
         }
         
     }
+    func addUrlToList(teamNumber: Int, url: String) {
+        self.sharedURLs[teamNumber]![(self.sharedURLs[teamNumber]?.count)!] = url //This line is terrible
+    }
+    
     func addFileToLineup(fileData : NSData, fileName : String, teamNumber : Int, shouldUpload : Bool) {
         let fileDict = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
         if self.cashedFiles[teamNumber] != nil {

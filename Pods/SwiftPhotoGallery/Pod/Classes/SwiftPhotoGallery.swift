@@ -139,7 +139,7 @@ public class SwiftPhotoGallery: UIViewController, UICollectionViewDataSource, UI
     // MARK: Rotation Handling
 
     override public func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.AllButUpsideDown
+        return UIInterfaceOrientationMask.Portrait
     }
 
     override public func shouldAutorotate() -> Bool {
@@ -280,7 +280,7 @@ public class SwiftPhotoGallery: UIViewController, UICollectionViewDataSource, UI
     }
     
     private func scrollToImage(withIndex:Int, animated:Bool = false) {
-        imageCollectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: withIndex, inSection: 0), atScrollPosition: .CenteredHorizontally, animated: animated)
+        imageCollectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: withIndex, inSection: 0), atScrollPosition: .CenteredVertically, animated: animated)
     }
 
     private func getImage(currentPage: Int) -> UIImage {

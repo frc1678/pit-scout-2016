@@ -16,7 +16,7 @@ let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
 
 let firebaseKeys = ["pitBumperHeight", "pitDriveBaseWidth", "pitDriveBaseLength", "pitNumberOfWheels", "pitOrganization", "pitPotentialLowBarCapability", "pitPotentialMidlineBallCapability", "pitPotentialShotBlockerCapability", "selectedImageUrl"]
 
-class TableViewController: UITableViewController, UISearchBarDelegate {
+class TableViewController: UITableViewController {
     
     let cellReuseId = "teamCell"
     var firebase : Firebase?
@@ -36,8 +36,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.firebase = Firebase(url: "https://1678-dev3-2016.firebaseio.com/Teams")
-        firebase?.authWithCustomToken(dev3Token, withCompletionBlock: { (E, A) -> Void in
+        self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
+        firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
                 self.teams = NSMutableArray()
                 self.teamNums = []
@@ -97,8 +97,14 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool {
         for key in firebaseKeys {
-            if snap.childSnapshotForPath(key).value == nil {
-                return false
+            if let o = (snap.childSnapshotForPath(key).value) as? NSString {
+                print(o)
+            } else {
+                if let _ = (snap.childSnapshotForPath(key).value) as? NSNumber {
+                    
+                } else {
+                    return false
+                }
             }
         }
         return true

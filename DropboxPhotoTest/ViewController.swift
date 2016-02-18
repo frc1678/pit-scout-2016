@@ -51,16 +51,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)")
             for key in self.firebaseKeys {
                 if let value = snap.childSnapshotForPath(key).value {
-                    let myObj = self.valueForKey(key)
-                    if object_getClass(myObj) == object_getClass(UITextField()) {
-                        myObj?.setValue("\(value)", forKey: "text")
-                    } else if object_getClass(myObj) == object_getClass(UISegmentedControl()) {
-                        myObj?.setValue(value as! Int, forKey: "selectedSegmentIndex")
-                        myObj?.setValue(true, forKey: "selected")
-                    } else if object_getClass(myObj) == object_getClass(UISwitch()) {
-                        (myObj as! UISwitch).setOn(Bool(value as! NSNumber), animated: true)
-                    } else {
-                        print("This should not happen")
+                    if !self.isNull(value) {
+                        let myObj = self.valueForKey(key)
+                        if object_getClass(myObj) == object_getClass(UITextField()) {
+                            myObj?.setValue("\(value)", forKey: "text")
+                        } else if object_getClass(myObj) == object_getClass(UISegmentedControl()) {
+                            myObj?.setValue(value as! Int, forKey: "selectedSegmentIndex")
+                            myObj?.setValue(true, forKey: "selected")
+                        } else if object_getClass(myObj) == object_getClass(UISwitch()) {
+                            (myObj as! UISwitch).setOn(Bool(value as! NSNumber), animated: true)
+                        } else {
+                            print("This should not happen")
+                        }
                     }
                 }
             }
@@ -249,5 +251,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
+    func isNull(object: AnyObject?) -> Bool {
+        if object_getClass(object) == object_getClass(NSNull()) {
+            return true
+        }
+        return false
+    }
 }
 

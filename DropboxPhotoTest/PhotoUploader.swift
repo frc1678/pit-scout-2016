@@ -158,39 +158,34 @@ class PhotoUploader : NSObject {
             if let client = Dropbox.authorizedClient {
                 for teamNumber in self.teamNumbers {
                     if let filesForTeam = self.cashedFiles[teamNumber] {
-                        for file in filesForTeam {
-                            if((file["shouldUpload"] as! Bool == false)) {
-                                break
-                            }
-                            
-                            let name = file["name"] as! String
-                            let data = file["data"] as! NSData
-                            var sharedURL = "Not Uploaded"
-                            let path = "/Public/\(name)"
-                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                                client.files.upload(path: path, body: data).response { response, error in
-                                    if let metaData = response {
-                                        for var file in self.cashedFiles[teamNumber]! {
-                                            file["shouldUpload"] = false
+                        for index in filesForTeam.indices {
+                            if((filesForTeam[index]["shouldUpload"] as! Bool == true)) {
+                                let name = filesForTeam[index]["name"] as! String
+                                let data = filesForTeam[index]["data"] as! NSData
+                                var sharedURL = "Not Uploaded"
+                                let path = "/Public/\(name)"
+                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                                    client.files.upload(path: path, body: data).response { response, error in
+                                        if let metaData = response {
+                                            self.cashedFiles[teamNumber]![index]["shouldUpload"] = false
+                                            
+                                            //Removing the uploaded file from files to upload, this actually works in swift!
+                                            print("*** Upload file: \(metaData) ****")
+                                            sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
+                                            self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
+                                            self.addUrlToList(teamNumber, url: sharedURL)
+                                            //print(self.sharedURLs)
+                                        } else {
+                                            client.files.delete(path: path)
+                                            self.uploadAllPhotos()
+                                            print("Upload Error: \(error?.description)")
                                         }
-                                        
-                                        //Removing the uploaded file from files to upload, this actually works in swift!
-                                        print("*** Upload file: \(metaData) ****")
-                                        sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
-                                        self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
-                                        self.addUrlToList(teamNumber, url: sharedURL)
-                                        //print(self.sharedURLs)
-                                    } else {
-                                        client.files.delete(path: path)
-                                        self.uploadAllPhotos()
-                                        print("Upload Error: \(error?.description)")
                                     }
-                                }
-
-                            })
+                                    
+                                })
+                            }
                         }
                     }
-                    
                 }
             }
         } else {

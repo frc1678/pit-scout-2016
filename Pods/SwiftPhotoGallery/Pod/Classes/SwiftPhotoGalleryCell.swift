@@ -23,11 +23,13 @@ public class SwiftPhotoGalleryCell: UICollectionViewCell, UIScrollViewDelegate {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         scrollView = UIScrollView(frame: frame)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         super.init(frame: frame)
         var scrollViewConstraints: [NSLayoutConstraint] = []
         var imageViewConstraints: [NSLayoutConstraint] = []
 
+
+        
         scrollViewConstraints.append(NSLayoutConstraint(item: scrollView, attribute: .Leading, relatedBy: .Equal, toItem: contentView, attribute: .Leading, multiplier: 1, constant: 0))
         scrollViewConstraints.append(NSLayoutConstraint(item: scrollView, attribute: .Top, relatedBy: .Equal, toItem: contentView, attribute: .Top, multiplier: 1, constant: 0))
         scrollViewConstraints.append(NSLayoutConstraint(item: scrollView, attribute: .Trailing, relatedBy: .Equal, toItem: contentView, attribute: .Trailing, multiplier: 1, constant: 0))
@@ -36,11 +38,14 @@ public class SwiftPhotoGalleryCell: UICollectionViewCell, UIScrollViewDelegate {
         contentView.addSubview(scrollView)
         contentView.addConstraints(scrollViewConstraints)
 
+
         imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .Leading, relatedBy: .Equal, toItem: scrollView, attribute: .Leading, multiplier: 1, constant: 0))
         imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .Top, relatedBy: .Equal, toItem: scrollView, attribute: .Top, multiplier: 1, constant: 0))
         imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .Trailing, relatedBy: .Equal, toItem: scrollView, attribute: .Trailing, multiplier: 1, constant: 0))
         imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .Bottom, relatedBy: .Equal, toItem: scrollView, attribute: .Bottom, multiplier: 1, constant: 0))
 
+
+        
         scrollView.addSubview(imageView)
         scrollView.addConstraints(imageViewConstraints)
 
@@ -64,6 +69,7 @@ public class SwiftPhotoGalleryCell: UICollectionViewCell, UIScrollViewDelegate {
 
     internal func configureForNewImage() {
         imageView.image = image
+
         imageView.sizeToFit()
         imageView.alpha = 0.0
 
@@ -72,6 +78,7 @@ public class SwiftPhotoGalleryCell: UICollectionViewCell, UIScrollViewDelegate {
         
         UIView.animateWithDuration(0.5) {
             self.imageView.alpha = 1.0
+
         }
     }
     

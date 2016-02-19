@@ -201,7 +201,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        return UIImage(data: self.photoUploader.getImagesForTeamNum(self.number)[forIndex]["data"] as! NSData)
+        let image = UIImage(data: self.photoUploader.getImagesForTeamNum(self.number)[forIndex]["data"] as! NSData)
+        let rotatedImage : UIImage = UIImage(CGImage: image!.CGImage! ,
+            scale: 1.0 ,
+            orientation: UIImageOrientation.Right)
+        return rotatedImage
     }
     
     // MARK: Swift Photo Gallery Methods
@@ -232,7 +236,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
         let urls = self.photoUploader.getSharedURLsForTeamNum(self.number)
-        if urls.count - 1 > gallery.currentPage   { // the -1 is because of the initial "-1" url
+        if urls.count  > gallery.currentPage   { // the -1 is because of the initial "-1" url
             self.selectedImageUrl.text = urls[gallery.currentPage] as? String
             self.selectedImageEditingEnded(self.selectedImageUrl)
             

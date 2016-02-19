@@ -139,11 +139,11 @@ public class SwiftPhotoGallery: UIViewController, UICollectionViewDataSource, UI
     // MARK: Rotation Handling
 
     override public func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+        return UIInterfaceOrientationMask.AllButUpsideDown
     }
 
     override public func shouldAutorotate() -> Bool {
-        return true
+        return false
     }
 
 
@@ -235,7 +235,7 @@ public class SwiftPhotoGallery: UIViewController, UICollectionViewDataSource, UI
         view.addSubview(result)
         view.addConstraints(imageCollectionViewConstraints)
 
-        result.contentSize = CGSize(width: 1000.0, height: 1.0)
+        result.contentSize = CGSize(width: 1.0, height: 10000.0)
         
         return result
     }

@@ -21,10 +21,12 @@ class TableViewController: UITableViewController {
     let cellReuseId = "teamCell"
     var firebase : Firebase?
     var teams : NSMutableArray = []
-    var teamNums : [Int] = []
-    var donePitscouting : NSMutableArray = []
+    var scoutedTeamInfo : [[String: Int]] = [] // ["num": 254, "hasBeenScouted": 0]
+    var teamNums = [Int]()
     var timer = NSTimer()
     var photoUploader : PhotoUploader?
+    
+    @IBOutlet weak var uploadPhotos: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +42,16 @@ class TableViewController: UITableViewController {
         firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
                 self.teams = NSMutableArray()
+                self.scoutedTeamInfo = []
                 self.teamNums = []
                 var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
                 for t in snap.children.enumerate() {
                     let team = t.element
                     self.teams.addObject(team)
                     if let teamNum = team.childSnapshotForPath("number").value as? Int {
+                        let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
+                        self.scoutedTeamInfo.append(scoutedTeamInfoDict)
                         self.teamNums.append(teamNum)
-                        
                         if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
                             let urlsArr = NSMutableArray()
                             for (_, value) in urlsForTeam {
@@ -59,24 +63,38 @@ class TableViewController: UITableViewController {
                         }
                         
                         if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
-                            self.donePitscouting[t.index] = true
+                            self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
                         } else {
-                            self.donePitscouting[t.index] = false
+                            self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
                         }
                     }
                     
                 }
                 
-                let tempArray : NSMutableArray = NSMutableArray(array: self.teamNums)
+                let tempArray : NSMutableArray = NSMutableArray(array: self.scoutedTeamInfo)
                 tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
-                    let o = obj1 as! Int
-                    let t = obj2 as! Int
+                    let o = obj1["num"] as! Int
+                    let t = obj2["num"] as! Int
+                    /*let so = obj1["hasBeenScouted"] as! Int
+                    let st = obj2["hasBeenScouted"] as! Int
                     
-                    if(o > t) { return NSComparisonResult.OrderedAscending }
-                    else if(t > o) { return NSComparisonResult.OrderedDescending }
-                    else { return NSComparisonResult.OrderedSame }
+                    if(so == 1 && st == 0) {
+                    return NSComparisonResult.OrderedDescending
+                    } else if(so == 0 && st == 1) {
+                    return NSComparisonResult.OrderedAscending
+                    }*/
+                    
+                    if(o > t) {
+                        return NSComparisonResult.OrderedAscending
+                    }
+                    else if(t > o) {
+                        return NSComparisonResult.OrderedDescending
+                    }
+                    else {
+                        return NSComparisonResult.OrderedSame
+                    }
                 })
-                self.teamNums = tempArray as [AnyObject] as! [Int]
+                self.scoutedTeamInfo = tempArray as [AnyObject] as! [[String: Int]]
                 
                 self.tableView.reloadData()
                 
@@ -85,6 +103,7 @@ class TableViewController: UITableViewController {
         })
         
     }
+    
     
     func setupPhotoUploader(urlsDict: [Int : NSMutableArray]) {
         if self.photoUploader == nil {
@@ -95,13 +114,11 @@ class TableViewController: UITableViewController {
         }
     }
     
-    func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool {
+    func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool { //For some reason it wasnt working other ways
         for key in firebaseKeys {
-            if let o = (snap.childSnapshotForPath(key).value) as? NSString {
-                print(o)
+            if let _ = (snap.childSnapshotForPath(key).value) as? NSString {
             } else {
                 if let _ = (snap.childSnapshotForPath(key).value) as? NSNumber {
-                    
                 } else {
                     return false
                 }
@@ -112,19 +129,56 @@ class TableViewController: UITableViewController {
     
     // MARK:  UITextFieldDelegate Methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("There are \(self.teamNums.count) teams.")
-        return self.teamNums.count
+        //print("There are \(self.scoutedTeamInfo.count) teams.")
+        
+        if section == 0 {
+            var numUnscouted = 0
+            for teamN in self.scoutedTeamInfo {
+                if teamN["hasBeenScouted"] == 0 {
+                    numUnscouted++
+                }
+            }
+            return numUnscouted
+        } else if section == 1 {
+            var numScouted = 0
+            for teamN in self.scoutedTeamInfo {
+                if teamN["hasBeenScouted"] == 1 {
+                    numScouted++
+                }
+            }
+            return numScouted
+        }
+        return 0
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(self.cellReuseId, forIndexPath: indexPath) as UITableViewCell
-        let text  = self.teamNums[indexPath.row]
+        var text = "shouldntBeThis"
+        print(indexPath.section)
+        if indexPath.section == 1 {
+            var scoutedTeamNums = NSMutableArray()
+            for team in self.scoutedTeamInfo {
+                if team["hasBeenScouted"] == 1 {
+                    scoutedTeamNums.addObject(team["num"]!)
+                }
+            }
+            text = "\(scoutedTeamNums[indexPath.row])"
+        } else if indexPath.section == 0 {
+            
+            var notScoutedTeamNums = NSMutableArray()
+            for team in self.scoutedTeamInfo {
+                if team["hasBeenScouted"] == 0 {
+                    notScoutedTeamNums.addObject(team["num"]!)
+                }
+            }
+            text = "\(notScoutedTeamNums[indexPath.row])"
+        }
         cell.textLabel?.text = "\(text)"
-        if(self.donePitscouting[indexPath.row] as! Bool == true) {
+        if(indexPath.section == 1) {
             cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         } else {
             cell.accessoryType = UITableViewCellAccessoryType.None
@@ -139,22 +193,45 @@ class TableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "Team View Segue" {
+            var number = -1
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
-            
-            if let number : Int = self.teamNums[(indexPath?.row)!] {
-                let teamViewController = segue.destinationViewController as! ViewController
+            if indexPath!.section == 1 {
+                var scoutedTeamNums = NSMutableArray()
+                for team in self.scoutedTeamInfo {
+                    if team["hasBeenScouted"] == 1 {
+                        scoutedTeamNums.addObject(team["num"]!)
+                    }
+                }
+                number = scoutedTeamNums[(indexPath?.row)!] as! Int
+            } else if indexPath!.section == 0 {
                 
-                let teamFB = self.firebase?.childByAppendingPath("\(number)")
-                teamViewController.ourTeam = teamFB
-                teamViewController.firebase = self.firebase
-                teamViewController.number = number
-                teamViewController.title = "\(number)"
-                teamViewController.photoUploader = self.photoUploader
-                teamViewController.firebaseKeys = firebaseKeys
-                teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-                    teamViewController.name = snap.childSnapshotForPath("name").value as! String
-                })
+                var notScoutedTeamNums = NSMutableArray()
+                for team in self.scoutedTeamInfo {
+                    if team["hasBeenScouted"] == 0 {
+                        notScoutedTeamNums.addObject(team["num"]!)
+                    }
+                }
+                number = notScoutedTeamNums[(indexPath?.row)!] as! Int
             }
+            let teamViewController = segue.destinationViewController as! ViewController
+            
+            let teamFB = self.firebase?.childByAppendingPath("\(number)")
+            teamViewController.ourTeam = teamFB
+            teamViewController.firebase = self.firebase
+            teamViewController.number = number
+            teamViewController.title = "\(number)"
+            teamViewController.photoUploader = self.photoUploader
+            teamViewController.firebaseKeys = firebaseKeys
+            teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                teamViewController.name = snap.childSnapshotForPath("name").value as! String
+            })
         }
+    }
+    
+    
+    
+    @IBAction func uploadPhotosPressed(sender: UIButton) {
+        self.photoUploader?.uploadAllPhotos()
+        self.photoUploader?.fetchPhotosFromDropbox()
     }
 }

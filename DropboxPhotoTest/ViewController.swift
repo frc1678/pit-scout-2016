@@ -76,7 +76,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func updatePhotoButtonText() {
-        self.viewImagesButton.setTitle("View Images: (\(self.photoUploader.getImagesForTeamNum(self.number).count)/5)", forState: UIControlState.Normal)
+        self.viewImagesButton.setTitle("View Images: (\(self.photoUploader.getThumbsForTeamNum(self.number).count)/5)", forState: UIControlState.Normal)
     }
     
     //MARK: Responding To UI Actions:
@@ -168,7 +168,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {
-        if self.photoUploader.getImagesForTeamNum(self.number).count > 0 && self.canViewPhotos  {
+        if self.photoUploader.getThumbsForTeamNum(self.number).count > 0 && self.canViewPhotos  {
             let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
             presentViewController(gallery, animated: true, completion: nil)
         }
@@ -200,11 +200,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: SwiftPhotoGalleryDataSource Methods
     
     func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.photoUploader.getImagesForTeamNum(self.number).count
+        return self.photoUploader.getThumbsForTeamNum(self.number).count
     }
     
     func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        let image = UIImage(data: self.photoUploader.getImagesForTeamNum(self.number)[forIndex]["data"] as! NSData)
+        let image = UIImage(data: self.photoUploader.getThumbsForTeamNum(self.number)[forIndex]["data"] as! NSData)
         let rotatedImage : UIImage = UIImage(CGImage: image!.CGImage! ,
             scale: 1.0 ,
             orientation: UIImageOrientation.Right)
@@ -222,7 +222,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
-            let fileName = "\(self.number)_\(self.photoUploader.getImagesForTeamNum(self.number).count).png"
+            let fileName = "\(self.number)_\(self.photoUploader.getThumbsForTeamNum(self.number).count).png"
             if let _ = self.photoUploader.sharedURLs[self.number] {
                 self.photoUploader.sharedURLs[self.number]!.addObject("https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
             } else {

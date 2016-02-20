@@ -19,13 +19,14 @@ class PhotoUploader : NSObject {
             print("mayKeepUsingNetwork: \(mayKeepUsingNetwork)")
         }
     }
-    var cashedFiles : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]() {
+   /* var cashedFiles : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]() {
         didSet {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.cashedFiles), key: "photos")
             })
         }
-    }
+    }*/
+    var thumbs : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
     //var photosToUpload : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
     var sharedURLs : [Int : NSMutableArray] = [Int : NSMutableArray]() {
         didSet {
@@ -42,7 +43,7 @@ class PhotoUploader : NSObject {
         self.teamsFirebase = teamsFirebase
         for number in teamNumbers {
             //self.photosToUpload[number] = []
-            self.cashedFiles[number] = []
+            self.thumbs[number] = []
             self.sharedURLs[number] = []
         }
         
@@ -50,14 +51,28 @@ class PhotoUploader : NSObject {
         self.fetchToUpdate()
     }
     
+    func updatePhotoCache(fileObject: [String: AnyObject], teamNum: Int) {
+        self.cache.fetch(key: "photos").onSuccess { (data) -> () in
+            var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
+            images[teamNum]?.append(fileObject)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(images), key: "photos")
+            })
+        }
+
+    }
+    
     func fetchPhotos(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
         self.cache.fetch(key: "photos").onSuccess { (data) -> () in
             let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
             for teamNum in self.teamNumbers {
                 if let imagesForTeam = images[teamNum] {
-                    if let files = self.cashedFiles[teamNum] {
+                    if let files = self.thumbs[teamNum] {
+                        for fileIndex in files.indices {
+                            self.thumbs[teamNum]![fileIndex]["data"] = self.getResizedImageDataForImageData(self.thumbs[teamNum]![fileIndex]["data"] as! NSData)
+                        }
                         if imagesForTeam != files {
-                            self.cashedFiles[teamNum] = imagesForTeam
+                            self.thumbs[teamNum] = imagesForTeam
                         }
                     }
                 }
@@ -83,7 +98,6 @@ class PhotoUploader : NSObject {
                     } else {
                         self.sharedURLs[teamNum] = urlsForTeam
                     }
-                    
                 }
             }
             print("URLs Fetched")
@@ -135,8 +149,8 @@ class PhotoUploader : NSObject {
     }
     
     
-    func getImagesForTeamNum(number: Int) -> [[String: AnyObject]] {
-        return self.cashedFiles[number]!
+    func getThumbsForTeamNum(number: Int) -> [[String: AnyObject]] {
+        return self.thumbs[number]!
     }
     
     func downloadPhoto(client: DropboxClient, searchMatch: Files.SearchMatch, teamNumber: Int) {
@@ -153,9 +167,12 @@ class PhotoUploader : NSObject {
             
             client.files.download(path: "/Public/\(name)", destination: destination).response { (response, error) in
                 if let (metadata, url) = response {
+                    
                     print("*** Download file ***")
-                    let data = NSData(contentsOfURL: url)
-                    self.addFileToLineup(data!, fileName: name, teamNumber: teamNumber, shouldUpload: false)
+                    let data = NSData(contentsOfURL: url)!
+                    let thumbData = self.getResizedImageDataForImageData(data)
+                    self.addThumb(UIImage(data: thumbData)!, fileName: name, teamNumber: teamNumber, shouldUpload: false)
+                    self.addFileToLineup(data, fileName: name, teamNumber: teamNumber, shouldUpload: false)
                     print("Downloaded file url: \(url)")
                     print("Downloaded file name: \(metadata.name)")
                 } else {
@@ -175,7 +192,7 @@ class PhotoUploader : NSObject {
             let path = "/Public/\(name)"
             client.files.upload(path: path, body: data).response { response, error in
                 if let metaData = response {
-                    self.cashedFiles[teamNumber]![index]["shouldUpload"] = false
+                    self.thumbs[teamNumber]![index]["shouldUpload"] = false
                     
                     //Removing the uploaded file from files to upload, this actually works in swift!
                     print("*** Upload file: \(metaData) ****")
@@ -186,11 +203,11 @@ class PhotoUploader : NSObject {
                 } else {
                     client.files.delete(path: path)
                     print("Upload Error: \(error?.description)")
+                    sleep(4)
                     self.uploadPhoto(filesForTeam, client: client, teamNumber: teamNumber, index: index)
                 }
             }
         }
-        
     }
     
     
@@ -198,33 +215,57 @@ class PhotoUploader : NSObject {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             if(self.isConnectedToNetwork()) {
                 if let client = Dropbox.authorizedClient {
-                    for teamNumber in self.teamNumbers {
-                        if let filesForTeam = self.cashedFiles[teamNumber] {
-                            for index in filesForTeam.indices {
-                                if((filesForTeam[index]["shouldUpload"] as! Bool == true)) {
-                                    self.uploadPhoto(filesForTeam, client: client, teamNumber: teamNumber, index: index)
+                    self.cache.fetch(key: "photos").onSuccess { (data) -> () in
+                        let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
+                        for teamNumber in self.teamNumbers {
+                            if let filesForTeam = images[teamNumber] {
+                                for index in filesForTeam.indices {
+                                    if((filesForTeam[index]["shouldUpload"] as! Bool == true)) {
+                                        self.uploadPhoto(images[teamNumber]!, client: client, teamNumber: teamNumber, index: index)
+                                    }
                                 }
                             }
                         }
                     }
+                } else {
+                    self.checkInternet(self.timer)
                 }
-            } else {
-                self.checkInternet(self.timer)
             }
         })
     }
+    
+    
     func addUrlToList(teamNumber: Int, url: String) {
         self.sharedURLs[teamNumber]![(self.sharedURLs[teamNumber]?.count)!] = url //This line is terrible
     }
     
+    func getResizedImageDataForImageData(data: NSData) -> NSData {
+        let imageOrigional = UIImage(data: data)
+        let newSize: CGSize = CGSize(width: (imageOrigional?.size.width)! / 8, height: (imageOrigional?.size.height)! / 8)
+        let rect = CGRectMake(0,0, newSize.width, newSize.height)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        // image is a variable of type UIImage
+        imageOrigional?.drawInRect(rect)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return UIImagePNGRepresentation(newImage)!
+        
+    }
+    
+    func addThumb(image : UIImage, fileName : String, teamNumber : Int, shouldUpload: Bool) {
+        let fileDict : [String: AnyObject] = ["name" : fileName, "image" : image, "shouldUpload": shouldUpload]
+        self.thumbs[teamNumber]?.append(fileDict)
+    }
+    
     func addFileToLineup(fileData : NSData, fileName : String, teamNumber : Int, shouldUpload : Bool) {
-        let fileDict = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
-        if self.cashedFiles[teamNumber] != nil {
-            self.cashedFiles[teamNumber]!.append(fileDict)
-        } else {
-            self.cashedFiles[teamNumber] = [fileDict]
+        let fileDict : [String: AnyObject] = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
+        if shouldUpload {
+            if let client = Dropbox.authorizedClient {
+                self.uploadPhoto([fileDict], client: client, teamNumber: teamNumber, index: 0)
+            }
         }
-        self.uploadAllPhotos()
+        self.updatePhotoCache(fileDict, teamNum: teamNumber)
     }
     
     func isConnectedToNetwork() -> Bool  {

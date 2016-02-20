@@ -14,7 +14,7 @@ import SwiftyDropbox
 let dev3Token = "AEduO6VFlZKD4v10eW81u9j3ZNopr5h2R32SPpeq"
 let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
 
-let firebaseKeys = ["pitBumperHeight", "pitDriveBaseWidth", "pitDriveBaseLength", "pitNumberOfWheels", "pitOrganization", "pitPotentialLowBarCapability", "pitPotentialMidlineBallCapability", "pitPotentialShotBlockerCapability", "selectedImageUrl"]
+let firebaseKeys = ["pitBumperHeight", "pitDriveBaseWidth", "pitDriveBaseLength", "pitNumberOfWheels", "pitOrganization", "pitPotentialLowBarCapability", "pitPotentialMidlineBallCapability", "pitPotentialShotBlockerCapability", "selectedImageUrl", "pitNotes", "pitHeightOfBallLeavingShooter"]
 
 class TableViewController: UITableViewController {
     
@@ -158,9 +158,9 @@ class TableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(self.cellReuseId, forIndexPath: indexPath) as UITableViewCell
         var text = "shouldntBeThis"
-        print(indexPath.section)
+        //print(indexPath.section)
         if indexPath.section == 1 {
-            var scoutedTeamNums = NSMutableArray()
+            let scoutedTeamNums = NSMutableArray()
             for team in self.scoutedTeamInfo {
                 if team["hasBeenScouted"] == 1 {
                     scoutedTeamNums.addObject(team["num"]!)
@@ -169,7 +169,7 @@ class TableViewController: UITableViewController {
             text = "\(scoutedTeamNums[indexPath.row])"
         } else if indexPath.section == 0 {
             
-            var notScoutedTeamNums = NSMutableArray()
+            let notScoutedTeamNums = NSMutableArray()
             for team in self.scoutedTeamInfo {
                 if team["hasBeenScouted"] == 0 {
                     notScoutedTeamNums.addObject(team["num"]!)
@@ -231,7 +231,13 @@ class TableViewController: UITableViewController {
     
     
     @IBAction func uploadPhotosPressed(sender: UIButton) {
+        self.photoUploader?.mayKeepUsingNetwork = true
         self.photoUploader?.uploadAllPhotos()
         self.photoUploader?.fetchPhotosFromDropbox()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        print("OH NO, MEM WARNING")
+        self.photoUploader!.mayKeepUsingNetwork = false
     }
 }

@@ -41,6 +41,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var numberOfPhotos : Int = 0
     var firebase : Firebase!
     var ourTeam : Firebase!
+    var photos = [UIImage]()
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
     var firebaseKeys = [String]()
     
@@ -86,8 +87,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
         if(sender.text != "") {
-            self.numberOfWheels = Int(sender.text!)!
-            self.ourTeam?.childByAppendingPath("pitNumberOfWheels").setValue(self.numberOfWheels)
+            if let numWheels = Int(sender.text!) {
+                self.numberOfWheels = numWheels
+                self.ourTeam?.childByAppendingPath("pitNumberOfWheels").setValue(self.numberOfWheels)
+            }
         }
     }
     
@@ -217,7 +220,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         //presentViewController(activityViewController, animated: true, completion: {})
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
             let fileName = "\(self.number)_\(self.photoUploader.getImagesForTeamNum(self.number).count).png"
             if let _ = self.photoUploader.sharedURLs[self.number] {
@@ -227,10 +230,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
             self.canViewPhotos = true
-            dispatch_async(dispatch_get_main_queue(), {
+            //dispatch_async(dispatch_get_main_queue(), {
                 self.updatePhotoButtonText()
-            })
-        })
+            //})
+        //})
         
     }
     
@@ -252,6 +255,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        print("Oh No, Mem warning!")
+        self.photoUploader.mayKeepUsingNetwork = false
         // Dispose of any resources that can be recreated.
     }
     

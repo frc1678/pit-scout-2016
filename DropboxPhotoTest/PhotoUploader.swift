@@ -50,7 +50,7 @@ class PhotoUploader : NSObject {
         self.fetchToUpdate()
     }
     
-    /*func fetchPhotos(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
+    func fetchPhotos(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
         self.cache.fetch(key: "photos").onSuccess { (data) -> () in
             let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
             for teamNum in self.teamNumbers {
@@ -68,23 +68,7 @@ class PhotoUploader : NSObject {
                 failCallback(E)
         }
     }
-    */
-    func fetchPhotosForTeamNum(num: Int, viewController: ViewController) {
-        self.cache.fetch(key: "photos").onSuccess { (data) -> () in
-            let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
-            for teamNum in self.teamNumbers {
-                var uiImages = [UIImage]()
-                for image in images[teamNum]! {
-                    uiImages.append(UIImage(data: image["data"] as! NSData)!)
-                }
-                viewController.photos = uiImages
-            }
-            print("Images Fetched")
-            }.onFailure { (E) -> () in
-                print("could not fetch photos for team \(num)")
-        }
-    }
-
+    
     
     
     func fetchSharedURLs(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
@@ -112,16 +96,7 @@ class PhotoUploader : NSObject {
     
     func fetchToUpdate() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
-                print("URLs Not Fetched \(E.debugDescription)")
-                self.sharedURLs = [-2:["-2"]]
-                self.fetchSharedURLs({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //After failing to fetch URLs, we succeeded in fetching URLs
-                    self.uploadAllPhotos()
-                })
-                }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
-                    self.uploadAllPhotos()
-            })
-            /*self.fetchPhotos({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //We succeded in fetching photos
+            self.fetchPhotos({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //We succeded in fetching photos
                 self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
                     print("URLs Not Fetched \(E.debugDescription)")
                     self.sharedURLs = [-2:["-2"]]
@@ -131,7 +106,7 @@ class PhotoUploader : NSObject {
                     }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
                         self.uploadAllPhotos()
                 })
-            })*/
+            })
         })
     }
     
@@ -224,19 +199,6 @@ class PhotoUploader : NSObject {
             if(self.isConnectedToNetwork()) {
                 if let client = Dropbox.authorizedClient {
                     for teamNumber in self.teamNumbers {
-                        self.cache.fetch(key: "photos").onSuccess { (data) -> () in
-                            let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int : [[String: AnyObject]]]
-                            for teamNum in self.teamNumbers {
-                                var uiImages = [UIImage]()
-                                for image in images[teamNum]! {
-                                    uiImages.append(UIImage(data: image["data"] as! NSData)!)
-                                }
-                                viewController.photos = uiImages
-                            }
-                            print("Images Fetched")
-                            }.onFailure { (E) -> () in
-                                print("could not fetch photos for team \(num)")
-                        }
                         if let filesForTeam = self.cashedFiles[teamNumber] {
                             for index in filesForTeam.indices {
                                 if((filesForTeam[index]["shouldUpload"] as! Bool == true)) {

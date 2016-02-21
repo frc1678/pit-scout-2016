@@ -226,36 +226,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //presentViewController(activityViewController, animated: true, completion: {})
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            
-            let fileName = "\(self.number)_\(self.photoUploader.getThumbsForTeamNum(self.number).count).png"
-            if let _ = self.photoUploader.sharedURLs[self.number] {
-                self.photoUploader.sharedURLs[self.number]!.addObject("https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
-            } else {
-                self.photoUploader.sharedURLs[self.number] = ["https://dl.dropboxusercontent.com/u/63662632/\(fileName)"]
+            self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
+                let fileName = "\(self.number)_\(self.photoUploader.getThumbsForTeamNum(self.number).count).png"
+                self.photoUploader.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
+                self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+                self.photoUploader.addThumb(image, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+                self.canViewPhotos = true
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.updatePhotoButtonText()
+                })
             }
-            self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
-            self.photoUploader.addThumb(image, fileName: fileName, teamNumber: self.number, shouldUpload: true)
-            self.canViewPhotos = true
-            dispatch_async(dispatch_get_main_queue(), {
-                self.updatePhotoButtonText()
-            })
+            
         })
         
     }
     
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
-        let urls = self.photoUploader.getSharedURLsForTeamNum(self.number)
-        if urls.count  > gallery.currentPage   { // the -1 is because of the initial "-1" url
-            self.selectedImageUrl.text = urls[gallery.currentPage] as? String
-            self.selectedImageEditingEnded(self.selectedImageUrl)
-            
-            dismissViewControllerAnimated(true, completion: nil)
-        } else {
-            let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
+        self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
+            if urls != nil && urls!.count > gallery.currentPage {
+                self.selectedImageUrl.text = urls![gallery.currentPage] as? String
+                self.selectedImageEditingEnded(self.selectedImageUrl)
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
                 // Do something when message is tapped
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            dismissViewControllerAnimated(true, completion: nil)
-            presentViewController(alert, animated: true, completion: nil)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                self.dismissViewControllerAnimated(true, completion: nil)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+            
         }
     }
     

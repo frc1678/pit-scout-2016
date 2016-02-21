@@ -22,13 +22,6 @@ class PhotoUploader : NSObject {
     
     var thumbs : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
     //var photosToUpload : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
-    var sharedURLs : [Int : NSMutableArray] = [Int : NSMutableArray]() {
-        didSet {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.sharedURLs), key: "sharedURLs")
-            })
-        }
-    }
     var timer : NSTimer = NSTimer()
     var teamsFirebase : Firebase
     
@@ -39,7 +32,6 @@ class PhotoUploader : NSObject {
         for number in teamNumbers {
             //self.photosToUpload[number] = []
             self.thumbs[number] = [[String: AnyObject]]()
-            self.sharedURLs[number] = []
         }
         
         super.init()
@@ -61,24 +53,25 @@ class PhotoUploader : NSObject {
         }
     }
     
+    
     func fetchPhotos(failCallback: (failedNums: [Int]) -> (), additionalSuccessCallback: () -> ()) {
         var fails = [Int]()
         for teamNum in self.teamNumbers {
             self.cache.fetch(key: "photos\(teamNum)").onSuccess { (data) -> () in
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                    let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]]
-                    if let imagesForTeam = images {
-                        if !(imagesForTeam[0]["-2"] as! Int == -2 && imagesForTeam.count == 1) {
-                            self.thumbs[teamNum] = imagesForTeam
-                            for fileIndex in imagesForTeam.indices {
-                                if fileIndex > 0 {
-                                    self.thumbs[teamNum]![fileIndex]["image"] = UIImage(data: self.getResizedImageDataForImageData(self.thumbs[teamNum]![fileIndex]["data"] as! NSData))
-                                    self.thumbs[teamNum]![fileIndex]["data"] = nil
-                                }
+                let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]]
+                if let imagesForTeam = images {
+                    if !(imagesForTeam[0]["-2"] as! Int == -2 && imagesForTeam.count == 1) {
+                        self.thumbs[teamNum] = imagesForTeam
+                        for fileIndex in imagesForTeam.indices {
+                            if fileIndex > 0 {
+                                self.thumbs[teamNum]![fileIndex]["image"] = UIImage(data: self.getResizedImageDataForImageData(self.thumbs[teamNum]![fileIndex]["data"] as! NSData))
+                                self.thumbs[teamNum]![fileIndex]["data"] = nil
                             }
                         }
                     }
-               // })
+                }
+                // })
                 }.onFailure({ (E) -> () in
                     fails.append(teamNum)
                 })
@@ -96,32 +89,42 @@ class PhotoUploader : NSObject {
     
     
     
-    func fetchSharedURLs(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
-        
-        self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
-                var su = [Int : NSMutableArray]()
-                for teamNum in self.teamNumbers {
-                    if let urlsForTeam = urls[teamNum] {
-                        if su[teamNum] != nil {
-                            if urlsForTeam != su[teamNum]! {
-                                su[teamNum] = urlsForTeam
-                            }
-                        } else {
-                            su[teamNum] = urlsForTeam
-                        }
-                    }
-                }
-                self.sharedURLs = su
-                additionalSuccessCallback(data)
-            })
-            }.onFailure { (E) -> () in
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                    failCallback(E)
-                })
+    /*func fetchSharedURLs(failCallback: (NSError?) -> (), additionalSuccessCallback: (NSData) -> ()) {
+    
+    self.cache.fetch(key: "sharedURLs").onSuccess { (data) -> () in
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+    let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Int: NSMutableArray]
+    var su = [Int : NSMutableArray]()
+    for teamNum in self.teamNumbers {
+    if let urlsForTeam = urls[teamNum] {
+    if su[teamNum] != nil {
+    if urlsForTeam != su[teamNum]! {
+    su[teamNum] = urlsForTeam
+    }
+    } else {
+    su[teamNum] = urlsForTeam
+    }
+    }
+    }
+    self.sharedURLs = su
+    additionalSuccessCallback(data)
+    })
+    }.onFailure { (E) -> () in
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+    failCallback(E)
+    })
+    }
+    
+    }*/
+    
+    func getSharedURLsForTeam(num: Int, fetched: (NSMutableArray?)->()) {
+        self.cache.fetch(key: "sharedURLs\(num)").onSuccess { (data) -> () in
+            if let urls = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? NSMutableArray {
+                fetched(urls)
+            } else {
+                fetched(nil)
+            }
         }
-        
     }
     
     
@@ -132,21 +135,23 @@ class PhotoUploader : NSObject {
             }
             }, additionalSuccessCallback: { (data) -> () in //We succeded in fetching photos
                 print("Photos Fetched")
-                self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
-                    print("URLs Not Fetched \(E.debugDescription)")
-                    self.sharedURLs = [-2:["-2"]]
-                    self.fetchSharedURLs({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //After failing to fetch URLs, we succeeded in fetching URLs
-                        print("URLs Fetched")
-                        self.uploadAllPhotos()
-                    })
-                    }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
-                        print("URLs Fetched")
-                        
-                        self.uploadAllPhotos()
-                        
+                self.uploadAllPhotos()
+                /*self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
+                print("URLs Not Fetched \(E.debugDescription)")
+                self.sharedURLs = [-2:["-2"]]
+                self.fetchSharedURLs({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //After failing to fetch URLs, we succeeded in fetching URLs
+                print("URLs Fetched")
+                self.uploadAllPhotos()
                 })
+                }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
+                print("URLs Fetched")
+                
+                self.uploadAllPhotos()
+                
+                })
+                })
+                */
         })
-        
     }
     
     func fetchPhotosFromDropbox() {
@@ -168,11 +173,6 @@ class PhotoUploader : NSObject {
             }
         })
     }
-    
-    func getSharedURLsForTeamNum(number: Int) -> NSMutableArray {
-        return self.sharedURLs[number]!
-    }
-    
     
     func getThumbsForTeamNum(number: Int) -> [[String: AnyObject]] {
         return self.thumbs[number]!
@@ -212,7 +212,7 @@ class PhotoUploader : NSObject {
     }
     
     func uploadPhoto(filesForTeam: [[String: AnyObject]], client: DropboxClient, teamNumber: Int, index: Int) {
-        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
         
         if(self.mayKeepUsingNetwork) {
             let name = filesForTeam[index]["name"] as! String
@@ -237,7 +237,7 @@ class PhotoUploader : NSObject {
                 }
             }
         }
-        //})
+        })
     }
     
     
@@ -246,35 +246,39 @@ class PhotoUploader : NSObject {
             if let client = Dropbox.authorizedClient {
                 for teamNumber in self.teamNumbers {
                     self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                             let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
                             for index in images.indices {
                                 let image = images[index]
-                                if image["shouldUpload"] as! Bool == true {
-                                    self.uploadPhoto([image], client: client, teamNumber: teamNumber, index: index)
+                                if(image["-2"] == nil) {
+                                    if image["shouldUpload"] as! Bool == true {
+                                    self.uploadPhoto([image], client: client, teamNumber: teamNumber, index:index)
+                                    }
                                 }
                             }
-                            
-                        })
+                        //})
                     }
                 }
-                
-                
             } else {
                 self.checkInternet(self.timer)
             }
         }
-        
     }
     
     
+    
     func addUrlToList(teamNumber: Int, url: String) {
-        self.sharedURLs[teamNumber]![(self.sharedURLs[teamNumber]?.count)!] = url //This line is terrible
+        self.getSharedURLsForTeam(teamNumber) { (urls) -> () in
+            if let nurls = urls {
+                nurls.addObject(url)
+                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(nurls), key: "sharedURLs\(teamNumber)")
+            }
+        }
     }
     
     func getResizedImageDataForImageData(data: NSData) -> NSData {
         let imageOrigional = UIImage(data: data)
-        let newSize: CGSize = CGSize(width: (imageOrigional?.size.width)! / 8, height: (imageOrigional?.size.height)! / 8)
+        let newSize: CGSize = CGSize(width: (imageOrigional?.size.width)! / 16, height: (imageOrigional?.size.height)! / 16)
         let rect = CGRectMake(0,0, newSize.width, newSize.height)
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
         // image is a variable of type UIImage

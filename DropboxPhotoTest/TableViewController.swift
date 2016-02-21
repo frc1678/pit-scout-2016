@@ -78,15 +78,6 @@ class TableViewController: UITableViewController {
                 tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
                     let o = obj1["num"] as! Int
                     let t = obj2["num"] as! Int
-                    /*let so = obj1["hasBeenScouted"] as! Int
-                    let st = obj2["hasBeenScouted"] as! Int
-                    
-                    if(so == 1 && st == 0) {
-                    return NSComparisonResult.OrderedDescending
-                    } else if(so == 0 && st == 1) {
-                    return NSComparisonResult.OrderedAscending
-                    }*/
-                    
                     if(o > t) {
                         return NSComparisonResult.OrderedAscending
                     }
@@ -98,8 +89,9 @@ class TableViewController: UITableViewController {
                     }
                 })
                 self.scoutedTeamInfo = tempArray as [AnyObject] as! [[String: Int]]
-                
-                self.tableView.reloadData()
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadData()
+                })
                 
                 self.setupPhotoUploader(urlsDict)
             })
@@ -113,9 +105,9 @@ class TableViewController: UITableViewController {
 
         if self.photoUploader == nil {
             self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
-            self.photoUploader?.sharedURLs = urlsDict
-        } else {
-            self.photoUploader?.sharedURLs = urlsDict
+        }
+        for (teamNum, urls) in urlsDict {
+            self.photoUploader?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
         }
     }
     

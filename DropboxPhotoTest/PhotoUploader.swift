@@ -20,10 +20,11 @@ class PhotoUploader : NSObject {
         }
     }
     
-    var thumbs : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
+    //var thumbs : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
     //var photosToUpload : [Int : [[String: AnyObject]]] = [Int : [[String: AnyObject]]]()
     var timer : NSTimer = NSTimer()
     var teamsFirebase : Firebase
+    var numberOfPhotosForTeam = [Int: Int]()
     
     init(teamsFirebase : Firebase, teamNumbers : [Int]) {
         
@@ -31,11 +32,12 @@ class PhotoUploader : NSObject {
         self.teamsFirebase = teamsFirebase
         for number in teamNumbers {
             //self.photosToUpload[number] = []
-            self.thumbs[number] = [[String: AnyObject]]()
+            //self.thumbs[number] = [[String: AnyObject]]()
+            self.numberOfPhotosForTeam[number] = 0
         }
         
         super.init()
-        self.fetchToUpdate()
+        // self.fetchToUpdate()
     }
     
     func updatePhotoCache(fileObject: [String: AnyObject], teamNum: Int) {
@@ -54,37 +56,37 @@ class PhotoUploader : NSObject {
     }
     
     
-    func fetchPhotos(failCallback: (failedNums: [Int]) -> (), additionalSuccessCallback: () -> ()) {
-        var fails = [Int]()
-        for teamNum in self.teamNumbers {
-            self.cache.fetch(key: "photos\(teamNum)").onSuccess { (data) -> () in
-                //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]]
-                if let imagesForTeam = images {
-                    if !(imagesForTeam[0]["-2"] as! Int == -2 && imagesForTeam.count == 1) {
-                        self.thumbs[teamNum] = imagesForTeam
-                        for fileIndex in imagesForTeam.indices {
-                            if fileIndex > 0 {
-                                self.thumbs[teamNum]![fileIndex]["image"] = UIImage(data: self.getResizedImageDataForImageData(self.thumbs[teamNum]![fileIndex]["data"] as! NSData))
-                                self.thumbs[teamNum]![fileIndex]["data"] = nil
-                            }
-                        }
-                    }
-                }
-                // })
-                }.onFailure({ (E) -> () in
-                    fails.append(teamNum)
-                })
-        }
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            if fails.count > 0 {
-                failCallback(failedNums: fails)
-            } else {
-                additionalSuccessCallback()
-            }
-        })
+    /*func fetchPhotos(failCallback: (failedNums: [Int]) -> (), additionalSuccessCallback: () -> ()) {
+    var fails = [Int]()
+    for teamNum in self.teamNumbers {
+    self.cache.fetch(key: "photos\(teamNum)").onSuccess { (data) -> () in
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+    let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]]
+    if let imagesForTeam = images {
+    if !(imagesForTeam[0]["-2"] as! Int == -2 && imagesForTeam.count == 1) {
+    self.thumbs[teamNum] = imagesForTeam
+    for fileIndex in imagesForTeam.indices {
+    if fileIndex > 0 {
+    self.thumbs[teamNum]![fileIndex]["image"] = UIImage(data: self.getResizedImageDataForImageData(self.thumbs[teamNum]![fileIndex]["data"] as! NSData))
+    self.thumbs[teamNum]![fileIndex]["data"] = nil
     }
+    }
+    }
+    }
+    // })
+    }.onFailure({ (E) -> () in
+    fails.append(teamNum)
+    })
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+    if fails.count > 0 {
+    failCallback(failedNums: fails)
+    } else {
+    additionalSuccessCallback()
+    }
+    })
+    }*/
     
     
     
@@ -128,54 +130,60 @@ class PhotoUploader : NSObject {
     }
     
     
-    func fetchToUpdate() {
-        self.fetchPhotos({ (fails) -> () in
-            for num in fails {
-                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([["-2":-2]]), key: "photos\(num)")
-            }
-            }, additionalSuccessCallback: { (data) -> () in //We succeded in fetching photos
-                print("Photos Fetched")
-                self.uploadAllPhotos()
-                /*self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
-                print("URLs Not Fetched \(E.debugDescription)")
-                self.sharedURLs = [-2:["-2"]]
-                self.fetchSharedURLs({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //After failing to fetch URLs, we succeeded in fetching URLs
-                print("URLs Fetched")
-                self.uploadAllPhotos()
-                })
-                }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
-                print("URLs Fetched")
-                
-                self.uploadAllPhotos()
-                
-                })
-                })
-                */
-        })
+    /*func fetchToUpdate() {
+    self.fetchPhotos({ (fails) -> () in
+    for num in fails {
+    self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([["-2":-2]]), key: "photos\(num)")
     }
+    }, additionalSuccessCallback: { (data) -> () in //We succeded in fetching photos
+    print("Photos Fetched")
+    self.uploadAllPhotos(0, client: nil)
+    /*self.fetchSharedURLs({ (E) -> () in //We failed to fetch URLs
+    print("URLs Not Fetched \(E.debugDescription)")
+    self.sharedURLs = [-2:["-2"]]
+    self.fetchSharedURLs({ (E) -> () in }, additionalSuccessCallback: { (data) -> () in //After failing to fetch URLs, we succeeded in fetching URLs
+    print("URLs Fetched")
+    self.uploadAllPhotos()
+    })
+    }, additionalSuccessCallback: { (data) -> () in //We succeeded in fetching URLs
+    print("URLs Fetched")
     
-    func fetchPhotosFromDropbox() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            if self.isConnectedToNetwork() {
-                if let client = Dropbox.authorizedClient {
-                    for teamNumber in self.teamNumbers {
-                        client.files.search(path: "/Public", query: "\(teamNumber)_").response({ (response, error) -> Void in
-                            if let result = response {
-                                for match in result.matches {
-                                    self.downloadPhoto(client, searchMatch: match, teamNumber: teamNumber)
-                                }
-                            } else {
-                                print("Query Error for team \(teamNumber), Error: \(error?.description)")
-                            }
-                        })
-                    }
+    self.uploadAllPhotos()
+    
+    })
+    })
+    */
+    })
+    }
+    */
+    /*func fetchPhotosFromDropbox() {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+    if self.isConnectedToNetwork() {
+    if let client = Dropbox.authorizedClient {
+    for teamNumber in self.teamNumbers {
+    client.files.search(path: "/Public", query: "\(teamNumber)_").response({ (response, error) -> Void in
+    if let result = response {
+    for match in result.matches {
+    self.downloadPhoto(client, searchMatch: match, teamNumber: teamNumber)
+    }
+    } else {
+    print("Query Error for team \(teamNumber), Error: \(error?.description)")
+    }
+    })
+    }
+    }
+    }
+    })
+    }*/
+    
+    func getPhotosForTeamNum(number: Int, success: ([[String: AnyObject]])->()) {
+        self.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                if let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                    success(images)
                 }
-            }
-        })
-    }
-    
-    func getThumbsForTeamNum(number: Int) -> [[String: AnyObject]] {
-        return self.thumbs[number]!
+            })
+        }
     }
     
     func downloadPhoto(client: DropboxClient, searchMatch: Files.SearchMatch, teamNumber: Int) {
@@ -197,8 +205,8 @@ class PhotoUploader : NSObject {
                     
                     print("*** Download file ***")
                     let data = NSData(contentsOfURL: url)!
-                    let thumbData = self.getResizedImageDataForImageData(data)
-                    self.addThumb(UIImage(data: thumbData)!, fileName: name, teamNumber: teamNumber, shouldUpload: false)
+                    //let thumbData = self.getResizedImageDataForImageData(data)
+                    //self.addThumb(UIImage(data: thumbData)!, fileName: name, teamNumber: teamNumber, shouldUpload: false)
                     self.addFileToLineup(data, fileName: name, teamNumber: teamNumber, shouldUpload: false)
                     print("Downloaded file url: \(url)")
                     print("Downloaded file name: \(metadata.name)")
@@ -211,59 +219,76 @@ class PhotoUploader : NSObject {
         //})
     }
     
-    func uploadPhoto(fileForTeam: [String: AnyObject], client: DropboxClient, teamNumber: Int, index: Int) {
+    func uploadPhoto(fileForTeam: [String: AnyObject], client: DropboxClient, teamNumber: Int, index: Int, success: ()->()) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-        
-        if(self.mayKeepUsingNetwork) {
-            let name = fileForTeam["name"] as! String
-            let data = fileForTeam["data"] as! NSData
-            var sharedURL = "Not Uploaded"
-            let path = "/Public/\(name)"
-            client.files.upload(path: path, body: data).response { response, error in
-                if let metaData = response {
-                    self.thumbs[teamNumber]![index]["shouldUpload"] = false
-                    
-                    //Removing the uploaded file from files to upload, this actually works in swift!
-                    print("*** Upload file: \(metaData) ****")
-                    sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
-                    self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
-                    self.addUrlToList(teamNumber, url: sharedURL)
-                    //print(self.sharedURLs)
-                } else {
-                    client.files.delete(path: path)
-                    print("Upload Error: \(error?.description)")
-                    //sleep(4)
-                    self.uploadPhoto(fileForTeam, client: client, teamNumber: teamNumber, index: index)
+            
+            if(self.mayKeepUsingNetwork) {
+                let name = fileForTeam["name"] as! String
+                let data = fileForTeam["data"] as! NSData
+                var sharedURL = "Not Uploaded"
+                let path = "/Public/\(name)"
+                client.files.upload(path: path, body: data).response { response, error in
+                    if let metaData = response {
+                        //self.thumbs[teamNumber]![index - 1]["shouldUpload"] = false
+                        
+                        //Removing the uploaded file from files to upload, this actually works in swift!
+                        print("*** Upload file: \(metaData) ****")
+                        sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
+                        self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
+                        self.addUrlToList(teamNumber, url: sharedURL)
+                        //print(self.sharedURLs)
+                        success()
+                    } else {
+                        client.files.delete(path: path)
+                        print("Upload Error: \(error?.description)")
+                        //sleep(4)
+                        self.uploadPhoto(fileForTeam, client: client, teamNumber: teamNumber, index: index, success: success)
+                    }
                 }
             }
-        }
         })
     }
     
+    func fetchPhotosAndUploadForTeam(teamNumber: Int, client: DropboxClient, success: ()->()) {
+        self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
+            //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
+            for index in images.indices {
+                let image = images[index]
+                if(image["-2"] == nil) {
+                    if image["shouldUpload"] as! Bool == true {
+                        self.uploadPhoto(image, client: client, teamNumber: teamNumber, index:index, success: success)
+                    }
+                }
+            }
+            //})
+        }
+    }
     
-    func uploadAllPhotos() {
+    func uploadAllPhotos(var currentIndex: Int, client: DropboxClient?) {
         if(self.isConnectedToNetwork()) {
-            if let client = Dropbox.authorizedClient {
-                for teamNumber in self.teamNumbers {
-                    self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
-                        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                            let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
-                            for index in images.indices {
-                                let image = images[index]
-                                if(image["-2"] == nil) {
-                                    if image["shouldUpload"] as! Bool == true {
-                                    self.uploadPhoto(image, client: client, teamNumber: teamNumber, index:index)
-                                    }
-                                }
-                            }
-                        //})
+            if client == nil {
+                if let client = Dropbox.authorizedClient {
+                    if currentIndex < self.teamNumbers.count {
+                        fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], client: client, success: { () -> () in
+                            currentIndex++
+                            self.uploadAllPhotos(currentIndex, client: client)
+                        })
                     }
                 }
             } else {
-                self.checkInternet(self.timer)
+                if currentIndex < self.teamNumbers.count {
+                    fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], client: client!, success: { () -> () in
+                        currentIndex++
+                        self.uploadAllPhotos(currentIndex, client: client)
+                    })
+                }
             }
+        } else {
+            
         }
     }
+    
     
     
     
@@ -290,18 +315,18 @@ class PhotoUploader : NSObject {
         
     }
     
-    func addThumb(image : UIImage, fileName : String, teamNumber : Int, shouldUpload: Bool) {
-        let fileDict : [String: AnyObject] = ["name" : fileName, "image" : image, "shouldUpload": shouldUpload]
-        self.thumbs[teamNumber]?.append(fileDict)
-    }
+    /*func addThumb(image : UIImage, fileName : String, teamNumber : Int, shouldUpload: Bool) {
+    let fileDict : [String: AnyObject] = ["name" : fileName, "image" : image, "shouldUpload": shouldUpload]
+    self.thumbs[teamNumber]?.append(fileDict)
+    }*/
     
     func addFileToLineup(fileData : NSData, fileName : String, teamNumber : Int, shouldUpload : Bool) {
         let fileDict : [String: AnyObject] = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
         self.updatePhotoCache(fileDict, teamNum: teamNumber)
-        
+        self.numberOfPhotosForTeam[teamNumber]!++
         if shouldUpload {
             if let client = Dropbox.authorizedClient {
-                self.uploadPhoto(fileDict, client: client, teamNumber: teamNumber, index: (self.thumbs[teamNumber]?.count)! - 1)
+                self.uploadPhoto(fileDict, client: client, teamNumber: teamNumber, index: self.numberOfPhotosForTeam[teamNumber]!, success: { () in })
             }
         }
     }
@@ -320,7 +345,7 @@ class PhotoUploader : NSObject {
         if(!self.isConnectedToNetwork()) {
             NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "checkInternet:", userInfo: nil, repeats: false)
         } else {
-            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "uploadAllPhotos:", userInfo: nil, repeats: false)
+            //NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "uploadAllPhotos:", userInfo: nil, repeats: false)
         }
     }
     

@@ -232,8 +232,8 @@ class TableViewController: UITableViewController {
     
     @IBAction func uploadPhotosPressed(sender: UIButton) {
         self.photoUploader?.mayKeepUsingNetwork = true
-        self.photoUploader?.uploadAllPhotos()
-        self.photoUploader?.fetchPhotosFromDropbox()
+        self.photoUploader?.uploadAllPhotos(0, client: nil)
+        //self.photoUploader?.fetchPhotosFromDropbox()
     }
     
     override func didReceiveMemoryWarning() {

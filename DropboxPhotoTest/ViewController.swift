@@ -48,7 +48,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
-            self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)")
+            //self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)") //Sometimes it is too long to fit
             for key in self.firebaseKeys {
                 if let value = snap.childSnapshotForPath(key).value {
                     if !self.isNull(value) {
@@ -68,6 +68,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         })
         
+        self.photoUploader.getPhotosForTeamNum(self.number, success: { (data) -> () in
+            for photo : [String: AnyObject] in data {
+                self.photos.append(UIImage(data: photo["data"] as! NSData)!)
+            }
+        })
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         
@@ -75,11 +81,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func updatePhotoButtonText() {
-        let thumbsCount = self.photoUploader.getThumbsForTeamNum(self.number).count
-        if thumbsCount == 0 {
-            self.viewImagesButton.setTitle("View Images: (\(thumbsCount)/5)", forState: UIControlState.Normal)
+        let photosCount : Int = self.photoUploader.numberOfPhotosForTeam[self.number]!
+        if photosCount == 0 {
+            self.viewImagesButton.setTitle("View Images: (\(photosCount)/5)", forState: UIControlState.Normal)
         } else {
-            self.viewImagesButton.setTitle("View Images: (\(thumbsCount - 1)/5)", forState: UIControlState.Normal)
+            self.viewImagesButton.setTitle("View Images: (\(photosCount - 1)/5)", forState: UIControlState.Normal)
         }
         
     }
@@ -173,9 +179,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {
-        if self.photoUploader.getThumbsForTeamNum(self.number).count > 0 && self.canViewPhotos  {
-            let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
-            presentViewController(gallery, animated: true, completion: nil)
+        if self.photoUploader.numberOfPhotosForTeam[self.number] > 0 && self.canViewPhotos {
+            
+                let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
+                presentViewController(gallery, animated: true, completion: nil)
+            
         }
     }
     
@@ -205,12 +213,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: SwiftPhotoGalleryDataSource Methods
     
     func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.photoUploader.getThumbsForTeamNum(self.number).count - 1
+        return self.photoUploader.numberOfPhotosForTeam[self.number]!
     }
     
     func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        let image = self.photoUploader.getThumbsForTeamNum(self.number)[forIndex + 1]["image"]
-        let rotatedImage : UIImage = UIImage(CGImage: image!.CGImage!!,
+        let image = self.photos[forIndex]
+        let rotatedImage : UIImage = UIImage(CGImage: image.CGImage!,
             scale: 1.0,
             orientation: UIImageOrientation.Right)
         return rotatedImage
@@ -227,10 +235,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
             self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
-                let fileName = "\(self.number)_\(self.photoUploader.getThumbsForTeamNum(self.number).count).png"
+                let fileName = "\(self.number)_\(self.photoUploader.numberOfPhotosForTeam[self.number]).png"
                 self.photoUploader.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
                 self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
-                self.photoUploader.addThumb(image, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+                //self.photoUploader.addThumb(image, fileName: fileName, teamNumber: self.number, shouldUpload: true)
                 self.canViewPhotos = true
                 dispatch_async(dispatch_get_main_queue(), {
                     self.updatePhotoButtonText()

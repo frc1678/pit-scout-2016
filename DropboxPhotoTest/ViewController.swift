@@ -37,10 +37,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var numberOfWheels : Int  = -1
     var pitOrg : Int = -1
     var number : Int!
-    var numberOfPhotos : Int = 0
     var firebase : Firebase!
     var ourTeam : Firebase!
     var photos = [UIImage]()
+    var tempPhotos = [UIImage]() //So that the photos dataset cant change while we are viewing them
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
     var firebaseKeys = [String]()
     
@@ -68,11 +68,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         })
         
-        self.photoUploader.getPhotosForTeamNum(self.number, success: { (data) -> () in
-            for photo : [String: AnyObject] in data {
-                self.photos.append(UIImage(data: photo["data"] as! NSData)!)
-            }
-        })
+        self.updateMyPhotos()
+        
+        self.photoUploader.currentlyNotifyingTeamNumber = self.number
+        self.photoUploader.callbackForPhotoCasheUpdated = { () in
+            self.updateMyPhotos()
+        }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
@@ -80,14 +81,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.updatePhotoButtonText()
     }
     
+    func updateMyPhotos() {
+        self.photoUploader.getPhotosForTeamNum(self.number, success: { (data) -> () in
+            for photo : [String: AnyObject] in data {
+                self.photos.append(UIImage(data: photo["data"] as! NSData)!)
+            }
+            self.updatePhotoButtonText()
+        })
+    }
+    
     func updatePhotoButtonText() {
-        let photosCount : Int = self.photoUploader.numberOfPhotosForTeam[self.number]!
-        if photosCount == 0 {
-            self.viewImagesButton.setTitle("View Images: (\(photosCount)/5)", forState: UIControlState.Normal)
-        } else {
-            self.viewImagesButton.setTitle("View Images: (\(photosCount - 1)/5)", forState: UIControlState.Normal)
-        }
-        
+        let photosCount : Int = self.photos.count
+        self.viewImagesButton.setTitle("View Images: (\(photosCount)/5)", forState: UIControlState.Normal)
     }
     
     //MARK: Responding To UI Actions:
@@ -179,10 +184,64 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {
-        if self.photoUploader.numberOfPhotosForTeam[self.number] > 0 && self.canViewPhotos {
+        if self.photos.count > 0 && self.canViewPhotos {
+            self.tempPhotos = self.photos
+            let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
+            presentViewController(gallery, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
+    // MARK: SwiftPhotoGalleryDataSource Methods
+    
+    func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
+        return self.tempPhotos.count //Actually counting the available ones
+    }
+    
+    func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
+        let image = self.tempPhotos[forIndex]
+        let rotatedImage : UIImage = UIImage(CGImage: image.CGImage!,
+            scale: 1.0,
+            orientation: UIImageOrientation.Right)
+        return rotatedImage
+    }
+    
+    // MARK: Swift Photo Gallery Methods
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        self.canViewPhotos = false
+        //self.imageButton.imageView?.image = image
+        picker.dismissViewControllerAnimated(true, completion: nil)
+        //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        //presentViewController(activityViewController, animated: true, completion: {})
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+            self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
+                let fileName = "\(self.number)_\(self.photos.count).png"
+                self.photoUploader.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
+                self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+                self.canViewPhotos = true
+            }
             
-                let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
-                presentViewController(gallery, animated: true, completion: nil)
+        })
+        
+    }
+    
+    func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
+        self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
+            if urls != nil && urls!.count > gallery.currentPage {
+                self.selectedImageUrl.text = urls![gallery.currentPage] as? String
+                self.selectedImageEditingEnded(self.selectedImageUrl)
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
+                // Do something when message is tapped
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                self.dismissViewControllerAnimated(true, completion: nil)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
             
         }
     }
@@ -210,67 +269,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.scrollView.contentInset = contentInset
     }
     
-    // MARK: SwiftPhotoGalleryDataSource Methods
-    
-    func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.photoUploader.numberOfPhotosForTeam[self.number]!
-    }
-    
-    func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        let image = self.photos[forIndex]
-        let rotatedImage : UIImage = UIImage(CGImage: image.CGImage!,
-            scale: 1.0,
-            orientation: UIImageOrientation.Right)
-        return rotatedImage
-    }
-    
-    // MARK: Swift Photo Gallery Methods
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        self.canViewPhotos = false
-        //self.imageButton.imageView?.image = image
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        //presentViewController(activityViewController, animated: true, completion: {})
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
-                let fileName = "\(self.number)_\(self.photoUploader.numberOfPhotosForTeam[self.number]).png"
-                self.photoUploader.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
-                self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
-                //self.photoUploader.addThumb(image, fileName: fileName, teamNumber: self.number, shouldUpload: true)
-                self.canViewPhotos = true
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.updatePhotoButtonText()
-                })
-            }
-            
-        })
-        
-    }
-    
-    func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
-        self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
-            if urls != nil && urls!.count > gallery.currentPage {
-                self.selectedImageUrl.text = urls![gallery.currentPage] as? String
-                self.selectedImageEditingEnded(self.selectedImageUrl)
-                
-                self.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
-                // Do something when message is tapped
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                self.dismissViewControllerAnimated(true, completion: nil)
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
-            
-        }
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print("Oh No, Mem warning!")
-        self.photoUploader.mayKeepUsingNetwork = false
+        self.photoUploader.mayKeepWorking = false
         // Dispose of any resources that can be recreated.
     }
     

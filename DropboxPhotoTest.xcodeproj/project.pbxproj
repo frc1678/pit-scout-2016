@@ -614,7 +614,6 @@
 		};
 		192BEAEA1C3463BA00992A8A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52C9A7C66FD082E114F1FFA0 /* Pods-DropboxPhotoTestTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = DropboxPhotoTestTests/Info.plist;
@@ -627,7 +626,6 @@
 		};
 		192BEAEB1C3463BA00992A8A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A28F83AA5ED247221F07CA2 /* Pods-DropboxPhotoTestTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = DropboxPhotoTestTests/Info.plist;

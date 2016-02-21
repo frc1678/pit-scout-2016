@@ -106,7 +106,7 @@
                                         <rect key="frame" x="23" y="106" width="556" height="92"/>
                                         <color key="backgroundColor" red="0.64787638121546953" green="0.64787638121546953" blue="0.64787638121546953" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="6uZ-Xs-ajz"/>
+                                            <constraint firstAttribute="height" priority="750" constant="50" id="6uZ-Xs-ajz"/>
                                             <constraint firstAttribute="width" secondItem="75B-wp-da5" secondAttribute="height" multiplier="1:1" id="FC4-kA-CH9">
                                                 <variation key="heightClass=regular-widthClass=compact" constant="263"/>
                                             </constraint>
@@ -574,7 +574,7 @@
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="72" id="cXa-wG-lgY"/>
+                                            <constraint firstAttribute="height" priority="750" constant="72" id="cXa-wG-lgY"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="View Images">

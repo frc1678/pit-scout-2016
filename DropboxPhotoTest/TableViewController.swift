@@ -30,6 +30,7 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.allowsSelection = false //You can select once we are done setting up the photo uploader object
         
         if(Dropbox.authorizedClient == nil) {
             Dropbox.authorizeFromController(self)
@@ -42,7 +43,7 @@ class TableViewController: UITableViewController {
         self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
         self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
 
                 self.teams = NSMutableArray()
                 self.scoutedTeamInfo = []
@@ -89,12 +90,12 @@ class TableViewController: UITableViewController {
                     }
                 })
                 self.scoutedTeamInfo = tempArray as [AnyObject] as! [[String: Int]]
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                //dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.tableView.reloadData()
-                })
+                //})
                 
                 self.setupPhotoUploader(urlsDict)
-            })
+            //})
         })
         })
         
@@ -109,6 +110,7 @@ class TableViewController: UITableViewController {
         for (teamNum, urls) in urlsDict {
             self.photoUploader?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
         }
+        self.tableView.allowsSelection = true
     }
     
     func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool { //For some reason it wasnt working other ways
@@ -158,7 +160,6 @@ class TableViewController: UITableViewController {
         if self.scoutedTeamInfo.count == 0 { return cell }
         
         var text = "shouldntBeThis"
-        //print(indexPath.section)
         if indexPath.section == 1 {
             let scoutedTeamNums = NSMutableArray()
             for team in self.scoutedTeamInfo {
@@ -196,7 +197,7 @@ class TableViewController: UITableViewController {
             var number = -1
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
             if indexPath!.section == 1 {
-                var scoutedTeamNums = NSMutableArray()
+                let scoutedTeamNums = NSMutableArray()
                 for team in self.scoutedTeamInfo {
                     if team["hasBeenScouted"] == 1 {
                         scoutedTeamNums.addObject(team["num"]!)
@@ -205,7 +206,7 @@ class TableViewController: UITableViewController {
                 number = scoutedTeamNums[(indexPath?.row)!] as! Int
             } else if indexPath!.section == 0 {
                 
-                var notScoutedTeamNums = NSMutableArray()
+                let notScoutedTeamNums = NSMutableArray()
                 for team in self.scoutedTeamInfo {
                     if team["hasBeenScouted"] == 0 {
                         notScoutedTeamNums.addObject(team["num"]!)
@@ -228,16 +229,12 @@ class TableViewController: UITableViewController {
         }
     }
     
-    
-    
     @IBAction func uploadPhotosPressed(sender: UIButton) {
-        self.photoUploader?.mayKeepUsingNetwork = true
-        self.photoUploader?.uploadAllPhotos(0, client: nil)
-        //self.photoUploader?.fetchPhotosFromDropbox()
+        self.photoUploader!.sync()
     }
     
     override func didReceiveMemoryWarning() {
         print("OH NO, MEM WARNING")
-        self.photoUploader!.mayKeepUsingNetwork = false
+        self.photoUploader!.mayKeepWorking = false
     }
 }

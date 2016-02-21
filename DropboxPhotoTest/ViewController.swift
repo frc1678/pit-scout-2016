@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import Firebase
 import SwiftyDropbox
-import Haneke
 import SwiftPhotoGallery
 
 
@@ -76,7 +75,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func updatePhotoButtonText() {
-        self.viewImagesButton.setTitle("View Images: (\(self.photoUploader.getThumbsForTeamNum(self.number).count)/5)", forState: UIControlState.Normal)
+        let thumbsCount = self.photoUploader.getThumbsForTeamNum(self.number).count
+        if thumbsCount == 0 {
+            self.viewImagesButton.setTitle("View Images: (\(thumbsCount)/5)", forState: UIControlState.Normal)
+        } else {
+            self.viewImagesButton.setTitle("View Images: (\(thumbsCount - 1)/5)", forState: UIControlState.Normal)
+        }
+        
     }
     
     //MARK: Responding To UI Actions:
@@ -200,13 +205,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: SwiftPhotoGalleryDataSource Methods
     
     func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.photoUploader.getThumbsForTeamNum(self.number).count
+        return self.photoUploader.getThumbsForTeamNum(self.number).count - 1
     }
     
     func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        let image = UIImage(data: self.photoUploader.getThumbsForTeamNum(self.number)[forIndex]["data"] as! NSData)
-        let rotatedImage : UIImage = UIImage(CGImage: image!.CGImage! ,
-            scale: 1.0 ,
+        let image = self.photoUploader.getThumbsForTeamNum(self.number)[forIndex + 1]["image"]
+        let rotatedImage : UIImage = UIImage(CGImage: image!.CGImage!!,
+            scale: 1.0,
             orientation: UIImageOrientation.Right)
         return rotatedImage
     }
@@ -220,7 +225,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         //presentViewController(activityViewController, animated: true, completion: {})
         
-        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
             
             let fileName = "\(self.number)_\(self.photoUploader.getThumbsForTeamNum(self.number).count).png"
             if let _ = self.photoUploader.sharedURLs[self.number] {
@@ -229,11 +234,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.photoUploader.sharedURLs[self.number] = ["https://dl.dropboxusercontent.com/u/63662632/\(fileName)"]
             }
             self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+            self.photoUploader.addThumb(image, fileName: fileName, teamNumber: self.number, shouldUpload: true)
             self.canViewPhotos = true
-            //dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue(), {
                 self.updatePhotoButtonText()
-            //})
-        //})
+            })
+        })
         
     }
     

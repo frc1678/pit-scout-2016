@@ -38,9 +38,12 @@ class TableViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+
         self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
-        firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
+        self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+
                 self.teams = NSMutableArray()
                 self.scoutedTeamInfo = []
                 self.teamNums = []
@@ -101,11 +104,13 @@ class TableViewController: UITableViewController {
                 self.setupPhotoUploader(urlsDict)
             })
         })
+        })
         
     }
     
     
     func setupPhotoUploader(urlsDict: [Int : NSMutableArray]) {
+
         if self.photoUploader == nil {
             self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
             self.photoUploader?.sharedURLs = urlsDict

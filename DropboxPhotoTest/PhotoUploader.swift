@@ -211,12 +211,12 @@ class PhotoUploader : NSObject {
         //})
     }
     
-    func uploadPhoto(filesForTeam: [[String: AnyObject]], client: DropboxClient, teamNumber: Int, index: Int) {
+    func uploadPhoto(fileForTeam: [String: AnyObject], client: DropboxClient, teamNumber: Int, index: Int) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
         
         if(self.mayKeepUsingNetwork) {
-            let name = filesForTeam[index]["name"] as! String
-            let data = filesForTeam[index]["data"] as! NSData
+            let name = fileForTeam["name"] as! String
+            let data = fileForTeam["data"] as! NSData
             var sharedURL = "Not Uploaded"
             let path = "/Public/\(name)"
             client.files.upload(path: path, body: data).response { response, error in
@@ -233,7 +233,7 @@ class PhotoUploader : NSObject {
                     client.files.delete(path: path)
                     print("Upload Error: \(error?.description)")
                     //sleep(4)
-                    self.uploadPhoto(filesForTeam, client: client, teamNumber: teamNumber, index: index)
+                    self.uploadPhoto(fileForTeam, client: client, teamNumber: teamNumber, index: index)
                 }
             }
         }
@@ -252,7 +252,7 @@ class PhotoUploader : NSObject {
                                 let image = images[index]
                                 if(image["-2"] == nil) {
                                     if image["shouldUpload"] as! Bool == true {
-                                    self.uploadPhoto([image], client: client, teamNumber: teamNumber, index:index)
+                                    self.uploadPhoto(image, client: client, teamNumber: teamNumber, index:index)
                                     }
                                 }
                             }
@@ -279,10 +279,10 @@ class PhotoUploader : NSObject {
     func getResizedImageDataForImageData(data: NSData) -> NSData {
         let imageOrigional = UIImage(data: data)
         let newSize: CGSize = CGSize(width: (imageOrigional?.size.width)! / 16, height: (imageOrigional?.size.height)! / 16)
-        let rect = CGRectMake(0,0, newSize.width, newSize.height)
+        //let rect = CGRectMake(0,0, newSize.width, newSize.height)
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
         // image is a variable of type UIImage
-        imageOrigional?.drawInRect(rect)
+        //imageOrigional?.drawInRect(rect)
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -301,7 +301,7 @@ class PhotoUploader : NSObject {
         
         if shouldUpload {
             if let client = Dropbox.authorizedClient {
-                self.uploadPhoto([fileDict], client: client, teamNumber: teamNumber, index: 0)
+                self.uploadPhoto(fileDict, client: client, teamNumber: teamNumber, index: (self.thumbs[teamNumber]?.count)! - 1)
             }
         }
     }

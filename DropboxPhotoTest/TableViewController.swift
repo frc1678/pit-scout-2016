@@ -42,7 +42,7 @@ class TableViewController: UITableViewController {
         self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
         self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
 
                 self.teams = NSMutableArray()
                 self.scoutedTeamInfo = []
@@ -154,6 +154,9 @@ class TableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(self.cellReuseId, forIndexPath: indexPath) as UITableViewCell
+        cell.textLabel?.text = "Please Wait..."
+        if self.scoutedTeamInfo.count == 0 { return cell }
+        
         var text = "shouldntBeThis"
         //print(indexPath.section)
         if indexPath.section == 1 {

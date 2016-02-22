@@ -91,8 +91,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func updatePhotoButtonText() {
-        let photosCount : Int = self.photos.count
-        self.viewImagesButton.setTitle("View Images: (\(photosCount)/5)", forState: UIControlState.Normal)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            let photosCount : Int = self.photos.count
+            self.viewImagesButton.setTitle("View Images: (\(photosCount)/5)", forState: UIControlState.Normal)
+        }
+        
     }
     
     //MARK: Responding To UI Actions:

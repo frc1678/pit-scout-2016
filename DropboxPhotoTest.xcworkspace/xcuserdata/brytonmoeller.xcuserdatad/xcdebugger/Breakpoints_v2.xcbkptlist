@@ -55,11 +55,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477796005.296271"
+            timestampString = "477818135.051337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "updatePhotoCache(_:teamNum:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -103,12 +103,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477796531.950331"
+            timestampString = "477818135.051337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "downloadPhoto(_:searchMatch:teamNumber:success:)"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "downloadPhoto(_:teamNumber:success:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -119,11 +119,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
+            timestampString = "477818782.363229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
             landmarkName = "addFileToLineup(_:fileName:teamNumber:shouldUpload:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -135,11 +135,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
+            timestampString = "477818782.363229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
             landmarkName = "addFileToLineup(_:fileName:teamNumber:shouldUpload:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -151,11 +151,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477814633.652735"
+            timestampString = "477818135.051337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "getResizedImageDataForImageData(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -167,12 +167,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
+            timestampString = "477818782.363229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "uploadAllPhotos(_:client:)"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "uploadAllPhotos(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -183,107 +183,91 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477814736.7549"
+            timestampString = "477818782.363229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
-            landmarkName = "fetchPhotosAndUploadForTeam(_:client:success:)"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "fetchPhotosAndUploadForTeam(_:successOrFail:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477814789.021297"
+            timestampString = "477818135.051337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "fetchPhotosAndUploadForTeam(_:client:success:)"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "uploadPhoto(_:teamNumber:index:success:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477814879.5528"
+            timestampString = "477818135.051337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "uploadPhoto(_:client:teamNumber:index:success:)"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "uploadPhoto(_:teamNumber:index:success:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477814880.289466"
+            timestampString = "477818782.363229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "uploadPhoto(_:client:teamNumber:index:success:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
-            landmarkName = "uploadAllPhotos(_:client:)"
+            startingLineNumber = "243"
+            endingLineNumber = "243"
+            landmarkName = "uploadAllPhotos(_:)"
             landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "DropboxPhotoTest.PhotoUploader.uploadAllPhotos (DropboxPhotoTest.PhotoUploader)(Swift.Int, client : Swift.Optional&lt;SwiftyDropbox.DropboxClient&gt;) -&gt; ()"
+                  symbolName = "DropboxPhotoTest.PhotoUploader.uploadAllPhotos (DropboxPhotoTest.PhotoUploader)(Swift.Int) -&gt; ()"
                   moduleName = "DropboxPhotoTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/brytonmoeller/pit-scout-2016/DropboxPhotoTest/PhotoUploader.swift"
-                  timestampString = "477815793.463671"
+                  timestampString = "477818135.116627"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "248"
-                  endingLineNumber = "248"
-                  offsetFromSymbolStart = "776">
+                  startingLineNumber = "233"
+                  endingLineNumber = "233"
+                  offsetFromSymbolStart = "226">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "DropboxPhotoTest.PhotoUploader.(uploadAllPhotos (DropboxPhotoTest.PhotoUploader) -&gt; (Swift.Int, client : Swift.Optional&lt;SwiftyDropbox.DropboxClient&gt;) -&gt; ()).(closure #2)"
+                  symbolName = "DropboxPhotoTest.PhotoUploader.(uploadAllPhotos (DropboxPhotoTest.PhotoUploader) -&gt; (Swift.Int) -&gt; ()).(closure #1)"
                   moduleName = "DropboxPhotoTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/brytonmoeller/pit-scout-2016/DropboxPhotoTest/PhotoUploader.swift"
-                  timestampString = "477815793.464076"
+                  timestampString = "477818135.117059"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "249"
-                  endingLineNumber = "249"
-                  offsetFromSymbolStart = "20">
+                  startingLineNumber = "234"
+                  endingLineNumber = "234"
+                  offsetFromSymbolStart = "16">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -291,16 +275,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
+            timestampString = "477818782.363229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
-            landmarkName = "uploadAllPhotos(_:client:)"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "uploadAllPhotos(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -311,139 +295,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
+            timestampString = "477818135.051337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "uploadAllPhotos(_:client:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815793.328173"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "uploadAllPhotos(_:client:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815458.635006"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "fetchPhotosAndUploadForTeam(_:client:success:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815478.235829"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
-            landmarkName = "fetchPhotosAndUploadForTeam(_:client:success:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815478.854586"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
-            landmarkName = "fetchPhotosAndUploadForTeam(_:client:success:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815569.105577"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
-            landmarkName = "fetchPhotosAndUploadForTeam(_:client:success:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/PhotoUploader.swift"
-            timestampString = "477815895.136618"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
-            landmarkName = "uploadPhoto(_:client:teamNumber:index:success:)"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "uploadPhoto(_:teamNumber:index:success:)"
             landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "DropboxPhotoTest.PhotoUploader.uploadPhoto (DropboxPhotoTest.PhotoUploader)(Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, client : SwiftyDropbox.DropboxClient, teamNumber : Swift.Int, index : Swift.Int, success : () -&gt; ()) -&gt; ()"
+                  symbolName = "DropboxPhotoTest.PhotoUploader.uploadPhoto (DropboxPhotoTest.PhotoUploader)(Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, teamNumber : Swift.Int, index : Swift.Int, success : () -&gt; ()) -&gt; ()"
                   moduleName = "DropboxPhotoTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/brytonmoeller/pit-scout-2016/DropboxPhotoTest/PhotoUploader.swift"
-                  timestampString = "477815895.139889"
+                  timestampString = "477818865.703758"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "174"
-                  endingLineNumber = "174"
-                  offsetFromSymbolStart = "44">
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "35">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "DropboxPhotoTest.PhotoUploader.(uploadPhoto (DropboxPhotoTest.PhotoUploader) -&gt; (Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, client : SwiftyDropbox.DropboxClient, teamNumber : Swift.Int, index : Swift.Int, success : () -&gt; ()) -&gt; ()).(closure #1)"
+                  symbolName = "DropboxPhotoTest.PhotoUploader.(uploadPhoto (DropboxPhotoTest.PhotoUploader) -&gt; (Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, teamNumber : Swift.Int, index : Swift.Int, success : () -&gt; ()) -&gt; ()).(closure #1)"
                   moduleName = "DropboxPhotoTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/brytonmoeller/pit-scout-2016/DropboxPhotoTest/PhotoUploader.swift"
-                  timestampString = "477815895.140147"
+                  timestampString = "477818865.704103"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "176"
-                  endingLineNumber = "176"
-                  offsetFromSymbolStart = "55">
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "47">
                </Location>
             </Locations>
          </BreakpointContent>

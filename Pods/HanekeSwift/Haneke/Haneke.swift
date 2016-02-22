@@ -47,6 +47,8 @@ public struct Shared {
         }
         return Static.cache
     }
+    
+    
 }
 
 func errorWithCode(code: Int, description: String) -> NSError {

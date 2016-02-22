@@ -201,17 +201,17 @@ class PhotoUploader : NSObject {
     func getResizedImageDataForImageData(data: NSData) -> NSData {
         var image = UIImage(data: data)
         let newSize: CGSize = CGSize(width: (image?.size.width)! / 2, height: (image?.size.height)! / 2)
-        //let rect = CGRectMake(0,0, newSize.width, newSize.height)
+        let rect = CGRectMake(0,0, newSize.width, newSize.height)
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
         // image is a variable of type UIImage
-        //imageOrigional?.drawInRect(rect)
+        image?.drawInRect(rect)
         
         image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return UIImagePNGRepresentation(image!)!
     }
     
-    func fetchPhotosAndUploadForTeam(teamNumber: Int, client: DropboxClient, success: ()->()) {
+    func fetchPhotosAndUploadForTeam(teamNumber: Int, client: DropboxClient, successOrFail: ()->()) {
         self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
             //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
@@ -219,12 +219,16 @@ class PhotoUploader : NSObject {
                 var image = images[index]
                 if(image["-2"] == nil) {
                     if image["shouldUpload"] as! Bool == true {
-                        self.uploadPhoto(image, client: client, teamNumber: teamNumber, index:index, success: success)
+                        self.uploadPhoto(image, client: client, teamNumber: teamNumber, index:index, success: successOrFail)
                     }
                 }
+                print("Team Number \(teamNumber) had none to upload")
                 image = [String:AnyObject]()
             }
             //})
+        }.onFailure { (E) -> () in
+            print("Failed to fetch photo for \(teamNumber)")
+            successOrFail()
         }
     }
     
@@ -233,7 +237,7 @@ class PhotoUploader : NSObject {
             if client == nil {
                 if let client = Dropbox.authorizedClient {
                     if currentIndex < self.teamNumbers.count {
-                        fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], client: client, success: { () -> () in
+                        fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], client: client, successOrFail: { () -> () in
                             currentIndex++
                             self.uploadAllPhotos(currentIndex, client: client)
                         })
@@ -241,7 +245,7 @@ class PhotoUploader : NSObject {
                 }
             } else {
                 if currentIndex < self.teamNumbers.count {
-                    fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], client: client!, success: { () -> () in
+                    fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], client: client!, successOrFail: { () -> () in
                         currentIndex++
                         self.uploadAllPhotos(currentIndex, client: client)
                     })
@@ -263,7 +267,7 @@ class PhotoUploader : NSObject {
     
     
     func addFileToLineup(var fileData : NSData, fileName : String, teamNumber : Int, shouldUpload : Bool) {
-        if (Double(fileData.length) / pow(2.0, 20.0)) > 8 {
+        if (Double(fileData.length) / pow(2.0, 20.0)) > 10 {
             fileData = self.getResizedImageDataForImageData(fileData)
         }
         let fileDict : [String: AnyObject] = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]

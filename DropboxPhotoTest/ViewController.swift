@@ -32,7 +32,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var pitNotes: UITextField!
     @IBOutlet weak var pitHeightOfBallLeavingShooter: UITextField!
     
-    var photoUploader : PhotoUploader!
+    var photoManager : PhotoManager!
     var name : String = "-1"
     var numberOfWheels : Int  = -1
     var pitOrg : Int = -1
@@ -67,12 +67,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 }
             }
         })
+        self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
+        self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
         
         self.updateMyPhotos()
         
-        self.photoUploader.currentlyNotifyingTeamNumber = self.number
-        self.photoUploader.callbackForPhotoCasheUpdated = { () in
+        self.photoManager.currentlyNotifyingTeamNumber = self.number
+        self.photoManager.callbackForPhotoCasheUpdated = { () in
             self.updateMyPhotos()
+            self.imageButton.enabled = true
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
@@ -82,9 +85,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func updateMyPhotos() {
-        self.photoUploader.getPhotosForTeamNum(self.number, success: { (data) -> () in
+        self.photos = []
+        self.tempPhotos = []
+        self.photoManager.getPhotosForTeamNum(self.number, success: { (data) -> () in
             for photo : [String: AnyObject] in data {
-                self.photos.append(UIImage(data: photo["data"] as! NSData)!)
+                if photo.keys.count > 0 {
+                    self.photos.append(UIImage(data: photo["data"] as! NSData)!)
+                }
             }
             self.updatePhotoButtonText()
         })
@@ -214,16 +221,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.canViewPhotos = false
+        self.imageButton.enabled = false
         //self.imageButton.imageView?.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
         //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         //presentViewController(activityViewController, animated: true, completion: {})
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
+        self.photoManager.photoSaver.saveImage(image)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
                 let fileName = "\(self.number)_\(self.photos.count).png"
-                self.photoUploader.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
-                self.photoUploader.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+                self.photoManager.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
+                self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
                 self.canViewPhotos = true
             }
             
@@ -232,7 +240,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
-        self.photoUploader.getSharedURLsForTeam(self.number) { (urls) -> () in
+        self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
             if urls != nil && urls!.count > gallery.currentPage {
                 self.selectedImageUrl.text = urls![gallery.currentPage] as? String
                 self.selectedImageEditingEnded(self.selectedImageUrl)
@@ -275,7 +283,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print("Oh No, Mem warning!")
-        self.photoUploader.mayKeepWorking = false
+        self.photoManager.mayKeepWorking = false
         // Dispose of any resources that can be recreated.
     }
     

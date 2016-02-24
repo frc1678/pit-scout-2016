@@ -24,7 +24,7 @@ class TableViewController: UITableViewController {
     var scoutedTeamInfo : [[String: Int]] = [] // ["num": 254, "hasBeenScouted": 0]
     var teamNums = [Int]()
     var timer = NSTimer()
-    var photoUploader : PhotoUploader?
+    var photoManager : PhotoManager?
     
     @IBOutlet weak var uploadPhotos: UIButton!
     
@@ -39,76 +39,85 @@ class TableViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-
+        
         self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
-        self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
+        if self.isConnectedToNetwork() {
+            self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
+                self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
+                    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    self.setup(snap)
+                })
+            })
+        } else {
             self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-
-                self.teams = NSMutableArray()
-                self.scoutedTeamInfo = []
-                self.teamNums = []
-                var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
-                for t in snap.children.enumerate() {
-                    let team = t.element
-                    self.teams.addObject(team)
-                    if let teamNum = team.childSnapshotForPath("number").value as? Int {
-                        let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
-                        self.scoutedTeamInfo.append(scoutedTeamInfoDict)
-                        self.teamNums.append(teamNum)
-                        if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
-                            let urlsArr = NSMutableArray()
-                            for (_, value) in urlsForTeam {
-                                urlsArr.addObject(value)
-                            }
-                            urlsDict[teamNum] = urlsArr
-                        } else {
-                            urlsDict[teamNum] = NSMutableArray()
-                        }
-                        
-                        if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
-                            self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
-                        } else {
-                            self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
-                        }
-                    }
-                    
-                }
-                
-                let tempArray : NSMutableArray = NSMutableArray(array: self.scoutedTeamInfo)
-                tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
-                    let o = obj1["num"] as! Int
-                    let t = obj2["num"] as! Int
-                    if(o > t) {
-                        return NSComparisonResult.OrderedAscending
-                    }
-                    else if(t > o) {
-                        return NSComparisonResult.OrderedDescending
-                    }
-                    else {
-                        return NSComparisonResult.OrderedSame
-                    }
-                })
-                self.scoutedTeamInfo = tempArray as [AnyObject] as! [[String: Int]]
-                //dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.tableView.reloadData()
-                //})
-                
-                self.setupPhotoUploader(urlsDict)
-            //})
-        })
-        })
-        
+                self.setup(snap)
+            })
+        }
     }
     
-    
-    func setupPhotoUploader(urlsDict: [Int : NSMutableArray]) {
+    func setup(snap: FDataSnapshot) {
+        self.teams = NSMutableArray()
+        self.scoutedTeamInfo = []
+        self.teamNums = []
+        var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
+        for t in snap.children.enumerate() {
+            let team = t.element
+            self.teams.addObject(team)
+            if let teamNum = team.childSnapshotForPath("number").value as? Int {
+                let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
+                self.scoutedTeamInfo.append(scoutedTeamInfoDict)
+                self.teamNums.append(teamNum)
+                if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
+                    let urlsArr = NSMutableArray()
+                    for (_, value) in urlsForTeam {
+                        urlsArr.addObject(value)
+                    }
+                    urlsDict[teamNum] = urlsArr
+                } else {
+                    urlsDict[teamNum] = NSMutableArray()
+                }
+                
+                if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
+                    self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
+                } else {
+                    self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
+                }
+            }
+            
+        }
+        
+        let tempArray : NSMutableArray = NSMutableArray(array: self.scoutedTeamInfo)
+        tempArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+            let o = obj1["num"] as! Int
+            let t = obj2["num"] as! Int
+            if(o > t) {
+                return NSComparisonResult.OrderedAscending
+            }
+            else if(t > o) {
+                return NSComparisonResult.OrderedDescending
+            }
+            else {
+                return NSComparisonResult.OrderedSame
+            }
+        })
+        self.scoutedTeamInfo = tempArray as [AnyObject] as! [[String: Int]]
+        //dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        self.tableView.reloadData()
+        //})
+        
+        self.setupphotoManager(urlsDict)
+        //})
 
-        if self.photoUploader == nil {
-            self.photoUploader = PhotoUploader(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
+    }
+    
+    func setupphotoManager(urlsDict: [Int : NSMutableArray]) {
+
+        if self.photoManager == nil {
+            self.photoManager = PhotoManager(teamsFirebase: self.firebase!, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)
         }
         for (teamNum, urls) in urlsDict {
-            self.photoUploader?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
+            self.photoManager?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
         }
         self.tableView.allowsSelection = true
     }
@@ -221,7 +230,7 @@ class TableViewController: UITableViewController {
             teamViewController.firebase = self.firebase
             teamViewController.number = number
             teamViewController.title = "\(number)"
-            teamViewController.photoUploader = self.photoUploader
+            teamViewController.photoManager = self.photoManager
             teamViewController.firebaseKeys = firebaseKeys
             teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                 teamViewController.name = snap.childSnapshotForPath("name").value as! String
@@ -230,11 +239,21 @@ class TableViewController: UITableViewController {
     }
     
     @IBAction func uploadPhotosPressed(sender: UIButton) {
-        self.photoUploader!.sync()
+        self.photoManager!.sync()
     }
     
     override func didReceiveMemoryWarning() {
         print("OH NO, MEM WARNING")
-        self.photoUploader!.mayKeepWorking = false
+        self.photoManager!.mayKeepWorking = false
     }
+    
+    func isConnectedToNetwork() -> Bool  {
+        let url = NSURL(string: "https://www.google.com/")
+        let data = NSData(contentsOfURL: url!)
+        if (data != nil) {
+            return(true)
+        }
+        return(false)
+    }
+    
 }

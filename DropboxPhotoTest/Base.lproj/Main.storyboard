@@ -261,7 +261,8 @@
                                                 <include reference="Dge-uS-a9b"/>
                                             </mask>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="252" y="422" width="125" height="29"/>
                                             <mask key="constraints">
                                                 <exclude reference="Dge-uS-a9b"/>
                                             </mask>
@@ -270,7 +271,7 @@
                                             <action selector="lowBarPotentialDidChange:" destination="GaD-O8-v2V" eventType="valueChanged" id="XTL-Xh-Yhp"/>
                                         </connections>
                                     </segmentedControl>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Ease of prepairing for low bar:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rzL-tS-HDb">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text=" Low bar cheesecake:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rzL-tS-HDb">
                                         <rect key="frame" x="23" y="464" width="226" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="hu4-cq-nfd"/>
@@ -283,13 +284,14 @@
                                                 <exclude reference="hu4-cq-nfd"/>
                                             </mask>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="18" y="422" width="226" height="28"/>
                                             <mask key="constraints">
                                                 <include reference="hu4-cq-nfd"/>
                                             </mask>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Ease of adding midline ball cheesecake:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="4" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LZ2-BS-VCh">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Midline cheesecake:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="4" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LZ2-BS-VCh">
                                         <rect key="frame" x="23" y="499" width="226" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="26" id="RvA-bw-CVx"/>
@@ -302,17 +304,21 @@
                                                 <exclude reference="RvA-bw-CVx"/>
                                             </mask>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="18" y="456" width="226" height="26"/>
                                             <mask key="constraints">
                                                 <include reference="RvA-bw-CVx"/>
                                             </mask>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" ambiguous="YES" misplaced="YES" text="Ease of adding shot blocker:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LHt-Fl-su3">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" ambiguous="YES" misplaced="YES" text="Shot block cheesecake:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LHt-Fl-su3">
                                         <rect key="frame" x="23" y="536" width="226" height="14"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="18" y="492" width="226" height="24"/>
+                                        </variation>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="Rap-vO-fRG">
                                         <rect key="frame" x="257" y="493" width="322" height="29"/>
@@ -324,6 +330,9 @@
                                             <segment title="5"/>
                                         </segments>
                                         <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="252" y="456" width="125" height="29"/>
+                                        </variation>
                                         <connections>
                                             <action selector="midlineBallCheesecakePotentialDidChange:" destination="GaD-O8-v2V" eventType="valueChanged" id="2CQ-Wi-Sne"/>
                                         </connections>
@@ -499,6 +508,9 @@
                                             <mask key="constraints">
                                                 <include reference="Hca-Qd-HJZ"/>
                                             </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="252" y="490" width="125" height="29"/>
                                         </variation>
                                         <connections>
                                             <action selector="shotBlockerPotentialDidChange:" destination="GaD-O8-v2V" eventType="valueChanged" id="Kii-oU-b12"/>

@@ -33,9 +33,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var pitHeightOfBallLeavingShooter: UITextField!
     
     var photoManager : PhotoManager!
-    var name : String = "-1"
-    var numberOfWheels : Int  = -1
-    var pitOrg : Int = -1
+    var name = String()
+    var numberOfWheels = Int()
+    var pitOrg  = Int()
     var number : Int!
     var firebase : Firebase!
     var ourTeam : Firebase!
@@ -123,6 +123,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func bumperHeightDidChange(sender: UITextField) {
         if let num = Float(self.pitBumperHeight.text!)  {
             self.ourTeam?.childByAppendingPath("pitBumperHeight").setValue(Float(num))
+            self.pitBumperHeight.backgroundColor = UIColor.whiteColor()
         } else {
             self.pitBumperHeight.backgroundColor = UIColor.redColor()
         }
@@ -135,6 +136,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func baseWidthDidChange(sender: UITextField) {
         if let num = Float(self.pitDriveBaseWidth.text!)  {
             self.ourTeam?.childByAppendingPath("pitDriveBaseWidth").setValue(Float(num))
+            self.pitDriveBaseWidth.backgroundColor = UIColor.whiteColor()
         } else {
             self.pitDriveBaseWidth.backgroundColor = UIColor.redColor()
         }
@@ -143,6 +145,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func baseLengthDidChange(sender: UITextField) {
         if let num = Float(self.pitDriveBaseLength.text!)  {
             self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(num))
+            self.pitDriveBaseLength.backgroundColor = UIColor.whiteColor()
         } else {
             self.pitDriveBaseLength.backgroundColor = UIColor.redColor()
         }
@@ -151,6 +154,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func releaseHeightEditingEnded(sender: UITextField) {
         if let num = Float(self.pitHeightOfBallLeavingShooter.text!)  {
             self.ourTeam?.childByAppendingPath("pitHeightOfBallLeavingShooter").setValue(Float(num))
+            self.pitHeightOfBallLeavingShooter.backgroundColor = UIColor.whiteColor()
         } else {
             self.pitHeightOfBallLeavingShooter.backgroundColor = UIColor.redColor()
         }
@@ -229,9 +233,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.photoManager.photoSaver.saveImage(image)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
-                let fileName = "\(self.number)_\(self.photos.count).png"
-                self.photoManager.addUrlToList(self.number, url: "https://dl.dropboxusercontent.com/u/63662632/\(fileName)")
-                self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: fileName, teamNumber: self.number, shouldUpload: true)
+                self.photoManager.addUrlToList(self.number, url: self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: (urls?.count)!), callback: {})
+                self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: (urls?.count)!), teamNumber: self.number, shouldUpload: true)
                 self.canViewPhotos = true
             }
             
@@ -239,19 +242,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
+    
+    
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
         self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
-            if urls != nil && urls!.count > gallery.currentPage {
+            if urls!.count > gallery.currentPage {
+            
                 self.selectedImageUrl.text = urls![gallery.currentPage] as? String
                 self.selectedImageEditingEnded(self.selectedImageUrl)
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
+                self.photoManager.addUrlToList(self.number, url: self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: gallery.currentPage), callback: { self.galleryDidTapToClose(gallery) })
+            
+                /*
                 let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
                 // Do something when message is tapped
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                 self.dismissViewControllerAnimated(true, completion: nil)
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.presentViewController(alert, animated: true, completion: nil)*/
             }
             
         }

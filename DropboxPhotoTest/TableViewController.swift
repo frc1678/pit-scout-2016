@@ -61,14 +61,16 @@ class TableViewController: UITableViewController {
         self.scoutedTeamInfo = []
         self.teamNums = []
         var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
-        for t in snap.children.enumerate() {
-            let team = t.element
+        let teams = snap.children.allObjects 
+        for i in 0..<teams.count {
+            let team = (teams[i] as! FDataSnapshot).value as! [String: AnyObject]
+            //let i = teams.indexOf { (($0 as! FDataSnapshot).value as! [String: AnyObject])["number"] as? Int == team["number"] as? Int }
             self.teams.addObject(team)
-            if let teamNum = team.childSnapshotForPath("number").value as? Int {
+            if let teamNum = team["number"] as? Int {
                 let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
                 self.scoutedTeamInfo.append(scoutedTeamInfoDict)
                 self.teamNums.append(teamNum)
-                if let urlsForTeam = team.childSnapshotForPath("otherImageUrls").value as? NSMutableDictionary {
+                if let urlsForTeam = team["otherImageUrls"] as? NSMutableDictionary {
                     let urlsArr = NSMutableArray()
                     for (_, value) in urlsForTeam {
                         urlsArr.addObject(value)
@@ -77,12 +79,25 @@ class TableViewController: UITableViewController {
                 } else {
                     urlsDict[teamNum] = NSMutableArray()
                 }
-                
-                if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
-                    self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
+                if(self.scoutedTeamInfo.count > i) {
+                    if(self.teamHasBeenPitScouted(team )) {
+                        self.scoutedTeamInfo[i]["hasBeenScouted"] = 1
+                    } else {
+                        self.scoutedTeamInfo[i]["hasBeenScouted"] = 0
+                    }
                 } else {
-                    self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
+                    print("ERROR")
+                   /* let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
+                    self.scoutedTeamInfo.append(scoutedTeamInfoDict)
+                    if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
+                        self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
+                    } else {
+                        self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
+                    }*/
                 }
+                
+            } else {
+                print("No Num")
             }
             
         }
@@ -122,11 +137,11 @@ class TableViewController: UITableViewController {
         self.tableView.allowsSelection = true
     }
     
-    func teamHasBeenPitScouted(snap: FDataSnapshot) -> Bool { //For some reason it wasnt working other ways
+    func teamHasBeenPitScouted(snap: [String: AnyObject]) -> Bool { //For some reason it wasnt working other ways
         for key in firebaseKeys {
-            if let _ = (snap.childSnapshotForPath(key).value) as? NSString {
+            if let _ = (snap[key]) as? NSString {
             } else {
-                if let _ = (snap.childSnapshotForPath(key).value) as? NSNumber {
+                if let _ = (snap[key]) as? NSNumber {
                 } else {
                     return false
                 }
@@ -239,7 +254,7 @@ class TableViewController: UITableViewController {
     }
     
     @IBAction func uploadPhotosPressed(sender: UIButton) {
-        self.photoManager!.sync()
+        self.photoManager!.checkInternetAndSync(self.timer)
     }
     
     override func didReceiveMemoryWarning() {

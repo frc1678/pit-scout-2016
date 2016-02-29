@@ -27,6 +27,8 @@ class PhotoManager : NSObject {
     var currentlyNotifyingTeamNumber = 0
     let dropboxClient : DropboxClient
     let photoSaver = CustomPhotoAlbum.sharedInstance
+    let dropboxURLBeginning = "https://dl.dropboxusercontent.com/u/63662632/"
+    
     var syncButton = UIButton()
     
     init(teamsFirebase : Firebase, teamNumbers : [Int], syncButton: UIButton) {
@@ -42,7 +44,7 @@ class PhotoManager : NSObject {
         }
         self.dropboxClient = Dropbox.authorizedClient!
         super.init()
-        self.sync()
+        self.checkInternetAndSync(self.timer)
     }
     
     
@@ -57,14 +59,14 @@ class PhotoManager : NSObject {
                 }
             }
             dicts[i!] = fileObject // We need to actually change the value at the index
-
+            
             self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(dicts), key: "photos\(teamNum)")
             if teamNum == self.currentlyNotifyingTeamNumber {
                 self.callbackForPhotoCasheUpdated()
             }
-           // fileObject = [String: AnyObject]()
-  //          dicts = [[String: AnyObject]]()
-//            datas = [[String: AnyObject]]()
+            // fileObject = [String: AnyObject]()
+            //          dicts = [[String: AnyObject]]()
+            //            datas = [[String: AnyObject]]()
         }
     }
     
@@ -92,7 +94,6 @@ class PhotoManager : NSObject {
                 }, index: index)
         } else {
             self.syncButton.enabled = true
-            
         }
         index++
     }
@@ -205,10 +206,9 @@ class PhotoManager : NSObject {
                     if let metaData = response {
                         data = NSData()
                         print("*** Upload file: \(metaData) ****")
-                        sharedURL = "https://dl.dropboxusercontent.com/u/63662632/\(name)"
+                        sharedURL = self.makeURLForFileName(name)
                         self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
-                        self.addUrlToList(teamNumber, url: sharedURL)
-                        success()
+                        self.addUrlToList(teamNumber, url: sharedURL, callback: success)
                     } else {
                         data = NSData()
                         self.dropboxClient.files.delete(path: path)
@@ -235,42 +235,44 @@ class PhotoManager : NSObject {
         return UIImagePNGRepresentation(image!)!
     }
     
-    func fetchPhotosAndUploadForTeam(var i: Int, successOrFail: ()->()) {
-        if self.teamNumbers.count > i {
-            let teamNumber = self.teamNumbers[i]
-            i++
+    func fetchPhotosAndUploadForTeam(var ind: Int, successOrFail: ()->()) {
+        if self.teamNumbers.count > ind {
+            let teamNumber = self.teamNumbers[ind]
+            ind++
             self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
                 print("Fetched Photos for \(teamNumber)")
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
                 print("Team \(teamNumber) has \(images.count) images.")
                 if images.count == 0 {
-                    self.fetchPhotosAndUploadForTeam(i, successOrFail: successOrFail)
+                    self.fetchPhotosAndUploadForTeam(ind, successOrFail: {})
                 } else {
-                    self.upload(images, number: teamNumber, i: 0, success: successOrFail)
+                    self.upload(images, number: teamNumber, inn: 0, success: {})
                 }
                 //})
                 }.onFailure { (E) -> () in
                     print("Failed to fetch photo for \(teamNumber)")
-                    self.fetchPhotosAndUploadForTeam(i, successOrFail: successOrFail)
+                    self.fetchPhotosAndUploadForTeam(ind, successOrFail: {})
             }
+        } else {
+            successOrFail()
         }
         
     }
     
-    func upload(images: [[String: AnyObject]], number: Int, var i: Int, success: ()->()) {
-        i++
-        if i < images.count && i < 6 {
-            if images[i]["-2"] == nil {
-                uploadPhoto(images[i], teamNumber: number, index: i, success: { () in
-                    
-                    if images[i]["shouldUpload"] as! Bool == true {
-                        self.upload(images, number: number, i: i, success: success)
-                    }
+    func upload(images: [[String: AnyObject]], number: Int, var inn: Int, success: ()->()) {
+        inn++
+        if inn <= images.count && inn < 6 {
+            if images[inn - 1]["shouldUpload"] as! Bool == true {
+                uploadPhoto(images[inn - 1], teamNumber: number, index: inn, success: { () in
+                    self.upload(images, number: number, inn: inn, success: success)
                 })
-            } else {
-                self.upload(images, number: number, i: i, success: success)
             }
+            else {
+                self.upload(images, number: number, inn: inn, success: success)
+            }
+        } else {
+            success()
         }
     }
     
@@ -278,7 +280,7 @@ class PhotoManager : NSObject {
         if(self.isConnectedToNetwork()) {
             
             if currentIndex < self.teamNumbers.count {
-                fetchPhotosAndUploadForTeam(self.teamNumbers[currentIndex], successOrFail: { () -> () in
+                fetchPhotosAndUploadForTeam(currentIndex, successOrFail: { () -> () in
                     currentIndex++
                     self.uploadAllPhotos(currentIndex)
                 })
@@ -289,11 +291,14 @@ class PhotoManager : NSObject {
         }
     }
     
-    func addUrlToList(teamNumber: Int, url: String) {
+    func addUrlToList(teamNumber: Int, url: String, callback: ()->()) {
         self.getSharedURLsForTeam(teamNumber) { (urls) -> () in
             if let nurls = urls {
                 nurls.addObject(url)
                 self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(nurls), key: "sharedURLs\(teamNumber)")
+                callback()
+            } else {
+                print("Could Not get shared urls for \(teamNumber)")
             }
         }
     }
@@ -320,13 +325,14 @@ class PhotoManager : NSObject {
         return(false)
     }
     
-    func checkInternet(timer: NSTimer) {
+    func checkInternetAndSync(timer: NSTimer) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
             
             self.timer.invalidate()
             if(!self.isConnectedToNetwork()) {
-                NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "checkInternet:", userInfo: nil, repeats: false)
+                NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "checkInternetAndSync:", userInfo: nil, repeats: false)
             } else {
+                self.sync()
                 //NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "uploadAllPhotos:", userInfo: nil, repeats: false)
             }
         })
@@ -350,5 +356,17 @@ class PhotoManager : NSObject {
         //self.fetchPhotosFromDropbox(0) //For fixing things only
     }
     
+    
+    func makeURLForTeamNumAndImageIndex(teamNum: Int, imageIndex: Int) -> String {
+        return self.dropboxURLBeginning + self.makeFilenameForTeamNumAndIndex(teamNum, imageIndex: imageIndex)
+    }
+    
+    func makeFilenameForTeamNumAndIndex(teamNum: Int, imageIndex: Int) -> String {
+        return String(teamNum) + String(imageIndex) + ".png"
+    }
+    
+    func makeURLForFileName(fileName: String) -> String {
+        return self.dropboxURLBeginning + String(fileName)
+    }
     
 }

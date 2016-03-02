@@ -26,7 +26,7 @@ class PhotoManager : NSObject {
     var callbackForPhotoCasheUpdated = { () in }
     var currentlyNotifyingTeamNumber = 0
     let dropboxClient : DropboxClient
-    let photoSaver = CustomPhotoAlbum.sharedInstance
+    let photoSaver = CustomPhotoAlbum()
     let dropboxURLBeginning = "https://dl.dropboxusercontent.com/u/63662632/"
     
     var syncButton = UIButton()
@@ -44,7 +44,7 @@ class PhotoManager : NSObject {
         }
         self.dropboxClient = Dropbox.authorizedClient!
         super.init()
-        self.checkInternetAndSync(self.timer)
+        //self.checkInternetAndSync(self.timer)
     }
     
     
@@ -90,12 +90,15 @@ class PhotoManager : NSObject {
         
         if index < self.teamNumbers.count {
             self.downloadPhotosForTeamNum(self.teamNumbers[index], success: { () -> () in
+                index++
                 self.fetchPhotosFromDropbox(index)
                 }, index: index)
         } else {
-            self.syncButton.enabled = true
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.syncButton.enabled = true
+
+            })
         }
-        index++
     }
     
     func downloadPhotosForTeamNum(number: Int, success: ()->(), index: Int) {
@@ -110,6 +113,7 @@ class PhotoManager : NSObject {
                             })
                         } else {
                             print("Query Error for team \(number), Error: \(error?.description)")
+                            success()
                         }
                     })
                 }
@@ -119,7 +123,7 @@ class PhotoManager : NSObject {
     }
     
     func download(matches: [Files.SearchMatch], number: Int, var i: Int, success: ()->()) {
-        if i < matches.count && i < 6 { // So data
+        if i < matches.count && i < 6 { // So we don't download too many and fill up memory
             self.downloadPhoto(matches[i], teamNumber: number, success: { () in
                 i++
                 self.download(matches, number: number, i: i, success: success)
@@ -235,24 +239,23 @@ class PhotoManager : NSObject {
         return UIImagePNGRepresentation(image!)!
     }
     
-    func fetchPhotosAndUploadForTeam(var ind: Int, successOrFail: ()->()) {
+    func fetchPhotosAndUploadForTeam(ind: Int, successOrFail: ()->()) {
         if self.teamNumbers.count > ind {
             let teamNumber = self.teamNumbers[ind]
-            ind++
             self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
                 print("Fetched Photos for \(teamNumber)")
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
                 print("Team \(teamNumber) has \(images.count) images.")
                 if images.count == 0 {
-                    self.fetchPhotosAndUploadForTeam(ind, successOrFail: {})
+                    successOrFail()
                 } else {
-                    self.upload(images, number: teamNumber, inn: 0, success: {})
+                    self.upload(images, number: teamNumber, inn: 0, success: successOrFail)
                 }
                 //})
                 }.onFailure { (E) -> () in
                     print("Failed to fetch photo for \(teamNumber)")
-                    self.fetchPhotosAndUploadForTeam(ind, successOrFail: {})
+                    successOrFail()
             }
         } else {
             successOrFail()
@@ -276,18 +279,20 @@ class PhotoManager : NSObject {
         }
     }
     
-    func uploadAllPhotos(var currentIndex: Int) {
+    func uploadAllPhotos(var currentIndex: Int, callback: ()->()) {
         if(self.isConnectedToNetwork()) {
             
             if currentIndex < self.teamNumbers.count {
                 fetchPhotosAndUploadForTeam(currentIndex, successOrFail: { () -> () in
                     currentIndex++
-                    self.uploadAllPhotos(currentIndex)
+                    self.uploadAllPhotos(currentIndex, callback: callback)
                 })
+            } else {
+                callback()
             }
             
         } else {
-            
+            print("Not Connected To Network, cannot upload all photos")
         }
     }
     
@@ -351,9 +356,12 @@ class PhotoManager : NSObject {
     
     func sync() {
         self.mayKeepWorking = true
-        self.syncButton.enabled = false
-        self.uploadAllPhotos(0)
-        //self.fetchPhotosFromDropbox(0) //For fixing things only
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.syncButton.enabled = false
+        }
+        self.uploadAllPhotos(0, callback: {
+            self.fetchPhotosFromDropbox(0)
+        })
     }
     
     
@@ -362,7 +370,7 @@ class PhotoManager : NSObject {
     }
     
     func makeFilenameForTeamNumAndIndex(teamNum: Int, imageIndex: Int) -> String {
-        return String(teamNum) + String(imageIndex) + ".png"
+        return String(teamNum) + "_" + String(imageIndex) + ".png"
     }
     
     func makeURLForFileName(fileName: String) -> String {

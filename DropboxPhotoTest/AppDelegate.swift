@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch authResult {
             case .Success(let token):
                 print("Success! User is logged into Dropbox with token: \(token)")
+                NSNotificationCenter.defaultCenter().postNotificationName("dropbox_authorized", object: nil)
             case .Error(let error, let description):
                 print("Error \(error): \(description)")
             }

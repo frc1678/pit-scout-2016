@@ -3,8 +3,7 @@ import Photos
 class CustomPhotoAlbum {
     
     static let albumName = "Pit Scout Photos 2016"
-    static let sharedInstance = CustomPhotoAlbum()
-    
+
     var assetCollection: PHAssetCollection!
     
     init() {

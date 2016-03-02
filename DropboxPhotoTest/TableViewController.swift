@@ -25,6 +25,8 @@ class TableViewController: UITableViewController {
     var teamNums = [Int]()
     var timer = NSTimer()
     var photoManager : PhotoManager?
+    var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
+    var dontNeedNotification = false
     
     @IBOutlet weak var uploadPhotos: UIButton!
     
@@ -33,7 +35,11 @@ class TableViewController: UITableViewController {
         self.tableView.allowsSelection = false //You can select once we are done setting up the photo uploader object
         
         if(Dropbox.authorizedClient == nil) {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupphotoManager", name: "dropbox_authorized", object: nil)
             Dropbox.authorizeFromController(self)
+
+        } else {
+            dontNeedNotification = true
         }
         
         tableView.delegate = self
@@ -60,8 +66,7 @@ class TableViewController: UITableViewController {
         self.teams = NSMutableArray()
         self.scoutedTeamInfo = []
         self.teamNums = []
-        var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
-        let teams = snap.children.allObjects 
+        let teams = snap.children.allObjects
         for i in 0..<teams.count {
             let team = (teams[i] as! FDataSnapshot).value as! [String: AnyObject]
             //let i = teams.indexOf { (($0 as! FDataSnapshot).value as! [String: AnyObject])["number"] as? Int == team["number"] as? Int }
@@ -120,13 +125,13 @@ class TableViewController: UITableViewController {
         //dispatch_async(dispatch_get_main_queue(), { () -> Void in
         self.tableView.reloadData()
         //})
-        
-        self.setupphotoManager(urlsDict)
+        if dontNeedNotification { self.setupphotoManager() }
+
         //})
 
     }
     
-    func setupphotoManager(urlsDict: [Int : NSMutableArray]) {
+    func setupphotoManager() {
 
         if self.photoManager == nil {
             self.photoManager = PhotoManager(teamsFirebase: self.firebase!, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)

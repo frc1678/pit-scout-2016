@@ -87,7 +87,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func updateMyPhotos() {
         self.photos = []
         self.tempPhotos = []
-        self.photoManager.getPhotosForTeamNum(self.number, success: { (data) -> () in
+        self.photoManager.getPhotosForTeamNum(self.number, success: { data in
             for photo : [String: AnyObject] in data {
                 if photo.keys.count > 0 {
                     self.photos.append(UIImage(data: photo["data"] as! NSData)!)

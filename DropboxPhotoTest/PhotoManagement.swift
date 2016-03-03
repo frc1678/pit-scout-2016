@@ -28,6 +28,7 @@ class PhotoManager : NSObject {
     let dropboxClient : DropboxClient
     let photoSaver = CustomPhotoAlbum()
     let dropboxURLBeginning = "https://dl.dropboxusercontent.com/u/63662632/"
+    var activeImages = [[String: AnyObject]]()
     
     var syncButton = UIButton()
     
@@ -50,23 +51,20 @@ class PhotoManager : NSObject {
     
     
     func updatePhotoCache(fileObject: [String: AnyObject], teamNum: Int) {
-        self.getPhotosForTeamNum(teamNum) { datas in
-            var dicts = datas
+        self.getPhotosForTeamNum(teamNum) { _ in
             let i = Int((fileObject["name"]?.componentsSeparatedByString(".")[0].componentsSeparatedByString("_")[1])!)
-            if i >= dicts.count {
-                for _ in dicts.count...i! {
-                    dicts.append([String: AnyObject]())
+            if i >= self.activeImages.count {
+                for _ in self.activeImages.count...i! {
+                    self.activeImages.append([String: AnyObject]())
                 }
             }
-            dicts[i!] = fileObject // We need to actually change the value at the index
+            self.activeImages[i!] = fileObject // We need to actually change the value at the index
             
-            self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(dicts), key: "photos\(teamNum)")
+            self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.activeImages), key: "photos\(teamNum)")
+            
             if teamNum == self.currentlyNotifyingTeamNumber {
                 self.callbackForPhotoCasheUpdated()
             }
-            // fileObject = [String: AnyObject]()
-            //          dicts = [[String: AnyObject]]()
-            //            datas = [[String: AnyObject]]()
         }
     }
     
@@ -96,7 +94,7 @@ class PhotoManager : NSObject {
         } else {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.syncButton.enabled = true
-
+                
             })
         }
     }
@@ -133,25 +131,31 @@ class PhotoManager : NSObject {
         }
     }
     
-    func getPhotosForTeamNum(number: Int, success: ([[String: AnyObject]])->()) {
+    func getPhotosForTeamNum(number: Int, success: (data: [[String: AnyObject]])->()) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
             if self.mayKeepWorking {
-                self.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
+                weak var weakSelf = self
+                weakSelf!.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                        if let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                            success(images)
+                        if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                            weakSelf!.activeImages = images
+                            images = [[String: AnyObject]]()
+                            success(data: weakSelf!.activeImages)
                         }
                     })
                     }.onFailure { (E) -> () in
-                        self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
-                        self.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
+                        weakSelf!.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
+                        weakSelf!.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                                if let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                                    success(images)
+                                if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                                    images = [[String: AnyObject]]()
+                                    weakSelf!.activeImages = images
+                                    success(data: weakSelf!.activeImages)
                                 }
                             })
                             }.onFailure { (E) -> () in
                                 print("Failed to fetch photos for team \(number)")
+                                success(data: [[String : AnyObject]]())
                         }
                 }
             }
@@ -242,42 +246,57 @@ class PhotoManager : NSObject {
     func fetchPhotosAndUploadForTeam(ind: Int, successOrFail: ()->()) {
         if self.teamNumbers.count > ind {
             let teamNumber = self.teamNumbers[ind]
-            self.cache.fetch(key: "photos\(teamNumber)").onSuccess { (data) -> () in
+            weak var weakSelf = self
+            weakSelf!.getPhotosForTeamNum(teamNumber, success: { _ in
                 print("Fetched Photos for \(teamNumber)")
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                let images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: AnyObject]]
-                print("Team \(teamNumber) has \(images.count) images.")
-                if images.count == 0 {
+                print("Team \(teamNumber) has \(self.len(self.activeImages)) images.")
+                if self.len(self.activeImages) == 0 {
                     successOrFail()
                 } else {
-                    self.upload(images, number: teamNumber, inn: 0, success: successOrFail)
+                    self.upload(teamNumber, inn: 0, success: successOrFail)
                 }
-                //})
-                }.onFailure { (E) -> () in
-                    print("Failed to fetch photo for \(teamNumber)")
-                    successOrFail()
-            }
+            })
         } else {
             successOrFail()
         }
         
     }
     
-    func upload(images: [[String: AnyObject]], number: Int, var inn: Int, success: ()->()) {
+    
+    
+    func len(a: [[String: AnyObject]]) -> Int {
+        var l = 0
+        for dict in a {
+            if dict.keys.count > 0 {
+                l++
+            }
+        }
+        return l
+    }
+    
+    func upload(number: Int, var inn: Int, success: ()->()) {
         inn++
-        if inn <= images.count && inn < 6 {
-            if images[inn - 1]["shouldUpload"] as! Bool == true {
-                uploadPhoto(images[inn - 1], teamNumber: number, index: inn, success: { () in
-                    self.upload(images, number: number, inn: inn, success: success)
-                })
+        if inn <= len(self.activeImages) && inn < 6 {
+            if let shouldUpload = self.activeImages[inn - 1]["shouldUpload"] {
+                if shouldUpload as! Bool == true {
+                    uploadPhoto(self.activeImages[inn - 1], teamNumber: number, index: inn, success: { () in
+                        self.upload(number, inn: inn, success: success)
+                    })
+                }
+                else {
+                    self.upload(number, inn: inn, success: success)
+                }
+            } else {
+                self.activeImages.removeAtIndex(inn - 1)
+                upload(number, inn: inn, success: success)
             }
-            else {
-                self.upload(images, number: number, inn: inn, success: success)
-            }
+            
         } else {
             success()
         }
     }
+    
     
     func uploadAllPhotos(var currentIndex: Int, callback: ()->()) {
         if(self.isConnectedToNetwork()) {
@@ -288,6 +307,7 @@ class PhotoManager : NSObject {
                     self.uploadAllPhotos(currentIndex, callback: callback)
                 })
             } else {
+                self.activeImages = [[String: AnyObject]]()
                 callback()
             }
             

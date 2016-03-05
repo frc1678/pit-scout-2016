@@ -42,13 +42,16 @@ class TableViewController: UITableViewController {
             dontNeedNotification = true
         }
         
+        let longPress = UILongPressGestureRecognizer(target: self, action: "didLongPress:")
+        self.tableView.addGestureRecognizer(longPress)
+        
         tableView.delegate = self
         tableView.dataSource = self
         
         
-        self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
+        self.firebase = Firebase(url: "https://1678-dev3-2016.firebaseio.com/Teams")
         if self.isConnectedToNetwork() {
-            self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
+            self.firebase?.authWithCustomToken(dev3Token, withCompletionBlock: { (E, A) -> Void in
                 self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
                     //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     self.setup(snap)
@@ -72,7 +75,7 @@ class TableViewController: UITableViewController {
             //let i = teams.indexOf { (($0 as! FDataSnapshot).value as! [String: AnyObject])["number"] as? Int == team["number"] as? Int }
             self.teams.addObject(team)
             if let teamNum = team["number"] as? Int {
-                let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
+                let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": 0]
                 self.scoutedTeamInfo.append(scoutedTeamInfoDict)
                 self.teamNums.append(teamNum)
                 if let urlsForTeam = team["otherImageUrls"] as? NSMutableDictionary {
@@ -85,11 +88,11 @@ class TableViewController: UITableViewController {
                     urlsDict[teamNum] = NSMutableArray()
                 }
                 if(self.scoutedTeamInfo.count > i) {
-                    if(self.teamHasBeenPitScouted(team )) {
+                    /*if(self.teamHasBeenPitScouted(team)) {
                         self.scoutedTeamInfo[i]["hasBeenScouted"] = 1
                     } else {
                         self.scoutedTeamInfo[i]["hasBeenScouted"] = 0
-                    }
+                    }*/
                 } else {
                     print("ERROR")
                    /* let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
@@ -216,6 +219,26 @@ class TableViewController: UITableViewController {
         return cell
     }
     
+    func didLongPress(recognizer: UIGestureRecognizer) {
+        if recognizer.state == UIGestureRecognizerState.Ended {
+            let longPressLocation = recognizer.locationInView(self.tableView)
+            if let longPressedIndexPath = tableView.indexPathForRowAtPoint(longPressLocation) {
+                if let longPressedCell = self.tableView.cellForRowAtIndexPath(longPressedIndexPath) {
+                    if longPressedCell.accessoryType == UITableViewCellAccessoryType.Checkmark {
+                        longPressedCell.accessoryType = UITableViewCellAccessoryType.None
+                        let scoutedTeamInfoIndex = self.scoutedTeamInfo.indexOf { $0["num"]! == Int((longPressedCell.textLabel?.text)!) }
+                        scoutedTeamInfo[scoutedTeamInfoIndex!]["hasBeenScouted"] = 0
+                    } else {
+                        longPressedCell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                        let scoutedTeamInfoIndex = self.scoutedTeamInfo.indexOf { $0["num"]! == Int((longPressedCell.textLabel?.text)!) }
+                        scoutedTeamInfo[scoutedTeamInfoIndex!]["hasBeenScouted"] = 1
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+
     // MARK:  UITableViewDelegate Methods
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)

@@ -51,7 +51,7 @@ class PhotoManager : NSObject {
     
     
     func updatePhotoCache(fileObject: [String: AnyObject], teamNum: Int) {
-        self.getPhotosForTeamNum(teamNum) { _ in
+        self.getPhotosForTeamNum(teamNum) { [unowned self] _ in
             let i = Int((fileObject["name"]?.componentsSeparatedByString(".")[0].componentsSeparatedByString("_")[1])!)
             if i >= self.activeImages.count {
                 for _ in self.activeImages.count...i! {
@@ -87,7 +87,7 @@ class PhotoManager : NSObject {
     func fetchPhotosFromDropbox(var index: Int) {
         
         if index < self.teamNumbers.count {
-            self.downloadPhotosForTeamNum(self.teamNumbers[index], success: { () -> () in
+            self.downloadPhotosForTeamNum(self.teamNumbers[index], success: { [unowned self] () -> () in
                 index++
                 self.fetchPhotosFromDropbox(index)
                 }, index: index)
@@ -104,7 +104,7 @@ class PhotoManager : NSObject {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
                 
                 if self.isConnectedToNetwork() {
-                    self.dropboxClient.files.search(path: "/Public", query: "\(number)_").response({ (response, error) -> Void in
+                    self.dropboxClient.files.search(path: "/Public", query: "\(number)_").response({ [unowned self] (response, error) -> Void in
                         if let result = response {
                             self.download(result.matches, number: number, i: 0, success: { () in
                                 success()
@@ -122,7 +122,7 @@ class PhotoManager : NSObject {
     
     func download(matches: [Files.SearchMatch], number: Int, var i: Int, success: ()->()) {
         if i < matches.count && i < 6 { // So we don't download too many and fill up memory
-            self.downloadPhoto(matches[i], teamNumber: number, success: { () in
+            self.downloadPhoto(matches[i], teamNumber: number, success: { [unowned self] () in
                 i++
                 self.download(matches, number: number, i: i, success: success)
             })
@@ -131,35 +131,34 @@ class PhotoManager : NSObject {
         }
     }
     
-    func getPhotosForTeamNum(number: Int, success: (data: [[String: AnyObject]])->()) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+    func getPhotosForTeamNum(number: Int, success: ()->()) {
+        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
             if self.mayKeepWorking {
-                weak var weakSelf = self
-                weakSelf!.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
+                self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
                         if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                            weakSelf!.activeImages = images
-                            images = [[String: AnyObject]]()
-                            success(data: weakSelf!.activeImages)
+                            self.activeImages = images
+                            images.removeAll()
+                            success()
                         }
                     })
-                    }.onFailure { (E) -> () in
-                        weakSelf!.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
-                        weakSelf!.cache.fetch(key: "photos\(number)").onSuccess { (data) -> () in
+                    }.onFailure { [unowned self] (E) -> () in
+                        self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
+                        self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
                                 if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                                    images = [[String: AnyObject]]()
-                                    weakSelf!.activeImages = images
-                                    success(data: weakSelf!.activeImages)
+                                    images.removeAll()
+                                    self.activeImages = images
+                                    success()
                                 }
                             })
                             }.onFailure { (E) -> () in
                                 print("Failed to fetch photos for team \(number)")
-                                success(data: [[String : AnyObject]]())
+                                success()
                         }
                 }
             }
-        })
+        //})
     }
     
     
@@ -178,7 +177,7 @@ class PhotoManager : NSObject {
                     return directoryURL.URLByAppendingPathComponent(pathComponent)
                 }
                 
-                self.dropboxClient.files.download(path: "/Public/\(name)", destination: destination).response { (response, error) in
+                self.dropboxClient.files.download(path: "/Public/\(name)", destination: destination).response { [unowned self] (response, error) in
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
                         
                         if let (metadata, url) = response {
@@ -246,8 +245,7 @@ class PhotoManager : NSObject {
     func fetchPhotosAndUploadForTeam(ind: Int, successOrFail: ()->()) {
         if self.teamNumbers.count > ind {
             let teamNumber = self.teamNumbers[ind]
-            weak var weakSelf = self
-            weakSelf!.getPhotosForTeamNum(teamNumber, success: { _ in
+            self.getPhotosForTeamNum(teamNumber, success: { [unowned self] in
                 print("Fetched Photos for \(teamNumber)")
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 print("Team \(teamNumber) has \(self.len(self.activeImages)) images.")
@@ -280,7 +278,7 @@ class PhotoManager : NSObject {
         if inn <= len(self.activeImages) && inn < 6 {
             if let shouldUpload = self.activeImages[inn - 1]["shouldUpload"] {
                 if shouldUpload as! Bool == true {
-                    uploadPhoto(self.activeImages[inn - 1], teamNumber: number, index: inn, success: { () in
+                    uploadPhoto(self.activeImages[inn - 1], teamNumber: number, index: inn, success: { [unowned self] in
                         self.upload(number, inn: inn, success: success)
                     })
                 }
@@ -302,12 +300,13 @@ class PhotoManager : NSObject {
         if(self.isConnectedToNetwork()) {
             
             if currentIndex < self.teamNumbers.count {
-                fetchPhotosAndUploadForTeam(currentIndex, successOrFail: { () -> () in
+                
+                fetchPhotosAndUploadForTeam(currentIndex, successOrFail: { [unowned self] in
                     currentIndex++
                     self.uploadAllPhotos(currentIndex, callback: callback)
                 })
             } else {
-                self.activeImages = [[String: AnyObject]]()
+                self.activeImages.removeAll()
                 callback()
             }
             
@@ -317,7 +316,7 @@ class PhotoManager : NSObject {
     }
     
     func addUrlToList(teamNumber: Int, url: String, callback: ()->()) {
-        self.getSharedURLsForTeam(teamNumber) { (urls) -> () in
+        self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
             if let nurls = urls {
                 nurls.addObject(url)
                 self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(nurls), key: "sharedURLs\(teamNumber)")
@@ -337,7 +336,7 @@ class PhotoManager : NSObject {
         let fileDict : [String: AnyObject] = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
         self.updatePhotoCache(fileDict, teamNum: teamNumber)
         if shouldUpload {
-            self.uploadPhoto(fileDict, teamNumber: teamNumber, index: self.numberOfPhotosForTeam[teamNumber]!, success: { () in })
+            self.uploadPhoto(fileDict, teamNumber: teamNumber, index: self.numberOfPhotosForTeam[teamNumber]!, success: { })
         }
     }
     
@@ -376,10 +375,10 @@ class PhotoManager : NSObject {
     
     func sync() {
         self.mayKeepWorking = true
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             self.syncButton.enabled = false
         }
-        self.uploadAllPhotos(0, callback: {
+        self.uploadAllPhotos(0, callback: { [unowned self] in
             self.fetchPhotosFromDropbox(0)
         })
     }

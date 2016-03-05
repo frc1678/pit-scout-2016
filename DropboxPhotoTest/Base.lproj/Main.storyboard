@@ -522,6 +522,9 @@
                                             <constraint firstAttribute="width" constant="49" id="J7H-09-GSg"/>
                                             <constraint firstAttribute="width" secondItem="eBg-q1-gp4" secondAttribute="height" multiplier="49:31" id="QFw-vo-9lb"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="lowBarTestResultChanged:" destination="GaD-O8-v2V" eventType="valueChanged" id="Y3n-58-CPC"/>
+                                        </connections>
                                     </switch>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VWJ-Uv-3NR">
                                         <rect key="frame" x="-25" y="-30" width="97" height="30"/>

@@ -73,7 +73,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.updateMyPhotos()
         
         self.photoManager.currentlyNotifyingTeamNumber = self.number
-        self.photoManager.callbackForPhotoCasheUpdated = { () in
+        self.photoManager.callbackForPhotoCasheUpdated = { [unowned self] () in
             self.updateMyPhotos()
             self.imageButton.enabled = true
         }
@@ -87,8 +87,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func updateMyPhotos() {
         self.photos = []
         self.tempPhotos = []
-        self.photoManager.getPhotosForTeamNum(self.number, success: { data in
-            for photo : [String: AnyObject] in data {
+        self.photoManager.getPhotosForTeamNum(self.number, success: { [unowned self] in
+            for photo : [String: AnyObject] in self.photoManager.activeImages {
                 if photo.keys.count > 0 {
                     self.photos.append(UIImage(data: photo["data"] as! NSData)!)
                 }
@@ -301,6 +301,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             return true
         }
         return false
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(self.pitLowBarCapability.on) //Because you might not want to change it
     }
 }
 

@@ -47,6 +47,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
+        self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
+        //self.imageButton.setTitle(self.imageButton.titleLabel?.text, forState: UIControlState.Normal)
+        //self.imageButton.setTitleColor(, forState: UIControlState.Normal)
+
+        
+        self.photoManager.currentlyNotifyingTeamNumber = self.number
+
+        self.photoManager.callbackForPhotoCasheUpdated = { [unowned self] () in
+            self.updateMyPhotos()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.imageButton.enabled = true
+            })
+        }
+        
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
             //self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)") //Sometimes it is too long to fit
             for key in self.firebaseKeys {
@@ -67,16 +82,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 }
             }
         })
-        self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
-        self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
+        
         
         self.updateMyPhotos()
         
-        self.photoManager.currentlyNotifyingTeamNumber = self.number
-        self.photoManager.callbackForPhotoCasheUpdated = { [unowned self] () in
-            self.updateMyPhotos()
-            self.imageButton.enabled = true
-        }
+        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);

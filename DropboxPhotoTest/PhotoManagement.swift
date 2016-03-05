@@ -23,7 +23,7 @@ class PhotoManager : NSObject {
     var timer : NSTimer = NSTimer()
     var teamsFirebase : Firebase
     var numberOfPhotosForTeam = [Int: Int]()
-    var callbackForPhotoCasheUpdated = { () in }
+    var callbackForPhotoCasheUpdated = { }
     var currentlyNotifyingTeamNumber = 0
     let dropboxClient : DropboxClient
     let photoSaver = CustomPhotoAlbum()

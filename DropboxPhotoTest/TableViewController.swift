@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import firebase_schema_2016_ios
 import SwiftyDropbox
+import Haneke
 
 let dev3Token = "AEduO6VFlZKD4v10eW81u9j3ZNopr5h2R32SPpeq"
 let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
@@ -21,12 +22,14 @@ class TableViewController: UITableViewController {
     let cellReuseId = "teamCell"
     var firebase : Firebase?
     var teams : NSMutableArray = []
-    var scoutedTeamInfo : [[String: Int]] = [] // ["num": 254, "hasBeenScouted": 0]
+    var scoutedTeamInfo : [[String: Int]] = []   // ["num": 254, "hasBeenScouted": 0]
+        
     var teamNums = [Int]()
     var timer = NSTimer()
     var photoManager : PhotoManager?
     var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
     var dontNeedNotification = false
+    let cache = Shared.dataCache
     
     @IBOutlet weak var uploadPhotos: UIButton!
     
@@ -37,10 +40,12 @@ class TableViewController: UITableViewController {
         if(Dropbox.authorizedClient == nil) {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupphotoManager", name: "dropbox_authorized", object: nil)
             Dropbox.authorizeFromController(self)
-
         } else {
             dontNeedNotification = true
         }
+        
+        
+            
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "didLongPress:")
         self.tableView.addGestureRecognizer(longPress)
@@ -107,6 +112,7 @@ class TableViewController: UITableViewController {
             } else {
                 print("No Num")
             }
+
             
         }
         
@@ -129,6 +135,12 @@ class TableViewController: UITableViewController {
         self.tableView.reloadData()
         //})
         if dontNeedNotification { self.setupphotoManager() }
+        self.cache.fetch(key: "scoutedTeamInfo").onSuccess({ [unowned self] (data) -> () in
+            self.scoutedTeamInfo = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [[String: Int]]
+            self.tableView.reloadData()
+            
+            })
+        //self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(scoutedTeamInfo), key: "scoutedTeamInfo")
 
         //})
 
@@ -233,6 +245,8 @@ class TableViewController: UITableViewController {
                         let scoutedTeamInfoIndex = self.scoutedTeamInfo.indexOf { $0["num"]! == Int((longPressedCell.textLabel?.text)!) }
                         scoutedTeamInfo[scoutedTeamInfoIndex!]["hasBeenScouted"] = 1
                     }
+                    self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(scoutedTeamInfo), key: "scoutedTeamInfo")
+
                     self.tableView.reloadData()
                 }
             }

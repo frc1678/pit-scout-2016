@@ -110,7 +110,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func updatePhotoButtonText() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             let photosCount : Int = self.photos.count
-            self.viewImagesButton.setTitle("View Images: (\(photosCount)/5)", forState: UIControlState.Normal)
+            self.viewImagesButton.setTitle("View Images: (\(photosCount)/3)", forState: UIControlState.Normal)
         }
         
     }
@@ -242,28 +242,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //presentViewController(activityViewController, animated: true, completion: {})
         self.photoManager.photoSaver.saveImage(image)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
-                self.photoManager.addUrlToList(self.number, url: self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: (urls?.count)!), callback: {})
-                self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: (urls?.count)!), teamNumber: self.number, shouldUpload: true)
-                self.canViewPhotos = true
-            }
             
-        })
-        
+            self.photoManager.updateUrl(self.number, callback: { [unowned self] i in
+                self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: i), teamNumber: self.number, shouldUpload: true)
+                self.canViewPhotos = true
+            })
+    })
+    
     }
     
     
     
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
         self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
-            if urls!.count > gallery.currentPage {
-            
-                self.selectedImageUrl.text = urls![gallery.currentPage] as? String
+                let url = self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: gallery.currentPage)
+                self.selectedImageUrl.text = url
                 self.selectedImageEditingEnded(self.selectedImageUrl)
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                self.photoManager.addUrlToList(self.number, url: self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: gallery.currentPage), callback: { self.galleryDidTapToClose(gallery) })
+            self.photoManager.updateUrl(self.number, callback: {_ in })
             
                 /*
                 let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -271,7 +268,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                 self.dismissViewControllerAnimated(true, completion: nil)
                 self.presentViewController(alert, animated: true, completion: nil)*/
-            }
+            
             
         }
     }

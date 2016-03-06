@@ -53,15 +53,18 @@ class PhotoManager : NSObject {
     func updatePhotoCache(fileObject: [String: AnyObject], teamNum: Int) {
         self.getPhotosForTeamNum(teamNum) { [unowned self] _ in
             let i = Int((fileObject["name"]?.componentsSeparatedByString(".")[0].componentsSeparatedByString("_")[1])!)
+            
             if i >= self.activeImages.count {
                 for _ in self.activeImages.count...i! {
                     self.activeImages.append([String: AnyObject]())
                 }
             }
+            
             self.activeImages[i!] = fileObject // We need to actually change the value at the index
             
-            self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.activeImages), key: "photos\(teamNum)")
             
+            self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(self.activeImages), key: "photos\(teamNum)")
+            self.numberOfPhotosForTeam[teamNum] = self.activeImages.count
             if teamNum == self.currentlyNotifyingTeamNumber {
                 self.callbackForPhotoCasheUpdated()
             }
@@ -113,7 +116,7 @@ class PhotoManager : NSObject {
                             print("Query Error for team \(number), Error: \(error?.description)")
                             success()
                         }
-                    })
+                        })
                 }
             })
         }
@@ -121,11 +124,11 @@ class PhotoManager : NSObject {
     }
     
     func download(matches: [Files.SearchMatch], number: Int, var i: Int, success: ()->()) {
-        if i < matches.count && i < 6 { // So we don't download too many and fill up memory
+        if i < matches.count && i < 4 { // So we don't download too many and fill up memory
             self.downloadPhoto(matches[i], teamNumber: number, success: { [unowned self] () in
                 i++
                 self.download(matches, number: number, i: i, success: success)
-            })
+                })
         } else {
             success()
         }
@@ -133,31 +136,33 @@ class PhotoManager : NSObject {
     
     func getPhotosForTeamNum(number: Int, success: ()->()) {
         //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            if self.mayKeepWorking {
-                self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                        if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                            self.activeImages = images
-                            images.removeAll()
-                            success()
-                        }
-                    })
-                    }.onFailure { [unowned self] (E) -> () in
-                        self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
-                        self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
-                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                                if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                                    images.removeAll()
-                                    self.activeImages = images
-                                    success()
-                                }
-                            })
-                            }.onFailure { (E) -> () in
-                                print("Failed to fetch photos for team \(number)")
+        if self.mayKeepWorking {
+            self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                    if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                        self.activeImages = images
+                        images.removeAll()
+                        self.numberOfPhotosForTeam[number] = self.activeImages.count
+                        success()
+                    }
+                })
+                }.onFailure { [unowned self] (E) -> () in
+                    self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
+                    self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                            if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                                images.removeAll()
+                                self.activeImages = images
+                                self.numberOfPhotosForTeam[number] = self.activeImages.count
                                 success()
-                        }
-                }
+                            }
+                        })
+                        }.onFailure { (E) -> () in
+                            print("Failed to fetch photos for team \(number)")
+                            success()
+                    }
             }
+        }
         //})
     }
     
@@ -209,13 +214,15 @@ class PhotoManager : NSObject {
                 var data = fileForTeam["data"] as! NSData
                 var sharedURL = "Not Uploaded"
                 let path = "/Public/\(name)"
+                let rotatedImage = UIImage(data: data)?.imageRotatedByDegrees(90, flip: false)
+                data = UIImagePNGRepresentation(rotatedImage!)!
                 self.dropboxClient.files.upload(path: path, body: data).response { response, error in
                     if let metaData = response {
                         data = NSData()
                         print("*** Upload file: \(metaData) ****")
                         sharedURL = self.makeURLForFileName(name)
                         self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
-                        self.addUrlToList(teamNumber, url: sharedURL, callback: success)
+                        self.updateUrl(teamNumber, callback: { _ in })
                     } else {
                         data = NSData()
                         self.dropboxClient.files.delete(path: path)
@@ -254,7 +261,7 @@ class PhotoManager : NSObject {
                 } else {
                     self.upload(teamNumber, inn: 0, success: successOrFail)
                 }
-            })
+                })
         } else {
             successOrFail()
         }
@@ -275,12 +282,12 @@ class PhotoManager : NSObject {
     
     func upload(number: Int, var inn: Int, success: ()->()) {
         inn++
-        if inn <= len(self.activeImages) && inn < 6 {
+        if inn <= len(self.activeImages) && inn < 4 {
             if let shouldUpload = self.activeImages[inn - 1]["shouldUpload"] {
                 if shouldUpload as! Bool == true {
                     uploadPhoto(self.activeImages[inn - 1], teamNumber: number, index: inn, success: { [unowned self] in
                         self.upload(number, inn: inn, success: success)
-                    })
+                        })
                 }
                 else {
                     self.upload(number, inn: inn, success: success)
@@ -304,7 +311,7 @@ class PhotoManager : NSObject {
                 fetchPhotosAndUploadForTeam(currentIndex, successOrFail: { [unowned self] in
                     currentIndex++
                     self.uploadAllPhotos(currentIndex, callback: callback)
-                })
+                    })
             } else {
                 self.activeImages.removeAll()
                 callback()
@@ -315,7 +322,7 @@ class PhotoManager : NSObject {
         }
     }
     
-    func addUrlToList(teamNumber: Int, url: String, callback: ()->()) {
+    /*func addUrlToList(teamNumber: Int, url: String, callback: ()->()) {
         self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
             if let nurls = urls {
                 nurls.addObject(url)
@@ -325,18 +332,50 @@ class PhotoManager : NSObject {
                 print("Could Not get shared urls for \(teamNumber)")
             }
         }
+    }*/
+    
+    func updateUrl(teamNumber: Int, callback: (i: Int)->()) {
+        self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
+            if var newURLs = urls {
+                let i : Int
+                if newURLs.count >= 3 {
+                    i = 0
+                } else {
+                    i = newURLs.count
+                }
+                let url = self.makeURLForTeamNumAndImageIndex(teamNumber, imageIndex: i)
+                if newURLs.count <= i {
+                    newURLs.addObject(url)
+                } else {
+                    newURLs[i] = url
+                }
+                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(newURLs), key: "sharedURLs\(teamNumber)")
+                callback(i: i)
+            } else {
+                print("Could not fetch shared urls for \(teamNumber)")
+            }
+        }
     }
     
     
     func addFileToLineup(var fileData : NSData, fileName : String, teamNumber : Int, shouldUpload : Bool) {
+        if numberOfPhotosForTeam[teamNumber] == nil { numberOfPhotosForTeam[teamNumber] = 0 }
         self.numberOfPhotosForTeam[teamNumber]!++
+        
+        let i : Int
+        if self.numberOfPhotosForTeam[teamNumber] >= 3 {
+            i = 1
+        } else {
+            i = self.numberOfPhotosForTeam[teamNumber]!
+        }
         while (Double(fileData.length) / pow(2.0, 20.0)) > 10 {
             fileData = self.getResizedImageDataForImageData(fileData)
         }
         let fileDict : [String: AnyObject] = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
         self.updatePhotoCache(fileDict, teamNum: teamNumber)
+        
         if shouldUpload {
-            self.uploadPhoto(fileDict, teamNumber: teamNumber, index: self.numberOfPhotosForTeam[teamNumber]!, success: { })
+            self.uploadPhoto(fileDict, teamNumber: teamNumber, index: i - 1, success: {})
         }
     }
     
@@ -371,6 +410,7 @@ class PhotoManager : NSObject {
             teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
         }
         
+        
     }
     
     func sync() {
@@ -380,7 +420,7 @@ class PhotoManager : NSObject {
         }
         self.uploadAllPhotos(0, callback: { [unowned self] in
             self.fetchPhotosFromDropbox(0)
-        })
+            })
     }
     
     
@@ -396,4 +436,48 @@ class PhotoManager : NSObject {
         return self.dropboxURLBeginning + String(fileName)
     }
     
+}
+
+extension UIImage {
+    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
+        let radiansToDegrees: (CGFloat) -> CGFloat = {
+            return $0 * (180.0 / CGFloat(M_PI))
+        }
+        let degreesToRadians: (CGFloat) -> CGFloat = {
+            return $0 / 180.0 * CGFloat(M_PI)
+        }
+        
+        // calculate the size of the rotated view's containing box for our drawing spaaace
+        let rotatedViewBox = UIView(frame: CGRect(origin: CGPointZero, size: size))
+        let t = CGAffineTransformMakeRotation(degreesToRadians(degrees));
+        rotatedViewBox.transform = t
+        let rotatedSize = rotatedViewBox.frame.size
+        
+        // Create the bitmap context
+        UIGraphicsBeginImageContext(rotatedSize)
+        let bitmap = UIGraphicsGetCurrentContext()
+        
+        // Move the origin to the middle of the image so we will rotate and scale around the center.
+        CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0);
+        
+        //   // Rotate the image context
+        CGContextRotateCTM(bitmap, degreesToRadians(degrees));
+        
+        // Now, draw the rotated/scaled image into the context
+        var yFlip: CGFloat
+        
+        if(flip){
+            yFlip = CGFloat(-1.0)
+        } else {
+            yFlip = CGFloat(1.0)
+        }
+        
+        CGContextScaleCTM(bitmap, yFlip, -1.0)
+        CGContextDrawImage(bitmap, CGRectMake(-size.width / 2, -size.height / 2, size.width, size.height), CGImage)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
 }

@@ -54,9 +54,9 @@ class TableViewController: UITableViewController {
         tableView.dataSource = self
         
         
-        self.firebase = Firebase(url: "https://1678-dev3-2016.firebaseio.com/Teams")
+        self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
         if self.isConnectedToNetwork() {
-            self.firebase?.authWithCustomToken(dev3Token, withCompletionBlock: { (E, A) -> Void in
+            self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
                 self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
                     //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     self.setup(snap)

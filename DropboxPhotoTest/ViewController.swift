@@ -299,7 +299,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print("Oh No, Mem warning!")
-        self.photoManager.mayKeepWorking = false
+        //self.photoManager.mayKeepWorking = false
         // Dispose of any resources that can be recreated.
     }
     

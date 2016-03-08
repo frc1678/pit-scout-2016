@@ -137,6 +137,8 @@ class PhotoManager : NSObject {
     func getPhotosForTeamNum(number: Int, success: ()->()) {
         //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
         if self.mayKeepWorking {
+            UIApplication.sharedApplication().performSelector("_performMemoryWarning")
+
             self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
                     if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
@@ -210,6 +212,8 @@ class PhotoManager : NSObject {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
             if(self.mayKeepWorking) {
+                UIApplication.sharedApplication().performSelector("_performMemoryWarning")
+
                 let name = fileForTeam["name"] as! String
                 var data = fileForTeam["data"] as! NSData
                 var sharedURL = "Not Uploaded"
@@ -223,6 +227,7 @@ class PhotoManager : NSObject {
                         sharedURL = self.makeURLForFileName(name)
                         self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
                         self.updateUrl(teamNumber, callback: { _ in })
+                        success()
                     } else {
                         data = NSData()
                         self.dropboxClient.files.delete(path: path)

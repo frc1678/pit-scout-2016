@@ -301,7 +301,8 @@ class TableViewController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         print("OH NO, MEM WARNING")
-        self.photoManager!.mayKeepWorking = false
+        
+        //self.photoManager?.mayKeepWorking = false
     }
     
     func isConnectedToNetwork() -> Bool  {

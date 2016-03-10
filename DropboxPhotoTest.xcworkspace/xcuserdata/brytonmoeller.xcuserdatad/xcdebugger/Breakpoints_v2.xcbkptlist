@@ -375,11 +375,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479104175.141527"
+            timestampString = "479269702.547621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "getPhotosForTeamNum(_:success:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -439,11 +439,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479106022.921453"
+            timestampString = "479269702.547621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "upload(_:inn:success:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -455,11 +455,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479106022.921453"
+            timestampString = "479269702.547621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "uploadPhoto(_:teamNumber:index:success:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -487,11 +487,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479106022.921453"
+            timestampString = "479269702.547621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "uploadAllPhotos(_:callback:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -503,11 +503,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479106022.921453"
+            timestampString = "479269702.547621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "321"
+            endingLineNumber = "321"
             landmarkName = "uploadAllPhotos(_:callback:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -575,11 +575,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479106022.921453"
+            timestampString = "479269702.547621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "437"
-            endingLineNumber = "437"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
             landmarkName = "makeFilenameForTeamNumAndIndex(_:imageIndex:)"
             landmarkType = "5">
          </BreakpointContent>

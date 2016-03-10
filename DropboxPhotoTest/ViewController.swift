@@ -313,5 +313,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidDisappear(animated: Bool) {
         self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(self.pitLowBarCapability.on) //Because you might not want to change it
     }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
 }
 

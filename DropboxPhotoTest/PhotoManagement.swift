@@ -120,7 +120,6 @@ class PhotoManager : NSObject {
                 }
             })
         }
-        
     }
     
     func download(matches: [Files.SearchMatch], number: Int, var i: Int, success: ()->()) {

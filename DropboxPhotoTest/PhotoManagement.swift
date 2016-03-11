@@ -340,9 +340,9 @@ class PhotoManager : NSObject {
     
     func updateUrl(teamNumber: Int, callback: (i: Int)->()) {
         self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
-            if var newURLs = urls {
+            if let newURLs = urls {
                 let i : Int
-                if newURLs.count >= 3 {
+                if newURLs.count > 3 {
                     i = 0
                 } else {
                     i = newURLs.count
@@ -353,8 +353,10 @@ class PhotoManager : NSObject {
                 } else {
                     newURLs[i] = url
                 }
-                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(newURLs), key: "sharedURLs\(teamNumber)")
-                callback(i: i)
+                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(newURLs), key: "sharedURLs\(teamNumber)", success: { _ in
+                    callback(i: i)
+                })
+                
             } else {
                 print("Could not fetch shared urls for \(teamNumber)")
             }
@@ -367,7 +369,7 @@ class PhotoManager : NSObject {
         self.numberOfPhotosForTeam[teamNumber]!++
         
         let i : Int
-        if self.numberOfPhotosForTeam[teamNumber] >= 3 {
+        if self.numberOfPhotosForTeam[teamNumber] > 3 {
             i = 1
         } else {
             i = self.numberOfPhotosForTeam[teamNumber]!

@@ -55,7 +55,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         self.photoManager.currentlyNotifyingTeamNumber = self.number
 
-        self.photoManager.callbackForPhotoCasheUpdated = { [unowned self] () in
+        self.photoManager.callbackForPhotoCasheUpdated = { () in
             self.updateMyPhotos()
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.imageButton.enabled = true

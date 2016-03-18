@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1909B1A11C9B9693004F5E7E /* MissingDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1909B1A01C9B9693004F5E7E /* MissingDataViewController.swift */; };
 		192596BF1C59C51D00C4A8EE /* firebase-schema-2016-ios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192596BE1C59C51D00C4A8EE /* firebase-schema-2016-ios.swift */; };
 		192BEAC21C3463B900992A8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAC11C3463B900992A8A /* AppDelegate.swift */; };
 		192BEAC41C3463B900992A8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAC31C3463B900992A8A /* ViewController.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1909B1A01C9B9693004F5E7E /* MissingDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissingDataViewController.swift; sourceTree = "<group>"; };
 		190DBEC01C55988900C4D1C2 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = firebase_schema_2016_ios.framework; path = "Pods/../build/Debug-iphoneos/firebase_schema_2016_ios.framework"; sourceTree = "<group>"; };
 		190DBEC71C5598FC00C4D1C2 /* firebase_schema_2016_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = firebase_schema_2016_ios.framework; path = "Pods/../build/Debug-iphoneos/firebase_schema_2016_ios.framework"; sourceTree = "<group>"; };
 		190DBED01C5599B200C4D1C2 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
@@ -153,6 +155,7 @@
 				194587931C7D326D00507019 /* PhotoLibrarySaver.swift */,
 				19E2FB361C4DB3D900BA4075 /* TableViewController.swift */,
 				19A2861F1C6916160039C0A4 /* PhotoManagement.swift */,
+				1909B1A01C9B9693004F5E7E /* MissingDataViewController.swift */,
 				192BEAC51C3463B900992A8A /* Main.storyboard */,
 				192BEAC81C3463B900992A8A /* Assets.xcassets */,
 				192BEACA1C3463B900992A8A /* LaunchScreen.storyboard */,
@@ -432,6 +435,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				192BEAC41C3463B900992A8A /* ViewController.swift in Sources */,
+				1909B1A11C9B9693004F5E7E /* MissingDataViewController.swift in Sources */,
 				19E2FB371C4DB3D900BA4075 /* TableViewController.swift in Sources */,
 				194587941C7D326D00507019 /* PhotoLibrarySaver.swift in Sources */,
 				192596BF1C59C51D00C4A8EE /* firebase-schema-2016-ios.swift in Sources */,

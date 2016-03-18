@@ -17,7 +17,7 @@ let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
 
 let firebaseKeys = ["pitBumperHeight", "pitDriveBaseWidth", "pitDriveBaseLength", "pitNumberOfWheels", "pitOrganization", "pitPotentialLowBarCapability", "pitPotentialMidlineBallCapability", "pitPotentialShotBlockerCapability", "selectedImageUrl", "pitNotes", "pitHeightOfBallLeavingShooter"]
 
-class TableViewController: UITableViewController {
+class TableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     
     let cellReuseId = "teamCell"
     var firebase : Firebase?
@@ -293,6 +293,11 @@ class TableViewController: UITableViewController {
                 teamViewController.name = snap.childSnapshotForPath("name").value as! String
             })
         }
+        else if segue.identifier == "popoverSegue" {
+            let popoverViewController = segue.destinationViewController 
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
     }
     
     @IBAction func uploadPhotosPressed(sender: UIButton) {
@@ -313,5 +318,10 @@ class TableViewController: UITableViewController {
         }
         return(false)
     }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.None
+    }
+
     
 }

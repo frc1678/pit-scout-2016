@@ -8,6 +8,70 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Missing Data-->
+        <scene sceneID="yo6-Yv-3LZ">
+            <objects>
+                <viewController autoresizesArchivedViewToFullSize="NO" title="Missing Data" modalTransitionStyle="crossDissolve" id="DjH-PD-EBO" customClass="MissingDataViewController" customModule="DropboxPhotoTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ksZ-Xo-Zx1"/>
+                        <viewControllerLayoutGuide type="bottom" id="72I-bi-7jX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kTY-8u-Hfz">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Missing Data:" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRg-MD-hVH">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="20" y="28" width="360" height="752"/>
+                                </variation>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="dRg-MD-hVH" secondAttribute="bottom" constant="20" symbolic="YES" id="3He-bm-OUM"/>
+                            <constraint firstItem="dRg-MD-hVH" firstAttribute="top" secondItem="ksZ-Xo-Zx1" secondAttribute="bottom" constant="8" symbolic="YES" id="XGL-cd-izU"/>
+                            <constraint firstItem="dRg-MD-hVH" firstAttribute="leading" secondItem="kTY-8u-Hfz" secondAttribute="leadingMargin" id="Yg4-qr-4fJ"/>
+                            <constraint firstItem="dRg-MD-hVH" firstAttribute="trailing" secondItem="kTY-8u-Hfz" secondAttribute="trailingMargin" id="atG-72-mbh"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="dRg-MD-hVH"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="3He-bm-OUM"/>
+                                <exclude reference="XGL-cd-izU"/>
+                                <exclude reference="Yg4-qr-4fJ"/>
+                                <exclude reference="atG-72-mbh"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="dRg-MD-hVH"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="3He-bm-OUM"/>
+                                <include reference="XGL-cd-izU"/>
+                                <include reference="Yg4-qr-4fJ"/>
+                                <include reference="atG-72-mbh"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="100"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="400" height="100"/>
+                    <connections>
+                        <outlet property="mdTextView" destination="dRg-MD-hVH" id="hTY-92-2dj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CYt-0O-ljg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="270" y="-708.75"/>
+        </scene>
         <!--Teams-->
         <scene sceneID="LZ6-dV-uSh">
             <objects>
@@ -35,6 +99,20 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Teams" id="gNv-ZL-D3l">
+                        <barButtonItem key="leftBarButtonItem" title="Data" style="plain" id="64u-nE-uhA">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CGF-vP-WW2">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Data">
+                                    <color key="titleColor" red="0.38823529411764707" green="0.83921568627450982" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="DjH-PD-EBO" kind="popoverPresentation" identifier="popoverSegue" popoverAnchorView="CGF-vP-WW2" id="Zwz-t1-sLd">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" left="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="HpA-hb-Vid">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wTN-GO-7iY">
                                 <rect key="frame" x="534" y="7" width="46" height="30"/>
@@ -238,39 +316,6 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="mEY-XQ-S4T">
-                                        <rect key="frame" x="257" y="457" width="322" height="29"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="Dge-uS-a9b"/>
-                                        </constraints>
-                                        <segments>
-                                            <segment title="1"/>
-                                            <segment title="2"/>
-                                            <segment title="3"/>
-                                            <segment title="4"/>
-                                            <segment title="5"/>
-                                        </segments>
-                                        <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="Dge-uS-a9b"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="widthClass=compact">
-                                            <mask key="constraints">
-                                                <include reference="Dge-uS-a9b"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                            <rect key="frame" x="252" y="422" width="125" height="29"/>
-                                            <mask key="constraints">
-                                                <exclude reference="Dge-uS-a9b"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <action selector="lowBarPotentialDidChange:" destination="GaD-O8-v2V" eventType="valueChanged" id="XTL-Xh-Yhp"/>
-                                        </connections>
-                                    </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text=" Low bar cheesecake:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rzL-tS-HDb">
                                         <rect key="frame" x="23" y="464" width="226" height="14"/>
                                         <constraints>
@@ -609,6 +654,39 @@
                                             <action selector="didPressShowMeButton:" destination="GaD-O8-v2V" eventType="touchUpInside" id="uuL-tD-nVR"/>
                                         </connections>
                                     </button>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="mEY-XQ-S4T">
+                                        <rect key="frame" x="257" y="457" width="322" height="29"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="Dge-uS-a9b"/>
+                                        </constraints>
+                                        <segments>
+                                            <segment title="1"/>
+                                            <segment title="2"/>
+                                            <segment title="3"/>
+                                            <segment title="4"/>
+                                            <segment title="5"/>
+                                        </segments>
+                                        <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Dge-uS-a9b"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="Dge-uS-a9b"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="252" y="422" width="125" height="29"/>
+                                            <mask key="constraints">
+                                                <exclude reference="Dge-uS-a9b"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="lowBarPotentialDidChange:" destination="GaD-O8-v2V" eventType="valueChanged" id="XTL-Xh-Yhp"/>
+                                        </connections>
+                                    </segmentedControl>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="CHd-RF-fGe" firstAttribute="centerY" secondItem="Dcb-tr-ryx" secondAttribute="centerY" id="0hA-56-EW0"/>
@@ -1026,7 +1104,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2da-iZ-Fh7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="993" y="-54"/>
+            <point key="canvasLocation" x="1054.5" y="-59.25"/>
         </scene>
     </scenes>
 </document>

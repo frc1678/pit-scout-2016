@@ -15,7 +15,7 @@ import Haneke
 let dev3Token = "AEduO6VFlZKD4v10eW81u9j3ZNopr5h2R32SPpeq"
 let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
 
-let firebaseKeys = ["pitBumperHeight","pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitCheesecakeAbility", "pitAvailableWeight"]
+let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitCheesecakeAbility", "pitAvailableWeight"]
 
 class TableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     

@@ -71,11 +71,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/ViewController.swift"
-            timestampString = "478904868.096773"
+            timestampString = "480393468.902066"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -343,11 +343,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/ViewController.swift"
-            timestampString = "478904868.096773"
+            timestampString = "480393839.82425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "imageInGallery(_:forIndex:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -655,11 +655,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "DropboxPhotoTest/ViewController.swift"
-            timestampString = "479408714.306443"
+            timestampString = "480393468.902066"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "updateMyPhotos()"
             landmarkType = "5">
             <Actions>
@@ -845,6 +845,22 @@
             startingLineNumber = "55"
             endingLineNumber = "55"
             landmarkName = "updateWithText(_:color:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DropboxPhotoTest/ViewController.swift"
+            timestampString = "480393874.128407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "pitAvailableWeightDidChange(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

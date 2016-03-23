@@ -14,7 +14,7 @@ class MissingDataViewController : UIViewController {
     
     let firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
     
-    let firebaseKeys = ["pitBumperHeight", "pitDriveBaseWidth", "pitDriveBaseLength", "pitNumberOfWheels", "pitOrganization", "pitPotentialLowBarCapability", "pitPotentialMidlineBallCapability", "pitPotentialShotBlockerCapability", "selectedImageUrl", "pitNotes", "pitHeightOfBallLeavingShooter"]
+    let firebaseKeys = ["pitBumperHeight","pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitCheesecakeAbility", "pitAvailableWeight"]
     
     let ignoreKeys = ["pitNotes"]
     

@@ -22,15 +22,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var pitOrganization:UISegmentedControl!
     @IBOutlet weak var selectedImageUrl: UITextField!
     @IBOutlet weak var bottomScrollViewConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pitDriveBaseWidth: UITextField!
-    @IBOutlet weak var pitDriveBaseLength: UITextField!
     @IBOutlet weak var pitBumperHeight: UITextField!
-    @IBOutlet weak var pitPotentialMidlineBallCapability: UISegmentedControl!
-    @IBOutlet weak var pitPotentialShotBlockerCapability: UISegmentedControl!
-    @IBOutlet weak var pitPotentialLowBarCapability: UISegmentedControl!
-    @IBOutlet weak var pitLowBarCapability: UISwitch!
+   
     @IBOutlet weak var pitNotes: UITextField!
-    @IBOutlet weak var pitHeightOfBallLeavingShooter: UITextField!
+    @IBOutlet weak var pitCheesecakeAbility: UISegmentedControl!
+    @IBOutlet weak var pitAvailableWeight: UITextField!
+    
     
     var photoManager : PhotoManager!
     var name = String()
@@ -46,7 +43,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
         self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
         //self.imageButton.setTitle(self.imageButton.titleLabel?.text, forState: UIControlState.Normal)
@@ -143,36 +139,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.ourTeam?.childByAppendingPath("selectedImageUrl").setValue(self.selectedImageUrl.text)
     }
     
-    @IBAction func baseWidthDidChange(sender: UITextField) {
-        if let num = Float(self.pitDriveBaseWidth.text!)  {
-            self.ourTeam?.childByAppendingPath("pitDriveBaseWidth").setValue(Float(num))
-            self.pitDriveBaseWidth.backgroundColor = UIColor.whiteColor()
+    @IBAction func pitAvailableWeightDidChange(sender: AnyObject) {
+        if let num = Float(self.pitAvailableWeight.text!)  {
+            self.ourTeam?.childByAppendingPath("pitAvailableWeight").setValue(Float(num))
+            self.pitAvailableWeight.backgroundColor = UIColor.whiteColor()
         } else {
-            self.pitDriveBaseWidth.backgroundColor = UIColor.redColor()
+            self.pitAvailableWeight.backgroundColor = UIColor.redColor()
         }
     }
     
-    @IBAction func baseLengthDidChange(sender: UITextField) {
-        if let num = Float(self.pitDriveBaseLength.text!)  {
-            self.ourTeam?.childByAppendingPath("pitDriveBaseLength").setValue(Float(num))
-            self.pitDriveBaseLength.backgroundColor = UIColor.whiteColor()
-        } else {
-            self.pitDriveBaseLength.backgroundColor = UIColor.redColor()
-        }
-    }
-    
-    @IBAction func releaseHeightEditingEnded(sender: UITextField) {
-        if let num = Float(self.pitHeightOfBallLeavingShooter.text!)  {
-            self.ourTeam?.childByAppendingPath("pitHeightOfBallLeavingShooter").setValue(Float(num))
-            self.pitHeightOfBallLeavingShooter.backgroundColor = UIColor.whiteColor()
-        } else {
-            self.pitHeightOfBallLeavingShooter.backgroundColor = UIColor.redColor()
-        }
-    }
     
     //MARK: --> Segmented Controls
-    @IBAction func shotBlockerPotentialDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.childByAppendingPath("pitPotentialShotBlockerCapability").setValue(sender.selectedSegmentIndex)
+    @IBAction func cheesecakeDidChange(sender: UISegmentedControl) {
+        self.ourTeam?.childByAppendingPath("pitCheesecakeAbility").setValue(sender.selectedSegmentIndex)
     }
     
     @IBAction func lowBarPotentialDidChange(sender: UISegmentedControl) {
@@ -310,9 +289,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return false
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(self.pitLowBarCapability.on) //Because you might not want to change it
-    }
+    
     
     override func shouldAutorotate() -> Bool {
         return false

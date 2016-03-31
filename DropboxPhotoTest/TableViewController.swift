@@ -297,6 +297,11 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             let popoverViewController = segue.destinationViewController 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
             popoverViewController.popoverPresentationController!.delegate = self
+            if let missingDataViewController = segue.destinationViewController as? MissingDataViewController {
+                self.firebase!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                    missingDataViewController.snap = snap
+                })
+            }
         }
     }
     
@@ -322,6 +327,8 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.None
     }
+    
+    
 
     
 }

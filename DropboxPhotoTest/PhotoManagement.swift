@@ -413,10 +413,8 @@ class PhotoManager : NSObject {
         let currentURLs = teamFirebase?.childByAppendingPath("otherImageUrls")
         currentURLs!.childByAutoId().setValue(link)
         if(selectedImage) {
-            teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
+        teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
         }
-        
-        
     }
     
     func sync() {
@@ -426,6 +424,7 @@ class PhotoManager : NSObject {
         }
         //self.fetchPhotosFromDropbox(0)
         //print("TESTING ONLY ALSKDFJ DSLKFHJKJSKLF JSKLD JFLK SDKLFJKSDFHJSDFHLSDHJF KLSJDHFLKJDF LKJSDL HJSDKHFL SDKJFL JSDHFL KJSDHFLKJSDHFL KJSHDLK FHSDJFHLKSDJFHSLDJKF JKLSDF KJSDF KLJSDF KJLSDFL KJDSHF JKSDHFKJSDJFHLKSJ DHFJSDJKFHLKJSDFHLKSJDHFJKSDHJLHLSDKJFHKJLSDHFJJKSDHFSKJHFSDLKJFHSDLKJFHSDJKLFHSDJKFHDJKHFKJLSDHFLKJHDFJKLSDHFJKLSDHFKLJSDHFLJKHSDKJLHFJKLHKLJHJLKHFKLJHG HJESFDSJKL LGIUSERJGHD LFKJ<DGLKJM<DHJKF BKJS <DGFBKJHSMD FJM D BFNBDFNBVDGXBFJ<BD")
+        self.teamNumbers = self.teamNumbers.reverse()
         self.uploadAllPhotos(0, callback: { [unowned self] in
             self.fetchPhotosFromDropbox(0)
             })

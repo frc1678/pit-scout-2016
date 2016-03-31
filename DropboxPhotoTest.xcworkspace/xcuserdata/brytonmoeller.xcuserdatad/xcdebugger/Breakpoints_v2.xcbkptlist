@@ -18,11 +18,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/TableViewController.swift"
-            timestampString = "479964182.189755"
+            timestampString = "481089294.745461"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "didReceiveMemoryWarning()"
             landmarkType = "5">
          </BreakpointContent>
@@ -575,11 +575,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479457546.980927"
+            timestampString = "480622250.027828"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "440"
-            endingLineNumber = "440"
+            startingLineNumber = "439"
+            endingLineNumber = "439"
             landmarkName = "makeFilenameForTeamNumAndIndex(_:imageIndex:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -775,11 +775,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
-            timestampString = "479459016.21471"
+            timestampString = "480622250.027828"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "430"
-            endingLineNumber = "430"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
             landmarkName = "sync()"
             landmarkType = "5">
          </BreakpointContent>
@@ -791,59 +791,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/MissingDataViewController.swift"
-            timestampString = "479964868.757489"
+            timestampString = "481089576.26219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DropboxPhotoTest.MissingDataViewController.viewDidLoad (DropboxPhotoTest.MissingDataViewController)() -&gt; ()"
-                  moduleName = "DropboxPhotoTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/brytonmoeller/pit-scout-2016/DropboxPhotoTest/MissingDataViewController.swift"
-                  timestampString = "479960327.67159"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "15">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DropboxPhotoTest.MissingDataViewController.(viewDidLoad (DropboxPhotoTest.MissingDataViewController) -&gt; () -&gt; ()).(closure #1)"
-                  moduleName = "DropboxPhotoTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/brytonmoeller/pit-scout-2016/DropboxPhotoTest/MissingDataViewController.swift"
-                  timestampString = "479960327.671917"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "19"
-                  endingLineNumber = "19"
-                  offsetFromSymbolStart = "23">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropboxPhotoTest/MissingDataViewController.swift"
-            timestampString = "479964868.757489"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "updateWithText(_:color:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -861,6 +813,22 @@
             startingLineNumber = "144"
             endingLineNumber = "144"
             landmarkName = "pitAvailableWeightDidChange(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DropboxPhotoTest/TableViewController.swift"
+            timestampString = "481089518.911859"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
+            landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

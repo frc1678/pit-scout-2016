@@ -45,7 +45,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
         self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
-        self.scrollView.scrollEnabled = false //THIS IS FOR WHEN THERE IS NOT MUCH DATA ON THE SCREEN, FOR CVR WE ACTUALLY NEEDED SCROLLING
+        //self.scrollView.scrollEnabled = false //THIS IS FOR WHEN THERE IS NOT MUCH DATA ON THE SCREEN, FOR CVR WE ACTUALLY NEEDED SCROLLING
         //self.imageButton.setTitle(self.imageButton.titleLabel?.text, forState: UIControlState.Normal)
         //self.imageButton.setTitleColor(, forState: UIControlState.Normal)
 

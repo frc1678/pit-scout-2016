@@ -11,8 +11,12 @@ import Firebase
 
 class MissingDataViewController : UIViewController {
     @IBOutlet weak var mdTextView: UITextView!
-    
-    let firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
+    /// Teams Firebase Snapshot
+    var snap : FDataSnapshot? = nil {
+        didSet {
+            self.viewDidLoad()
+        }
+    }
     
     let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitCheesecakeAbility", "pitAvailableWeight"]
     
@@ -24,10 +28,8 @@ class MissingDataViewController : UIViewController {
     }
     
     override func viewDidLoad() {
-        
-        firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
-            self.firebase?.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-                for team in snap.children.allObjects {
+        if let snap = self.snap {
+                        for team in snap.children.allObjects {
                     let t = (team as! FDataSnapshot).value as! [String: AnyObject]
                     if t["selectedImageUrl"] == nil {
                         self.updateWithText("\nTeam \(t["number"]!) has no selected image URL.", color: UIColor.blueColor())
@@ -47,8 +49,7 @@ class MissingDataViewController : UIViewController {
                         self.updateWithText("\nTeam \(t["number"]!) is missing many datapoints.", color: UIColor.redColor())
                     }
                 }
-            })
-        })
+        }
     }
     
     func updateWithText(text : String, color: UIColor) {

@@ -155,7 +155,7 @@
         <!--View Controller-->
         <scene sceneID="iot-Kf-vRQ">
             <objects>
-                <viewController id="GaD-O8-v2V" customClass="ViewController" customModule="DropboxPhotoTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="crossDissolve" id="GaD-O8-v2V" customClass="ViewController" customModule="DropboxPhotoTest" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NYs-oh-iKm"/>
                         <viewControllerLayoutGuide type="bottom" id="wOz-0N-Nb2"/>
@@ -164,7 +164,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="qah-pQ-L5G">
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="qah-pQ-L5G">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="642"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nck-Zp-qiT">
@@ -362,7 +362,8 @@
                                                 <exclude reference="Y5h-CR-fVm"/>
                                             </mask>
                                         </variation>
-                                        <variation key="widthClass=compact">
+                                        <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="257" y="457" width="322" height="46"/>
                                             <mask key="constraints">
                                                 <include reference="Dge-uS-a9b"/>
                                             </mask>

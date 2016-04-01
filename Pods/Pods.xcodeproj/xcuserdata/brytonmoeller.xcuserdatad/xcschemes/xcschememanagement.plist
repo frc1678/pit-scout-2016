@@ -14,11 +14,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>FirebaseUI.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>HanekeSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -62,11 +57,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>147F997BE8DBA5B7B7E26F30BA3C6CDB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>24FB1BB0AB4B68388EB65B09AB3B9A67</key>
 		<dict>
 			<key>primary</key>
@@ -77,37 +67,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4187113204C6DF1FD719ACAEC15EDE3C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>432ECC54282C84882B482CCB4CF227FC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>4B2F30D90D85A544E9EFE2A49D392C25</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5168204719510DEDDB0DE026BD356D02</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>547803AB9D2943F16A55C870E41AFA0A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>64CDB55411467BD9155EAD1AB775021D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7DDF79495F24B309AF089ACC99FC1151</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -118,11 +83,6 @@
 			<true/>
 		</dict>
 		<key>B7AC9326D819482593FE118E915409D7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C16842C8AF01C01808978A07DD226D82</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -138,11 +98,6 @@
 			<true/>
 		</dict>
 		<key>D3C8735CDE7C2F2ECAC36ED174ACC0D0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F25A39724C1F236915EF8279D2B63339</key>
 		<dict>
 			<key>primary</key>
 			<true/>

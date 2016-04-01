@@ -14,6 +14,8 @@ target 'DropboxPhotoTest' do
     pod 'SwiftyDropbox'
     pod 'HanekeSwift'
     pod 'SwiftPhotoGallery'
+    pod 'Instabug'
+
 
 end
 

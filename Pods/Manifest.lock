@@ -3,6 +3,7 @@ PODS:
   - Firebase (2.4.3)
   - firebase-schema-2016-ios (0.0.1)
   - HanekeSwift (0.10.0)
+  - Instabug (5.2.2)
   - JSONHelper (1.7.0)
   - SwiftPhotoGallery (2.0.0)
   - SwiftyDropbox (2.0.0):
@@ -13,6 +14,7 @@ DEPENDENCIES:
   - Firebase
   - firebase-schema-2016-ios (from `https://github.com/frc1678/firebase-schema-2016-ios.git`)
   - HanekeSwift
+  - Instabug
   - JSONHelper
   - SwiftPhotoGallery
   - SwiftyDropbox
@@ -32,6 +34,7 @@ SPEC CHECKSUMS:
   Firebase: 48179995b561e2262c5d4060ecdffca45fbbff8b
   firebase-schema-2016-ios: 172ffba71ecfd9b77c363c79960458a0e846907d
   HanekeSwift: d6f5bdf9dbdbbc09d59623b2c1d533e46463dd4d
+  Instabug: 01bf89d7869b79b15795c847bb0f79ac96d7ae67
   JSONHelper: b71808273ac60fb9e1878eb115370b0faac14a81
   SwiftPhotoGallery: 9e904ad9d5bd38bc2c547a5f483143d05286ddcf
   SwiftyDropbox: 9f95901f03881942603d7ca1e7366e962629fb66

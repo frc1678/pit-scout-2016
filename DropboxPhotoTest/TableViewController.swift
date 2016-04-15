@@ -15,7 +15,7 @@ import Haneke
 let dev3Token = "AEduO6VFlZKD4v10eW81u9j3ZNopr5h2R32SPpeq"
 let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
 
-let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitCheesecakeAbility", "pitAvailableWeight"]
+let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitProgrammingLanguage", "pitAvailableWeight"]
 
 class TableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     
@@ -67,6 +67,13 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 self.setup(snap)
             })
+        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTitle:", name: "titleUpdated", object: nil)
+    }
+    
+    func updateTitle(note : NSNotification) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.title = note.object as? String
         }
     }
     

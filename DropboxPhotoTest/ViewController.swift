@@ -25,7 +25,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var pitBumperHeight: UITextField!
    
     @IBOutlet weak var pitNotes: UITextField!
-    @IBOutlet weak var pitCheesecakeAbility: UISegmentedControl!
+    @IBOutlet weak var pitProgrammingLanguage: UISegmentedControl!
     @IBOutlet weak var pitAvailableWeight: UITextField!
     
     
@@ -58,6 +58,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageButton.enabled = true
             })
         }
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: "didLongPress:")
+        self.imageButton.addGestureRecognizer(longPress)
         
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
             //self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)") //Sometimes it is too long to fit
@@ -151,8 +154,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     //MARK: --> Segmented Controls
-    @IBAction func cheesecakeDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.childByAppendingPath("pitCheesecakeAbility").setValue(sender.selectedSegmentIndex)
+    @IBAction func pitProgrammingLanguageDidChange(sender: UISegmentedControl) {
+        self.ourTeam?.childByAppendingPath("pitProgrammingLanguage").setValue(sender.selectedSegmentIndex)
     }
     
     @IBAction func lowBarPotentialDidChange(sender: UISegmentedControl) {
@@ -185,6 +188,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.Camera)!
         picker.delegate = self
         presentViewController(picker, animated: true, completion: nil)
+    }
+    
+    func didLongPress(recognizer: UIGestureRecognizer) {
+        if recognizer.state == UIGestureRecognizerState.Ended {
+            let picker = UIImagePickerController()
+            
+            picker.sourceType = .PhotoLibrary
+            picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.PhotoLibrary)!
+            picker.delegate = self
+            presentViewController(picker, animated: true, completion: nil)
+        }
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {

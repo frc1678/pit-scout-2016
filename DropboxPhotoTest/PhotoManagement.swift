@@ -90,6 +90,7 @@ class PhotoManager : NSObject {
     func fetchPhotosFromDropbox(var index: Int) {
         
         if index < self.teamNumbers.count {
+            NSNotificationCenter.defaultCenter().postNotificationName("titleUpdated", object: "Download: \((Int(((Float(index + 1))/Float(self.teamNumbers.count)) * 100)))%")
             self.downloadPhotosForTeamNum(self.teamNumbers[index], success: { [unowned self] () -> () in
                 index++
                 self.fetchPhotosFromDropbox(index)
@@ -311,7 +312,7 @@ class PhotoManager : NSObject {
         if(self.isConnectedToNetwork()) {
             
             if currentIndex < self.teamNumbers.count {
-                
+                NSNotificationCenter.defaultCenter().postNotificationName("titleUpdated", object: "Upload: \(Int((Float((currentIndex + 1))/Float(self.teamNumbers.count)) * 100))%")
                 fetchPhotosAndUploadForTeam(currentIndex, successOrFail: { [unowned self] in
                     currentIndex++
                     self.uploadAllPhotos(currentIndex, callback: callback)

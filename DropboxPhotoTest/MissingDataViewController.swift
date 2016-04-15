@@ -18,7 +18,7 @@ class MissingDataViewController : UIViewController {
         }
     }
     
-    let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitCheesecakeAbility", "pitAvailableWeight"]
+    let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitProgrammingLanguage", "pitAvailableWeight"]
     
     let ignoreKeys = ["pitNotes"]
     
@@ -29,26 +29,21 @@ class MissingDataViewController : UIViewController {
     
     override func viewDidLoad() {
         if let snap = self.snap {
-                        for team in snap.children.allObjects {
-                    let t = (team as! FDataSnapshot).value as! [String: AnyObject]
-                    if t["selectedImageUrl"] == nil {
-                        self.updateWithText("\nTeam \(t["number"]!) has no selected image URL.", color: UIColor.blueColor())
-                    }
-                    var dataNils : [String] = []
-                    for key in self.firebaseKeys {
-                        if t[key] == nil && !self.ignoreKeys.contains(key) {
-                            dataNils.append(key)
-                        }
-                    }
-                    if dataNils.count == 2 {
-                        self.updateWithText("\nTeam \(t["number"]!) is missing datapoint: \(dataNils[0]).", color: UIColor.orangeColor())
-                        self.updateWithText("\nTeam \(t["number"]!) is missing datapoint: \(dataNils[1]).", color: UIColor.orangeColor())
-                    } else if dataNils.count == 1 {
-                        self.updateWithText("\nTeam \(t["number"]!) is missing datapoint: \(dataNils[0]).", color: UIColor.orangeColor())
-                    } else if dataNils.count > 2 {
-                        self.updateWithText("\nTeam \(t["number"]!) is missing many datapoints.", color: UIColor.redColor())
+            for team in snap.children.allObjects {
+                let t = (team as! FDataSnapshot).value as! [String: AnyObject]
+                if t["selectedImageUrl"] == nil {
+                    self.updateWithText("\nTeam \(t["number"]!) has no selected image URL.", color: UIColor.blueColor())
+                }
+                var dataNils : [String] = []
+                for key in self.firebaseKeys {
+                    if t[key] == nil && !self.ignoreKeys.contains(key) {
+                        dataNils.append(key)
                     }
                 }
+                for dataNil in dataNils {
+                    self.updateWithText("\nTeam \(t["number"]!) is missing datapoint: \(dataNil).", color: UIColor.orangeColor())
+                }
+            }
         }
     }
     

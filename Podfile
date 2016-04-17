@@ -15,8 +15,9 @@ target 'DropboxPhotoTest' do
     pod 'HanekeSwift'
     pod 'SwiftPhotoGallery'
     pod 'Instabug'
-
-
+    pod 'MWPhotoBrowser'
+    
+    
 end
 
 target 'DropboxPhotoTestUITests' do

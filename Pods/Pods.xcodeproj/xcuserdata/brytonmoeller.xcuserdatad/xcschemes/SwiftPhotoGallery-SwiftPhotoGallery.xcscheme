@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7B6F7133B6ADE27C0BB04FFE'
+               BlueprintIdentifier = 'C5245A57B0B5740BEDB5591D'
                BlueprintName = 'SwiftPhotoGallery-SwiftPhotoGallery'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'SwiftPhotoGallery.bundle'>

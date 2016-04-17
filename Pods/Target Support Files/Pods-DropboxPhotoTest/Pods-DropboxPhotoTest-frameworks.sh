@@ -85,9 +85,13 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-DropboxPhotoTest/Alamofire.framework"
+  install_framework "Pods-DropboxPhotoTest/DACircularProgress.framework"
   install_framework "Pods-DropboxPhotoTest/Firebase.framework"
   install_framework "Pods-DropboxPhotoTest/Haneke.framework"
   install_framework "Pods-DropboxPhotoTest/JSONHelper.framework"
+  install_framework "Pods-DropboxPhotoTest/MBProgressHUD.framework"
+  install_framework "Pods-DropboxPhotoTest/MWPhotoBrowser.framework"
+  install_framework "Pods-DropboxPhotoTest/SDWebImage.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftPhotoGallery.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftyDropbox.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftyJSON.framework"
@@ -95,9 +99,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-DropboxPhotoTest/Alamofire.framework"
+  install_framework "Pods-DropboxPhotoTest/DACircularProgress.framework"
   install_framework "Pods-DropboxPhotoTest/Firebase.framework"
   install_framework "Pods-DropboxPhotoTest/Haneke.framework"
   install_framework "Pods-DropboxPhotoTest/JSONHelper.framework"
+  install_framework "Pods-DropboxPhotoTest/MBProgressHUD.framework"
+  install_framework "Pods-DropboxPhotoTest/MWPhotoBrowser.framework"
+  install_framework "Pods-DropboxPhotoTest/SDWebImage.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftPhotoGallery.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftyDropbox.framework"
   install_framework "Pods-DropboxPhotoTest/SwiftyJSON.framework"

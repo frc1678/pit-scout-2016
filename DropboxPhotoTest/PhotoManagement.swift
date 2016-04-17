@@ -28,7 +28,11 @@ class PhotoManager : NSObject {
     let dropboxClient : DropboxClient
     let photoSaver = CustomPhotoAlbum()
     let dropboxURLBeginning = "https://dl.dropboxusercontent.com/u/63662632/"
-    var activeImages = [[String: AnyObject]]()
+    var activeImages = [[String: AnyObject]]() {
+        didSet {
+            
+        }
+    }
     
     var syncButton = UIButton()
     
@@ -51,7 +55,7 @@ class PhotoManager : NSObject {
     
     
     func updatePhotoCache(fileObject: [String: AnyObject], teamNum: Int) {
-        self.getPhotosForTeamNum(teamNum) { [unowned self] _ in
+        self.getPhotosForTeamNum(teamNum, download: false) { [unowned self] _ in
             let i = Int((fileObject["name"]?.componentsSeparatedByString(".")[0].componentsSeparatedByString("_")[1])!)
             
             if i >= self.activeImages.count {
@@ -134,36 +138,45 @@ class PhotoManager : NSObject {
         }
     }
     
-    func getPhotosForTeamNum(number: Int, success: ()->()) {
+    func getPhotosForTeamNum(number: Int, download: Bool, success: ()->()) {
         //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
         if self.mayKeepWorking {
-            UIApplication.sharedApplication().performSelector("_performMemoryWarning")
-
-            self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                    if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                        self.activeImages = images
-                        images.removeAll()
-                        self.numberOfPhotosForTeam[number] = self.activeImages.count
-                        success()
-                    }
-                })
-                }.onFailure { [unowned self] (E) -> () in
-                    self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
-                    self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-                            if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
-                                images.removeAll()
-                                self.activeImages = images
-                                self.numberOfPhotosForTeam[number] = self.activeImages.count
-                                success()
-                            }
-                        })
-                        }.onFailure { (E) -> () in
-                            print("Failed to fetch photos for team \(number)")
+            //UIApplication.sharedApplication().performSelector("_performMemoryWarning")
+            func fetchPhotos(number: Int, success: ()->()) {
+                self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                        if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                            self.activeImages = images
+                            images.removeAll()
+                            self.numberOfPhotosForTeam[number] = self.activeImages.count
                             success()
-                    }
+                        }
+                    })
+                    }.onFailure { [unowned self] (E) -> () in
+                        self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject([[String: AnyObject]]()), key: "photos\(number)")
+                        self.cache.fetch(key: "photos\(number)").onSuccess { [unowned self] (data) -> () in
+                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                                if var images = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [[String: AnyObject]] {
+                                    images.removeAll()
+                                    self.activeImages = images
+                                    self.numberOfPhotosForTeam[number] = self.activeImages.count
+                                    success()
+                                }
+                            })
+                            }.onFailure { (E) -> () in
+                                print("Failed to fetch photos for team \(number)")
+                                success()
+                        }
+                }
             }
+            if download && self.isConnectedToNetwork() {
+                self.downloadPhotosForTeamNum(number, success: {
+                    fetchPhotos(number, success: success)
+                    }, index: 0)
+            } else {
+                fetchPhotos(number, success: success)
+            }
+            
         }
         //})
     }
@@ -212,8 +225,10 @@ class PhotoManager : NSObject {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
             if(self.mayKeepWorking) {
-                UIApplication.sharedApplication().performSelector("_performMemoryWarning")
-
+                if self.currentlyNotifyingTeamNumber == 0 {
+                    UIApplication.sharedApplication().performSelector("_performMemoryWarning")
+                }
+                
                 let name = fileForTeam["name"] as! String
                 var data = fileForTeam["data"] as! NSData
                 var sharedURL = "Not Uploaded"
@@ -223,7 +238,7 @@ class PhotoManager : NSObject {
                 self.dropboxClient.files.upload(path: path, body: data).response { response, error in
                     if let metaData = response {
                         data = NSData()
-                        print("*** Upload file: \(metaData) ****")
+                        print("Upload file: \(metaData.name)")
                         sharedURL = self.makeURLForFileName(name)
                         self.putPhotoLinkToFirebase(sharedURL, teamNumber: teamNumber, selectedImage: false)
                         self.updateUrl(teamNumber, callback: { _ in })
@@ -257,10 +272,9 @@ class PhotoManager : NSObject {
     func fetchPhotosAndUploadForTeam(ind: Int, successOrFail: ()->()) {
         if self.teamNumbers.count > ind {
             let teamNumber = self.teamNumbers[ind]
-            self.getPhotosForTeamNum(teamNumber, success: { [unowned self] in
-                print("Fetched Photos for \(teamNumber)")
+            self.getPhotosForTeamNum(teamNumber, download: false, success: { [unowned self] in
                 //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                print("Team \(teamNumber) has \(self.len(self.activeImages)) images.")
+                print("Fetched: Team \(teamNumber) has \(self.len(self.activeImages)) images.")
                 if self.len(self.activeImages) == 0 {
                     successOrFail()
                 } else {
@@ -328,33 +342,38 @@ class PhotoManager : NSObject {
     }
     
     /*func addUrlToList(teamNumber: Int, url: String, callback: ()->()) {
-        self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
-            if let nurls = urls {
-                nurls.addObject(url)
-                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(nurls), key: "sharedURLs\(teamNumber)")
-                callback()
-            } else {
-                print("Could Not get shared urls for \(teamNumber)")
-            }
-        }
+    self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
+    if let nurls = urls {
+    nurls.addObject(url)
+    self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(nurls), key: "sharedURLs\(teamNumber)")
+    callback()
+    } else {
+    print("Could Not get shared urls for \(teamNumber)")
+    }
+    }
     }*/
     
     func updateUrl(teamNumber: Int, callback: (i: Int)->()) {
         self.getSharedURLsForTeam(teamNumber) { [unowned self] (urls) -> () in
-            if let newURLs = urls {
+            if let oldURLs = urls {
                 let i : Int
-                if newURLs.count > 3 {
+                if oldURLs.count == 3 {
                     i = 0
+                } else if oldURLs.count < 3 {
+                    i = oldURLs.count //If there are currently two images, we want i to be 2, because that will be the index of the third image
                 } else {
-                    i = newURLs.count
+                    print("This should not happen")
+                    i = 0
                 }
                 let url = self.makeURLForTeamNumAndImageIndex(teamNumber, imageIndex: i)
-                if newURLs.count <= i {
-                    newURLs.addObject(url)
+                if oldURLs.count - 1 == i {
+                    oldURLs[i] = url
+                } else if oldURLs.count == i {
+                    oldURLs.addObject(url)
                 } else {
-                    newURLs[i] = url
-                }
-                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(newURLs), key: "sharedURLs\(teamNumber)", success: { _ in
+                    oldURLs[i] = url
+                } //Old URLs is actually new urls at this point
+                self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(oldURLs), key: "sharedURLs\(teamNumber)", success: { _ in
                     callback(i: i)
                 })
                 
@@ -409,13 +428,16 @@ class PhotoManager : NSObject {
     }
     
     func putPhotoLinkToFirebase(link: String, teamNumber: Int, selectedImage: Bool) {
-        
         let teamFirebase = self.teamsFirebase.childByAppendingPath("\(teamNumber)")
         let currentURLs = teamFirebase?.childByAppendingPath("otherImageUrls")
-        currentURLs!.childByAutoId().setValue(link)
-        if(selectedImage) {
-        teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
-        }
+        currentURLs?.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+            if snap.childrenCount < 3 {
+                currentURLs!.childByAutoId().setValue(link)
+            }
+            if(selectedImage) {
+                teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
+            }
+        })
     }
     
     func sync() {
@@ -426,9 +448,10 @@ class PhotoManager : NSObject {
         //self.fetchPhotosFromDropbox(0)
         //print("TESTING ONLY ALSKDFJ DSLKFHJKJSKLF JSKLD JFLK SDKLFJKSDFHJSDFHLSDHJF KLSJDHFLKJDF LKJSDL HJSDKHFL SDKJFL JSDHFL KJSDHFLKJSDHFL KJSHDLK FHSDJFHLKSDJFHSLDJKF JKLSDF KJSDF KLJSDF KJLSDFL KJDSHF JKSDHFKJSDJFHLKSJ DHFJSDJKFHLKJSDFHLKSJDHFJKSDHJLHLSDKJFHKJLSDHFJJKSDHFSKJHFSDLKJFHSDLKJFHSDJKLFHSDJKFHDJKHFKJLSDHFLKJHDFJKLSDHFJKLSDHFKLJSDHFLJKHSDKJLHFJKLHKLJHJLKHFKLJHG HJESFDSJKL LGIUSERJGHD LFKJ<DGLKJM<DHJKF BKJS <DGFBKJHSMD FJM D BFNBDFNBVDGXBFJ<BD")
         self.teamNumbers = self.teamNumbers.reverse()
-        self.uploadAllPhotos(0, callback: { [unowned self] in
-            self.fetchPhotosFromDropbox(0)
-            })
+        self.uploadAllPhotos(0, callback: {
+            self.syncButton.enabled = true
+            NSNotificationCenter.defaultCenter().postNotificationName("titleUpdated", object: "Teams")
+        })
     }
     
     

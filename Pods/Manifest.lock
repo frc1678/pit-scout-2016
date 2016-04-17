@@ -1,10 +1,19 @@
 PODS:
   - Alamofire (2.0.2)
+  - DACircularProgress (2.3.1)
   - Firebase (2.4.3)
   - firebase-schema-2016-ios (0.0.1)
   - HanekeSwift (0.10.0)
   - Instabug (5.2.2)
   - JSONHelper (1.7.0)
+  - MBProgressHUD (0.9.2)
+  - MWPhotoBrowser (2.1.1):
+    - DACircularProgress (~> 2.3)
+    - MBProgressHUD (~> 0.9)
+    - SDWebImage (!= 3.7.2, ~> 3.7)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
   - SwiftPhotoGallery (2.0.0)
   - SwiftyDropbox (2.0.0):
     - Alamofire (~> 2.0.2)
@@ -16,6 +25,7 @@ DEPENDENCIES:
   - HanekeSwift
   - Instabug
   - JSONHelper
+  - MWPhotoBrowser
   - SwiftPhotoGallery
   - SwiftyDropbox
   - SwiftyJSON
@@ -31,11 +41,15 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
+  DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   Firebase: 48179995b561e2262c5d4060ecdffca45fbbff8b
   firebase-schema-2016-ios: 172ffba71ecfd9b77c363c79960458a0e846907d
   HanekeSwift: d6f5bdf9dbdbbc09d59623b2c1d533e46463dd4d
   Instabug: 01bf89d7869b79b15795c847bb0f79ac96d7ae67
   JSONHelper: b71808273ac60fb9e1878eb115370b0faac14a81
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MWPhotoBrowser: ba0d0c09ffda3a7ea10093518738c502c1c7141c
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SwiftPhotoGallery: 9e904ad9d5bd38bc2c547a5f483143d05286ddcf
   SwiftyDropbox: 9f95901f03881942603d7ca1e7366e962629fb66
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a

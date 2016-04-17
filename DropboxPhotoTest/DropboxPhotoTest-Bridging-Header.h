@@ -3,3 +3,4 @@
 //
 
 #import <Instabug/Instabug.h>
+#import <MWPhotoBrowser/MWPhotoBrowser.h>

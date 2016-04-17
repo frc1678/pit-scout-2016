@@ -336,6 +336,11 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     }
     
     
-
+    override func viewWillAppear(animated: Bool) {
+        if self.photoManager != nil {
+            self.photoManager?.currentlyNotifyingTeamNumber = 0
+        }
+        UIApplication.sharedApplication().performSelector("_performMemoryWarning")
+    }
     
 }

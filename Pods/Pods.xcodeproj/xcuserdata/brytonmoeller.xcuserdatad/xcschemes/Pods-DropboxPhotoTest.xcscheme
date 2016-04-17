@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B2B0DC5146FA5100BF70FC50'
+               BlueprintIdentifier = '87B6EC597189DF6015EF56B7'
                BlueprintName = 'Pods-DropboxPhotoTest'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_DropboxPhotoTest.framework'>

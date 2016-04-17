@@ -14,7 +14,7 @@ import SwiftPhotoGallery
 import MWPhotoBrowser
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate, SwiftPhotoGalleryDataSource, SwiftPhotoGalleryDelegate, MWPhotoBrowserDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate, MWPhotoBrowserDelegate {
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
@@ -38,7 +38,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var firebase : Firebase!
     var ourTeam : Firebase!
     var photos = [MWPhoto]()
-    var tempPhotos = [UIImage]() //So that the photos dataset cant change while we are viewing them
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
     var firebaseKeys = [String]()
     var numberOfImagesOnFirebase = -1
@@ -47,7 +46,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
         self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
-        //self.scrollView.scrollEnabled = false //THIS IS FOR WHEN THERE IS NOT MUCH DATA ON THE SCREEN, FOR CVR WE ACTUALLY NEEDED SCROLLING
         //self.imageButton.setTitle(self.imageButton.titleLabel?.text, forState: UIControlState.Normal)
         //self.imageButton.setTitleColor(, forState: UIControlState.Normal)
         
@@ -55,7 +53,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.photoManager.currentlyNotifyingTeamNumber = self.number
         
         self.photoManager.callbackForPhotoCasheUpdated = { () in
-            self.updateMyPhotos(false)
+            self.updateMyPhotos({})
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.imageButton.enabled = true
             })
@@ -88,10 +86,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.ourTeam.childByAppendingPath("otherImageUrls").observeEventType(.Value, withBlock: { (snap) -> Void in
             if self.numberOfImagesOnFirebase == -1 { //This is the first time that the firebase event gets called, it gets called once nomatter what when you first get here in code.
                 self.numberOfImagesOnFirebase = Int(snap.childrenCount)
-                self.updateMyPhotos(true)
+                self.updateMyPhotos({})
             } else {
                 self.numberOfImagesOnFirebase = Int(snap.childrenCount)
-                self.updateMyPhotos(false)
+                self.updateMyPhotos({})
             }
         })
         
@@ -110,53 +108,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         browser.startOnGrid = false; // Whether to start on the grid of thumbnails instead of the first photo (defaults to NO)
         browser.autoPlayOnAppear = false; // Auto-play first video
         
-        
-               // Present
-        
- 
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         
         self.updatePhotoButtonText()
     }
     
-    func updateMyPhotos(download: Bool) {
-        self.photos = []
-        self.tempPhotos = []
-        if self.photos.count < self.numberOfImagesOnFirebase {
-            /*self.photoManager.getPhotosForTeamNum(self.number, download: download, success: { [weak self] in
-                if let weakSelf = self {
-                    for photo : [String: AnyObject] in weakSelf.photoManager.activeImages {
-                        if photo.keys.count > 0 {
-                            weakSelf.photos.append(UIImage(data: photo["data"] as! NSData)!)
-                        }
-                    }
-                    weakSelf.updatePhotoButtonText()
-                }
-                })
-                
-                
-               */
-            self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
-                self.photos.removeAll()
-                self.browser.releaseAllUnderlyingPhotos(false)
-                for url in urls! {
-                    self.photos.append(MWPhoto(URL: NSURL(string: url as! String)))
-                }
+    func updateMyPhotos(callback: ()->()) {
+        self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
+            self.photos.removeAll()
+            for url in urls! {
+                self.photos.append(MWPhoto(URL: NSURL(string: url as! String)))
             }
-            
             self.updatePhotoButtonText()
-
+            callback()
         }
     }
     
     func updatePhotoButtonText() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            //let photosCount : Int = self.photos.count
             self.viewImagesButton.setTitle("View Images: (\(self.numberOfImagesOnFirebase))", forState: UIControlState.Normal)
         }
-        
     }
     
     //MARK: Responding To UI Actions:
@@ -246,39 +218,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {
-        self.updateMyPhotos(false)
-        let nav = UINavigationController(rootViewController: browser)
-        nav.delegate = self
-        self.presentViewController(nav, animated: true, completion: nil)
-
-        /*if self.photos.count > 0 && self.canViewPhotos {
-            self.tempPhotos = self.photos
-            let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
-            presentViewController(gallery, animated: true, completion: nil)
-        }*/
-    }
-    
-    
-    
-    // MARK: SwiftPhotoGalleryDataSource Methods
-    
-    func numberOfImagesInGallery(gallery:SwiftPhotoGallery) -> Int {
-        return self.tempPhotos.count //Actually counting the available ones
+        self.updateMyPhotos { [unowned self] in
+            let nav = UINavigationController(rootViewController: self.browser)
+            nav.delegate = self
+            self.presentViewController(nav, animated: true, completion: {
+                // SDImageCache
+//                SDImageCache
+                self.browser.reloadData()
+            })
+        }
     }
     
     func numberOfPhotosInPhotoBrowser(photoBrowser: MWPhotoBrowser!) -> UInt {
         return UInt(self.photos.count)
-    }
-    
-    func imageInGallery(gallery:SwiftPhotoGallery, forIndex:Int) -> UIImage? {
-        var rotatedImage = UIImage(named: "notAvail")
-        if self.tempPhotos.count > forIndex {
-            let image = self.tempPhotos[forIndex]
-            rotatedImage = UIImage(CGImage: image.CGImage!,
-                scale: 1.0,
-                orientation: UIImageOrientation.Right)
-        }
-        return rotatedImage
     }
     
     func photoBrowser(photoBrowser: MWPhotoBrowser!, photoAtIndex index: UInt, selectedChanged selected: Bool) {
@@ -291,15 +243,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
                 self.photoManager.updateUrl(self.number, callback: {_ in })
-                
-                /*
-                let alert = UIAlertController(title: "Image Not Uploaded", message: "Please wait for the image to be uploaded, before trying to set it as the selected image. If we set the selected image url before the image exists on Dropbox, then the viewers might get confused.", preferredStyle: UIAlertControllerStyle.Alert)
-                // Do something when message is tapped
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                self.dismissViewControllerAnimated(true, completion: nil)
-                self.presentViewController(alert, animated: true, completion: nil)*/
-                
-                
             }
         }
     }
@@ -313,10 +256,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.canViewPhotos = false
         self.imageButton.enabled = false
-        //self.imageButton.imageView?.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
-        //let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        //presentViewController(activityViewController, animated: true, completion: {})
+       
         self.photoManager.photoSaver.saveImage(image)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
@@ -397,6 +338,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return UIInterfaceOrientationMask.Portrait
     }
     
-   
+    
 }
 

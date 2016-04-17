@@ -101,6 +101,9 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 - (void)releaseAllUnderlyingPhotos:(BOOL)preserveCurrent {
     // Create a copy in case this array is modified while we are looping through
     // Release photos
+    
+    [[SDImageCache sharedImageCache] clearDisk]; // clear memory
+
     NSArray *copy = [_photos copy];
     for (id p in copy) {
         if (p != [NSNull null]) {
@@ -600,7 +603,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     
     // Get data
     NSUInteger numberOfPhotos = [self numberOfPhotos];
-    [self releaseAllUnderlyingPhotos:YES];
+    [self releaseAllUnderlyingPhotos:NO];
     [_photos removeAllObjects];
     [_thumbPhotos removeAllObjects];
     for (int i = 0; i < numberOfPhotos; i++) {

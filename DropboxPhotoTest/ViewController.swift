@@ -41,6 +41,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
     var firebaseKeys = [String]()
     var numberOfImagesOnFirebase = -1
+    var notActuallyLeavingViewController = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -197,7 +198,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //MARK: --> Buttons
     @IBAction func cameraButtonPressed(sender: UIButton) {
-        
+        notActuallyLeavingViewController = true
         let picker = UIImagePickerController()
         
         picker.sourceType = .Camera
@@ -207,6 +208,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func didLongPress(recognizer: UIGestureRecognizer) {
+        notActuallyLeavingViewController = true
         if recognizer.state == UIGestureRecognizerState.Ended {
             let picker = UIImagePickerController()
             
@@ -218,12 +220,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func didPressShowMeButton(sender: UIButton) {
+        notActuallyLeavingViewController = true
         self.updateMyPhotos { [unowned self] in
             let nav = UINavigationController(rootViewController: self.browser)
             nav.delegate = self
             self.presentViewController(nav, animated: true, completion: {
                 // SDImageCache
-//                SDImageCache
+                //                SDImageCache
                 self.browser.reloadData()
             })
         }
@@ -254,11 +257,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: Swift Photo Gallery Methods
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        self.canViewPhotos = false
-        self.imageButton.enabled = false
+        notActuallyLeavingViewController = false
+        canViewPhotos = false
+        imageButton.enabled = false
         picker.dismissViewControllerAnimated(true, completion: nil)
-       
-        self.photoManager.photoSaver.saveImage(image)
+        self.photos.append(MWPhoto(image: image))
+        photoManager.photoSaver.saveImage(image)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
             self.photoManager.updateUrl(self.number, callback: { [unowned self] i in
@@ -290,6 +294,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
         }
     }
+    
     
     //MARK: Keyboard UI Methods
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -338,6 +343,39 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return UIInterfaceOrientationMask.Portrait
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        if selectedImageUrl.text == "" && !notActuallyLeavingViewController && photos.count == 1 { // If there is only one image, set the selected image url to that image's url
+            self.selectedImageUrl.text = photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: 0)
+            self.selectedImageEditingEnded(self.selectedImageUrl)
+            /*self.ourTeam.childByAppendingPath("otherImageUrls").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                if let v = snap.value as? [String: String] {
+                    let urls = v.vals
+                    if urls.count > 0 {
+                        self.selectedImageUrl.text = urls[0] as? String
+                        self.selectedImageEditingEnded(self.selectedImageUrl)
+                    } else {
+                        print("This is a problem")
+                    }
+                } else {
+                    
+                }
+            })*/
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        notActuallyLeavingViewController = false
+    }
     
 }
 
+
+extension Dictionary {
+    var vals : [AnyObject] {
+        var v = [AnyObject]()
+        for (_, value) in self {
+            v.append(value as! AnyObject)
+        }
+        return v
+    }
+}

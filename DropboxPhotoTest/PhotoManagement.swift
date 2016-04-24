@@ -398,11 +398,14 @@ class PhotoManager : NSObject {
             fileData = self.getResizedImageDataForImageData(fileData)
         }
         let fileDict : [String: AnyObject] = ["name" : fileName, "data" : fileData, "shouldUpload": shouldUpload]
+
+        
+        
         self.updatePhotoCache(fileDict, teamNum: teamNumber)
         
-        if shouldUpload {
+        //if shouldUpload {
             self.uploadPhoto(fileDict, teamNumber: teamNumber, index: i - 1, success: {})
-        }
+        //}
     }
     
     func isConnectedToNetwork() -> Bool  {
@@ -445,10 +448,11 @@ class PhotoManager : NSObject {
         dispatch_async(dispatch_get_main_queue()) {
             self.syncButton.enabled = false
         }
-        //self.fetchPhotosFromDropbox(0)
-        //print("TESTING ONLY ALSKDFJ DSLKFHJKJSKLF JSKLD JFLK SDKLFJKSDFHJSDFHLSDHJF KLSJDHFLKJDF LKJSDL HJSDKHFL SDKJFL JSDHFL KJSDHFLKJSDHFL KJSHDLK FHSDJFHLKSDJFHSLDJKF JKLSDF KJSDF KLJSDF KJLSDFL KJDSHF JKSDHFKJSDJFHLKSJ DHFJSDJKFHLKJSDFHLKSJDHFJKSDHJLHLSDKJFHKJLSDHFJJKSDHFSKJHFSDLKJFHSDLKJFHSDJKLFHSDJKFHDJKHFKJLSDHFLKJHDFJKLSDHFJKLSDHFKLJSDHFLJKHSDKJLHFJKLHKLJHJLKHFKLJHG HJESFDSJKL LGIUSERJGHD LFKJ<DGLKJM<DHJKF BKJS <DGFBKJHSMD FJM D BFNBDFNBVDGXBFJ<BD")
+        
         self.teamNumbers = self.teamNumbers.reverse()
+        
         self.uploadAllPhotos(0, callback: {
+            //self.fetchPhotosFromDropbox(0) //For Testing Only!
             self.syncButton.enabled = true
             NSNotificationCenter.defaultCenter().postNotificationName("titleUpdated", object: "Teams")
         })

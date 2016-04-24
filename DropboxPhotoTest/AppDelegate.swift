@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         Firebase.defaultConfig().persistenceEnabled = true
         Dropbox.setupWithAppKey("dekmb3lm9fzcd32")
-        Instabug.startWithToken("9a4404f7d21afdefac8e65515daabccf", invocationEvent: IBGInvocationEvent.Shake)
+        Instabug.startWithToken("ab53034b6c6a246e5f5c74f489a49488", invocationEvent: IBGInvocationEvent.Shake)
 
         return true
     }

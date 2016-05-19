@@ -21,7 +21,7 @@ class PhotoManager : NSObject {
     }
     
     var timer : NSTimer = NSTimer()
-    var teamsFirebase : Firebase
+    var teamsFirebase : FIRDatabaseReference
     var numberOfPhotosForTeam = [Int: Int]()
     var callbackForPhotoCasheUpdated = { }
     var currentlyNotifyingTeamNumber = 0
@@ -36,7 +36,7 @@ class PhotoManager : NSObject {
     
     var syncButton = UIButton()
     
-    init(teamsFirebase : Firebase, teamNumbers : [Int], syncButton: UIButton) {
+    init(teamsFirebase : FIRDatabaseReference, teamNumbers : [Int], syncButton: UIButton) {
         
         self.syncButton = syncButton
         self.syncButton.setTitle("WAIT", forState: UIControlState.Disabled)
@@ -431,14 +431,14 @@ class PhotoManager : NSObject {
     }
     
     func putPhotoLinkToFirebase(link: String, teamNumber: Int, selectedImage: Bool) {
-        let teamFirebase = self.teamsFirebase.childByAppendingPath("\(teamNumber)")
-        let currentURLs = teamFirebase?.childByAppendingPath("otherImageUrls")
-        currentURLs?.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+        let teamFirebase = self.teamsFirebase.child("\(teamNumber)")
+        let currentURLs = teamFirebase.child("otherImageUrls")
+        currentURLs.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
             if snap.childrenCount < 3 {
-                currentURLs!.childByAutoId().setValue(link)
+                currentURLs.childByAutoId().setValue(link)
             }
             if(selectedImage) {
-                teamFirebase?.childByAppendingPath("selectedImageUrl").setValue(link)
+                teamFirebase.child("selectedImageUrl").setValue(link)
             }
         })
     }
@@ -475,9 +475,6 @@ class PhotoManager : NSObject {
 
 extension UIImage {
     public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
-        let radiansToDegrees: (CGFloat) -> CGFloat = {
-            return $0 * (180.0 / CGFloat(M_PI))
-        }
         let degreesToRadians: (CGFloat) -> CGFloat = {
             return $0 / 180.0 * CGFloat(M_PI)
         }

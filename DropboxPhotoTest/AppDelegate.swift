@@ -18,10 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        Firebase.defaultConfig().persistenceEnabled = true
+        FIRApp.configure()
+        FIRDatabase.database().persistenceEnabled = true
         Dropbox.setupWithAppKey("dekmb3lm9fzcd32")
         Instabug.startWithToken("ab53034b6c6a246e5f5c74f489a49488", invocationEvent: IBGInvocationEvent.Shake)
-
         return true
     }
 

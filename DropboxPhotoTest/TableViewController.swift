@@ -20,7 +20,7 @@ let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", 
 class TableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     
     let cellReuseId = "teamCell"
-    var firebase : Firebase?
+    var firebase = FIRDatabase.database().reference()
     var teams : NSMutableArray = []
     var scoutedTeamInfo : [[String: Int]] = []   // ["num": 254, "hasBeenScouted": 0]
         
@@ -30,7 +30,9 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     var urlsDict : [Int : NSMutableArray] = [Int: NSMutableArray]()
     var dontNeedNotification = false
     let cache = Shared.dataCache
-    
+    var refHandle = FIRDatabaseHandle()
+    let storageRef = FIRStorage.storage().referenceForURL("gs://firebase-scouting-2016.appspot.com/")
+
     @IBOutlet weak var uploadPhotos: UIButton!
     
     override func viewDidLoad() {
@@ -45,7 +47,8 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         }
         
         
-            
+        // Get a reference to the storage service, using the default Firebase App
+        // Create a storage reference from our storage service
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "didLongPress:")
         self.tableView.addGestureRecognizer(longPress)
@@ -54,17 +57,14 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         tableView.dataSource = self
         
         
-        self.firebase = Firebase(url: "https://1678-scouting-2016.firebaseio.com/Teams")
         if self.isConnectedToNetwork() {
-            self.firebase?.authWithCustomToken(compToken, withCompletionBlock: { (E, A) -> Void in
-                self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
-                    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            FIRAuth.auth()?.signInWithCustomToken(compToken, completion: { (U, E) -> Void in
+                self.refHandle = self.firebase.observeEventType(.Value, withBlock: { (snap) -> Void in
                     self.setup(snap)
                 })
             })
         } else {
-            self.firebase?.observeEventType(.Value, withBlock: { (snap) -> Void in
-                //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.refHandle = self.firebase.observeEventType(.Value, withBlock: { (snap) -> Void in
                 self.setup(snap)
             })
         }
@@ -77,13 +77,13 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         }
     }
     
-    func setup(snap: FDataSnapshot) {
+    func setup(snap: FIRDataSnapshot) {
         self.teams = NSMutableArray()
         self.scoutedTeamInfo = []
         self.teamNums = []
         let teams = snap.children.allObjects
         for i in 0..<teams.count {
-            let team = (teams[i] as! FDataSnapshot).value as! [String: AnyObject]
+            let team = (teams[i] as! FIRDataSnapshot).value as! [String: AnyObject]
             //let i = teams.indexOf { (($0 as! FDataSnapshot).value as! [String: AnyObject])["number"] as? Int == team["number"] as? Int }
             self.teams.addObject(team)
             if let teamNum = team["number"] as? Int {
@@ -156,7 +156,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     func setupphotoManager() {
 
         if self.photoManager == nil {
-            self.photoManager = PhotoManager(teamsFirebase: self.firebase!, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)
+            self.photoManager = PhotoManager(teamsFirebase: self.firebase, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)
         }
         for (teamNum, urls) in urlsDict {
             self.photoManager?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
@@ -289,14 +289,14 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             }
             let teamViewController = segue.destinationViewController as! ViewController
             
-            let teamFB = self.firebase?.childByAppendingPath("\(number)")
+            let teamFB = self.firebase.child("\(number)")
             teamViewController.ourTeam = teamFB
             teamViewController.firebase = self.firebase
             teamViewController.number = number
             teamViewController.title = "\(number)"
             teamViewController.photoManager = self.photoManager
             teamViewController.firebaseKeys = firebaseKeys
-            teamFB!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+            teamFB.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                 teamViewController.name = snap.childSnapshotForPath("name").value as! String
             })
         }
@@ -305,7 +305,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
             popoverViewController.popoverPresentationController!.delegate = self
             if let missingDataViewController = segue.destinationViewController as? MissingDataViewController {
-                self.firebase!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                self.firebase.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                     missingDataViewController.snap = snap
                 })
             }

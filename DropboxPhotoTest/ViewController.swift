@@ -35,8 +35,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var numberOfWheels = Int()
     var pitOrg  = Int()
     var number : Int!
-    var firebase : Firebase!
-    var ourTeam : Firebase!
+    var firebase = FIRDatabase.database().reference()
+    var firebaseStorageRef : FIRStorageReference!
+    var ourTeam : FIRDatabaseReference!
     var photos = [MWPhoto]()
     var canViewPhotos : Bool = true //This is for that little time in between when the photo is taken and when it has been passed over to the uploader controller.
     var firebaseKeys = [String]()
@@ -62,7 +63,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "didLongPress:")
         self.imageButton.addGestureRecognizer(longPress)
-        
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
             //self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)") //Sometimes it is too long to fit
             for key in self.firebaseKeys {
@@ -84,7 +84,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         })
         
-        self.ourTeam.childByAppendingPath("otherImageUrls").observeEventType(.Value, withBlock: { (snap) -> Void in
+        self.ourTeam.child("otherImageUrls").observeEventType(.Value, withBlock: { (snap) -> Void in
             if self.numberOfImagesOnFirebase == -1 { //This is the first time that the firebase event gets called, it gets called once nomatter what when you first get here in code.
                 self.numberOfImagesOnFirebase = Int(snap.childrenCount)
                 self.updateMyPhotos({})
@@ -135,21 +135,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //MARK: Responding To UI Actions:
     //MARK: --> Text Fields
     @IBAction func pitNotesEditingEnded(sender: UITextField) {
-        self.ourTeam?.childByAppendingPath("pitNotes").setValue(self.pitNotes.text)
+        self.ourTeam?.child("pitNotes").setValue(self.pitNotes.text)
     }
     
     @IBAction func numWheelsEditingEnded(sender: UITextField) {
         if(sender.text != "") {
             if let numWheels = Int(sender.text!) {
                 self.numberOfWheels = numWheels
-                self.ourTeam?.childByAppendingPath("pitNumberOfWheels").setValue(self.numberOfWheels)
+                self.ourTeam?.child("pitNumberOfWheels").setValue(self.numberOfWheels)
             }
         }
     }
     
     @IBAction func bumperHeightDidChange(sender: UITextField) {
         if let num = Float(self.pitBumperHeight.text!)  {
-            self.ourTeam?.childByAppendingPath("pitBumperHeight").setValue(Float(num))
+            self.ourTeam?.child("pitBumperHeight").setValue(Float(num))
             self.pitBumperHeight.backgroundColor = UIColor.whiteColor()
         } else {
             self.pitBumperHeight.backgroundColor = UIColor.redColor()
@@ -157,12 +157,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func selectedImageEditingEnded(sender: UITextField) {
-        self.ourTeam?.childByAppendingPath("selectedImageUrl").setValue(self.selectedImageUrl.text)
+        self.ourTeam?.child("selectedImageUrl").setValue(self.selectedImageUrl.text)
     }
     
     @IBAction func pitAvailableWeightDidChange(sender: AnyObject) {
         if let num = Float(self.pitAvailableWeight.text!)  {
-            self.ourTeam?.childByAppendingPath("pitAvailableWeight").setValue(Float(num))
+            self.ourTeam?.child("pitAvailableWeight").setValue(Float(num))
             self.pitAvailableWeight.backgroundColor = UIColor.whiteColor()
         } else {
             self.pitAvailableWeight.backgroundColor = UIColor.redColor()
@@ -172,28 +172,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //MARK: --> Segmented Controls
     @IBAction func pitProgrammingLanguageDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.childByAppendingPath("pitProgrammingLanguage").setValue(sender.selectedSegmentIndex)
+        self.ourTeam?.child("pitProgrammingLanguage").setValue(sender.selectedSegmentIndex)
     }
     
     @IBAction func lowBarPotentialDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.childByAppendingPath("pitPotentialLowBarCapability").setValue(sender.selectedSegmentIndex)
+        self.ourTeam?.child("pitPotentialLowBarCapability").setValue(sender.selectedSegmentIndex)
     }
     
     @IBAction func pitOrgValueChanged(sender: UISegmentedControl) {
         if self.pitOrg != sender.selectedSegmentIndex {
             self.pitOrg = sender.selectedSegmentIndex
-            self.ourTeam?.childByAppendingPath("pitOrganization").setValue(sender.selectedSegmentIndex)
+            self.ourTeam?.child("pitOrganization").setValue(sender.selectedSegmentIndex)
         }
         
     }
     
     @IBAction func midlineBallCheesecakePotentialDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.childByAppendingPath("pitPotentialMidlineBallCapability").setValue(sender.selectedSegmentIndex)
+        self.ourTeam?.child("pitPotentialMidlineBallCapability").setValue(sender.selectedSegmentIndex)
     }
     
     //MARK: --> Switches
     @IBAction func lowBarTestResultChanged(sender: UISwitch) {
-        self.ourTeam.childByAppendingPath("pitLowBarCapability").setValue(sender.on)
+        self.ourTeam.child("pitLowBarCapability").setValue(sender.on)
     }
     
     //MARK: --> Buttons
@@ -263,10 +263,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.photos.append(MWPhoto(image: image))
         photoManager.photoSaver.saveImage(image)
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
             self.photoManager.updateUrl(self.number, callback: { [unowned self] i in
-                self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: i), teamNumber: self.number, shouldUpload: true)
+                _ = self.firebaseStorageRef.child(self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: i)).putData(UIImagePNGRepresentation(image)!, metadata: nil) { metadata, error in
+                    if (error != nil) {
+                        // Uh-oh, an error occurred!
+                    } else {
+                        // Metadata contains file metadata such as size, content-type, and download URL.
+                        let downloadURL = metadata!.downloadURL
+                        print(downloadURL)
+                    }
+                }
+                
+                //self.photoManager.addFileToLineup(UIImagePNGRepresentation(image)!, fileName: , teamNumber: self.number, shouldUpload: true)
                 self.canViewPhotos = true
                 })
         })
@@ -347,7 +358,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if selectedImageUrl.text == "" && !notActuallyLeavingViewController && photos.count == 1 { // If there is only one image, set the selected image url to that image's url
             self.selectedImageUrl.text = photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: 0)
             self.selectedImageEditingEnded(self.selectedImageUrl)
-            /*self.ourTeam.childByAppendingPath("otherImageUrls").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+            /*self.ourTeam.child("otherImageUrls").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                 if let v = snap.value as? [String: String] {
                     let urls = v.vals
                     if urls.count > 0 {

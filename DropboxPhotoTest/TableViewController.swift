@@ -20,10 +20,10 @@ let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", 
 class TableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     
     let cellReuseId = "teamCell"
-    var firebase = FIRDatabase.database().reference()
+    var firebase : FIRDatabaseReference?
     var teams : NSMutableArray = []
     var scoutedTeamInfo : [[String: Int]] = []   // ["num": 254, "hasBeenScouted": 0]
-        
+    
     var teamNums = [Int]()
     var timer = NSTimer()
     var photoManager : PhotoManager?
@@ -31,14 +31,13 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     var dontNeedNotification = false
     let cache = Shared.dataCache
     var refHandle = FIRDatabaseHandle()
-    let storageRef = FIRStorage.storage().referenceForURL("gs://firebase-scouting-2016.appspot.com/")
-
+    
     @IBOutlet weak var uploadPhotos: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.allowsSelection = false //You can select once we are done setting up the photo uploader object
-        
+        firebase = FIRDatabase.database().reference()
         if(Dropbox.authorizedClient == nil) {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupphotoManager", name: "dropbox_authorized", object: nil)
             Dropbox.authorizeFromController(self)
@@ -55,19 +54,18 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        
-        if self.isConnectedToNetwork() {
-            FIRAuth.auth()?.signInWithCustomToken(compToken, completion: { (U, E) -> Void in
-                self.refHandle = self.firebase.observeEventType(.Value, withBlock: { (snap) -> Void in
+        FIRAuth.auth()?.signInWithEmail("1678programming@gmail.com", password: "Squeezecrush1", completion: { (U, E) -> Void in
+            if E?.description != nil {
+                print(E?.description)
+            } else {
+                self.firebase!.observeEventType(.Value, withBlock: { (snap) -> Void in
                     self.setup(snap)
                 })
-            })
-        } else {
-            self.refHandle = self.firebase.observeEventType(.Value, withBlock: { (snap) -> Void in
-                self.setup(snap)
-            })
-        }
+            }
+        })
+        FIRAuth.auth()?.signInWithCustomToken(compToken, completion: { (U, E) -> Void in
+            
+        })
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTitle:", name: "titleUpdated", object: nil)
     }
     
@@ -101,25 +99,25 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
                 }
                 if(self.scoutedTeamInfo.count > i) {
                     /*if(self.teamHasBeenPitScouted(team)) {
-                        self.scoutedTeamInfo[i]["hasBeenScouted"] = 1
+                    self.scoutedTeamInfo[i]["hasBeenScouted"] = 1
                     } else {
-                        self.scoutedTeamInfo[i]["hasBeenScouted"] = 0
+                    self.scoutedTeamInfo[i]["hasBeenScouted"] = 0
                     }*/
                 } else {
                     print("ERROR")
-                   /* let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
+                    /* let scoutedTeamInfoDict = ["num": teamNum, "hasBeenScouted": -1]
                     self.scoutedTeamInfo.append(scoutedTeamInfoDict)
                     if(self.teamHasBeenPitScouted(team as! FDataSnapshot)) {
-                        self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
+                    self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 1
                     } else {
-                        self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
+                    self.scoutedTeamInfo[t.index]["hasBeenScouted"] = 0
                     }*/
                 }
                 
             } else {
                 print("No Num")
             }
-
+            
             
         }
         
@@ -148,15 +146,15 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             
             })
         //self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(scoutedTeamInfo), key: "scoutedTeamInfo")
-
+        
         //})
-
+        
     }
     
     func setupphotoManager() {
-
+        
         if self.photoManager == nil {
-            self.photoManager = PhotoManager(teamsFirebase: self.firebase, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)
+            self.photoManager = PhotoManager(teamsFirebase: self.firebase!, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)
         }
         for (teamNum, urls) in urlsDict {
             self.photoManager?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
@@ -253,13 +251,13 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
                         scoutedTeamInfo[scoutedTeamInfoIndex!]["hasBeenScouted"] = 1
                     }
                     self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(scoutedTeamInfo), key: "scoutedTeamInfo")
-
+                    
                     self.tableView.reloadData()
                 }
             }
         }
     }
-
+    
     // MARK:  UITableViewDelegate Methods
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -289,9 +287,9 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             }
             let teamViewController = segue.destinationViewController as! ViewController
             
-            let teamFB = self.firebase.child("\(number)")
+            let teamFB = self.firebase!.child("\(number)")
             teamViewController.ourTeam = teamFB
-            teamViewController.firebase = self.firebase
+            teamViewController.firebase = self.firebase!
             teamViewController.number = number
             teamViewController.title = "\(number)"
             teamViewController.photoManager = self.photoManager
@@ -305,7 +303,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
             popoverViewController.popoverPresentationController!.delegate = self
             if let missingDataViewController = segue.destinationViewController as? MissingDataViewController {
-                self.firebase.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                self.firebase!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                     missingDataViewController.snap = snap
                 })
             }

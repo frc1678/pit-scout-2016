@@ -17,6 +17,7 @@
 		192BEAD71C3463BA00992A8A /* DropboxPhotoTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAD61C3463BA00992A8A /* DropboxPhotoTestTests.swift */; };
 		192BEAE21C3463BA00992A8A /* DropboxPhotoTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAE11C3463BA00992A8A /* DropboxPhotoTestUITests.swift */; };
 		194587941C7D326D00507019 /* PhotoLibrarySaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194587931C7D326D00507019 /* PhotoLibrarySaver.swift */; };
+		197872261CEEBBA40036F118 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 197872251CEEBBA40036F118 /* GoogleService-Info.plist */; };
 		19A286201C6916160039C0A4 /* PhotoManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A2861F1C6916160039C0A4 /* PhotoManagement.swift */; };
 		19A6697C1C51E9D60044D1F2 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697B1C51E9D60044D1F2 /* libc++.tbd */; };
 		19A6697E1C51E9E50044D1F2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */; };
@@ -68,6 +69,7 @@
 		192BEAE31C3463BA00992A8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		194587931C7D326D00507019 /* PhotoLibrarySaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrarySaver.swift; sourceTree = "<group>"; };
 		19498EDF1CAE174600CF5236 /* DropboxPhotoTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DropboxPhotoTest-Bridging-Header.h"; sourceTree = "<group>"; };
+		197872251CEEBBA40036F118 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		19A2861F1C6916160039C0A4 /* PhotoManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoManagement.swift; sourceTree = "<group>"; };
 		19A6697B1C51E9D60044D1F2 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -169,6 +171,7 @@
 				192BEACD1C3463B900992A8A /* Info.plist */,
 				192596BE1C59C51D00C4A8EE /* firebase-schema-2016-ios.swift */,
 				19498EDF1CAE174600CF5236 /* DropboxPhotoTest-Bridging-Header.h */,
+				197872251CEEBBA40036F118 /* GoogleService-Info.plist */,
 			);
 			path = DropboxPhotoTest;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 			files = (
 				192BEACC1C3463B900992A8A /* LaunchScreen.storyboard in Resources */,
 				192BEAC91C3463B900992A8A /* Assets.xcassets in Resources */,
+				197872261CEEBBA40036F118 /* GoogleService-Info.plist in Resources */,
 				192BEAC71C3463B900992A8A /* Main.storyboard in Resources */,
 				19EEDCD21CE584440057AA96 /* PSUITextInputView.xib in Resources */,
 			);

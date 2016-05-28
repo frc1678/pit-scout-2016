@@ -54,18 +54,16 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         
         tableView.delegate = self
         tableView.dataSource = self
-        FIRAuth.auth()?.signInWithEmail("1678programming@gmail.com", password: "Squeezecrush1", completion: { (U, E) -> Void in
-            if E?.description != nil {
-                print(E?.description)
-            } else {
-                self.firebase!.observeEventType(.Value, withBlock: { (snap) -> Void in
-                    self.setup(snap)
-                })
-            }
+        
+        self.firebase = FIRDatabase.database().reference()
+        
+        self.firebase!.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
+            self.setup(snapshot.childSnapshotForPath("Teams"))
         })
-        FIRAuth.auth()?.signInWithCustomToken(compToken, completion: { (U, E) -> Void in
-            
-        })
+        
+        
+        
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTitle:", name: "titleUpdated", object: nil)
     }
     
@@ -287,7 +285,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             }
             let teamViewController = segue.destinationViewController as! ViewController
             
-            let teamFB = self.firebase!.child("\(number)")
+            let teamFB = self.firebase!.child("Teams").child("\(number)")
             teamViewController.ourTeam = teamFB
             teamViewController.firebase = self.firebase!
             teamViewController.number = number
@@ -303,7 +301,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
             popoverViewController.popoverPresentationController!.delegate = self
             if let missingDataViewController = segue.destinationViewController as? MissingDataViewController {
-                self.firebase!.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+                self.firebase!.child("Teams").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                     missingDataViewController.snap = snap
                 })
             }

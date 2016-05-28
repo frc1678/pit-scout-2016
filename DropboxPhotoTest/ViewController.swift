@@ -13,7 +13,6 @@ import SwiftyDropbox
 import SwiftPhotoGallery
 import MWPhotoBrowser
 
-
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate, MWPhotoBrowserDelegate {
     
     @IBOutlet var scrollView: UIScrollView!
@@ -52,6 +51,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //self.imageButton.setTitleColor(, forState: UIControlState.Normal)
         
         
+        
         self.photoManager.currentlyNotifyingTeamNumber = self.number
         
         self.photoManager.callbackForPhotoCasheUpdated = { () in
@@ -65,6 +65,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.imageButton.addGestureRecognizer(longPress)
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
             //self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)") //Sometimes it is too long to fit
+            /*let testTextInput = PSUITextInputViewController()
+            
+            testTextInput.setup("Number", firebaseRef: self.ourTeam.child("number"), initialValue: "\(snap.childSnapshotForPath("number").value as! Int)")
+            
+            self.addChildViewController(testTextInput)
+            for childViewController in self.childViewControllers {
+            self.view.addSubview(childViewController.view)
+            }*/
+            
             for key in self.firebaseKeys {
                 if let value = snap.childSnapshotForPath(key).value {
                     if !self.isNull(value) {
@@ -359,17 +368,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.selectedImageUrl.text = photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: 0)
             self.selectedImageEditingEnded(self.selectedImageUrl)
             /*self.ourTeam.child("otherImageUrls").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-                if let v = snap.value as? [String: String] {
-                    let urls = v.vals
-                    if urls.count > 0 {
-                        self.selectedImageUrl.text = urls[0] as? String
-                        self.selectedImageEditingEnded(self.selectedImageUrl)
-                    } else {
-                        print("This is a problem")
-                    }
-                } else {
-                    
-                }
+            if let v = snap.value as? [String: String] {
+            let urls = v.vals
+            if urls.count > 0 {
+            self.selectedImageUrl.text = urls[0] as? String
+            self.selectedImageEditingEnded(self.selectedImageUrl)
+            } else {
+            print("This is a problem")
+            }
+            } else {
+            
+            }
             })*/
         }
     }

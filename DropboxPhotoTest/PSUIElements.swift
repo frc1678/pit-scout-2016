@@ -14,8 +14,11 @@ import Firebase
 
 class PSUITextInputViewController : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var label: UILabel!
+    var titleText = ""
+    var initialValue = ""
+    
     var neededType : NeededType?
-    var firebaseRef : FIRDatabaseReference! {
+    var firebaseRef : FIRDatabaseReference? {
         didSet {
             self.connectWithFirebase()
         }
@@ -25,16 +28,19 @@ class PSUITextInputViewController : UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         self.textField.delegate = self
-    }
-    
-    func setup(titleLabel : String, firebaseLocation : String, initialValue : String) {
-        self.label.text = titleLabel
+        self.label.text = titleText
         self.textField.text = initialValue
     }
     
+    func setup(titleText : String, firebaseRef : FIRDatabaseReference, initialValue : String) {
+        self.titleText = titleText
+        self.initialValue = initialValue
+        self.firebaseRef = firebaseRef
+    }
+    
     private func connectWithFirebase() {
-        _ = self.firebaseRef.observeEventType(.Value) { (snapshot) -> Void in
-            self.firebaseRef.setValue(snapshot.value)
+        self.firebaseRef!.observeEventType(.Value) { (snapshot) -> Void in
+            self.firebaseRef!.setValue(snapshot.value)
         }
     }
     
@@ -68,6 +74,4 @@ class PSUITextInputViewController : UIViewController, UITextFieldDelegate {
     
 }
 
-class PSUILayoutController : UIViewController {
-    
-}
+

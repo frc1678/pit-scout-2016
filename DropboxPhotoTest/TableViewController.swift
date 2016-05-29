@@ -31,6 +31,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     var dontNeedNotification = false
     let cache = Shared.dataCache
     var refHandle = FIRDatabaseHandle()
+    var firebaseStorageRef : FIRStorageReference?
     
     @IBOutlet weak var uploadPhotos: UIButton!
     
@@ -38,6 +39,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         super.viewDidLoad()
         self.tableView.allowsSelection = false //You can select once we are done setting up the photo uploader object
         firebase = FIRDatabase.database().reference()
+        firebaseStorageRef = FIRStorage.storage().referenceForURL("gs://firebase-scouting-2016.appspot.com")
         if(Dropbox.authorizedClient == nil) {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupphotoManager", name: "dropbox_authorized", object: nil)
             Dropbox.authorizeFromController(self)
@@ -292,6 +294,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             teamViewController.title = "\(number)"
             teamViewController.photoManager = self.photoManager
             teamViewController.firebaseKeys = firebaseKeys
+            teamViewController.firebaseStorageRef = self.firebaseStorageRef
             teamFB.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
                 teamViewController.name = snap.childSnapshotForPath("name").value as! String
             })

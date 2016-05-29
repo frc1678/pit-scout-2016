@@ -17,6 +17,8 @@
 		192BEAD71C3463BA00992A8A /* DropboxPhotoTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAD61C3463BA00992A8A /* DropboxPhotoTestTests.swift */; };
 		192BEAE21C3463BA00992A8A /* DropboxPhotoTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192BEAE11C3463BA00992A8A /* DropboxPhotoTestUITests.swift */; };
 		194587941C7D326D00507019 /* PhotoLibrarySaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194587931C7D326D00507019 /* PhotoLibrarySaver.swift */; };
+		197788C01CFA65FA00D632AD /* PSUISwitchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 197788BF1CFA65FA00D632AD /* PSUISwitchViewController.xib */; };
+		197788C31CFA6ED700D632AD /* PSUISegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 197788C21CFA6ED700D632AD /* PSUISegmentedViewController.xib */; };
 		197872261CEEBBA40036F118 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 197872251CEEBBA40036F118 /* GoogleService-Info.plist */; };
 		19A286201C6916160039C0A4 /* PhotoManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A2861F1C6916160039C0A4 /* PhotoManagement.swift */; };
 		19A6697C1C51E9D60044D1F2 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697B1C51E9D60044D1F2 /* libc++.tbd */; };
@@ -69,6 +71,8 @@
 		192BEAE31C3463BA00992A8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		194587931C7D326D00507019 /* PhotoLibrarySaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrarySaver.swift; sourceTree = "<group>"; };
 		19498EDF1CAE174600CF5236 /* DropboxPhotoTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DropboxPhotoTest-Bridging-Header.h"; sourceTree = "<group>"; };
+		197788BF1CFA65FA00D632AD /* PSUISwitchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PSUISwitchViewController.xib; sourceTree = "<group>"; };
+		197788C21CFA6ED700D632AD /* PSUISegmentedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PSUISegmentedViewController.xib; sourceTree = "<group>"; };
 		197872251CEEBBA40036F118 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		19A2861F1C6916160039C0A4 /* PhotoManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoManagement.swift; sourceTree = "<group>"; };
 		19A6697B1C51E9D60044D1F2 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -162,7 +166,7 @@
 				194587931C7D326D00507019 /* PhotoLibrarySaver.swift */,
 				19E2FB361C4DB3D900BA4075 /* TableViewController.swift */,
 				19EEDCCF1CE583470057AA96 /* PSUIElements.swift */,
-				19EEDCD11CE584440057AA96 /* PSUITextInputView.xib */,
+				197788C11CFA661F00D632AD /* PSUIXibFiles */,
 				19A2861F1C6916160039C0A4 /* PhotoManagement.swift */,
 				1909B1A01C9B9693004F5E7E /* MissingDataViewController.swift */,
 				192BEAC51C3463B900992A8A /* Main.storyboard */,
@@ -192,6 +196,16 @@
 				192BEAE31C3463BA00992A8A /* Info.plist */,
 			);
 			path = DropboxPhotoTestUITests;
+			sourceTree = "<group>";
+		};
+		197788C11CFA661F00D632AD /* PSUIXibFiles */ = {
+			isa = PBXGroup;
+			children = (
+				19EEDCD11CE584440057AA96 /* PSUITextInputView.xib */,
+				197788BF1CFA65FA00D632AD /* PSUISwitchViewController.xib */,
+				197788C21CFA6ED700D632AD /* PSUISegmentedViewController.xib */,
+			);
+			name = PSUIXibFiles;
 			sourceTree = "<group>";
 		};
 		3BC125DF03FD1D3B53A9678F /* Frameworks */ = {
@@ -327,8 +341,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				192BEACC1C3463B900992A8A /* LaunchScreen.storyboard in Resources */,
+				197788C31CFA6ED700D632AD /* PSUISegmentedViewController.xib in Resources */,
 				192BEAC91C3463B900992A8A /* Assets.xcassets in Resources */,
 				197872261CEEBBA40036F118 /* GoogleService-Info.plist in Resources */,
+				197788C01CFA65FA00D632AD /* PSUISwitchViewController.xib in Resources */,
 				192BEAC71C3463B900992A8A /* Main.storyboard in Resources */,
 				19EEDCD21CE584440057AA96 /* PSUITextInputView.xib in Resources */,
 			);

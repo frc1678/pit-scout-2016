@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
-        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <viewController id="3eM-Ak-BSp" customClass="PSUITextInputViewController" customModule="DropboxPhotoTest" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PSUITextInputViewController" customModule="DropboxPhotoTest" customModuleProvider="target">
             <connections>
-                <outlet property="textField" destination="SvS-gX-rJ1" id="j2e-7i-51U"/>
-                <outlet property="view" destination="iN0-l3-epB" id="jzA-0t-lwc"/>
+                <outlet property="label" destination="IbT-xH-wUH" id="Isd-kP-8MA"/>
+                <outlet property="textField" destination="SvS-gX-rJ1" id="ZQW-cp-nCI"/>
+                <outlet property="view" destination="iN0-l3-epB" id="467-iT-8ds"/>
             </connections>
-            <point key="canvasLocation" x="233" y="336"/>
-        </viewController>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="45"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -31,7 +31,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
-                        <action selector="textFieldEditingDidEnd:" destination="3eM-Ak-BSp" eventType="editingDidEnd" id="saz-am-zhA"/>
+                        <action selector="textFieldEditingDidEnd:" destination="-1" eventType="editingDidEnd" id="XNV-ys-KLs"/>
                     </connections>
                 </textField>
             </subviews>
@@ -49,10 +49,11 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="label" destination="IbT-xH-wUH" id="AGe-34-BCT"/>
-                <outlet property="textField" destination="SvS-gX-rJ1" id="4RE-WU-Cgt"/>
-            </connections>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="6qb-CD-7bS"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="233" y="-26.5"/>
         </view>
     </objects>

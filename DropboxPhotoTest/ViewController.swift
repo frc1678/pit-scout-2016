@@ -16,17 +16,7 @@ import MWPhotoBrowser
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate, MWPhotoBrowserDelegate {
     
     @IBOutlet var scrollView: UIScrollView!
-    @IBOutlet weak var imageButton: UIButton!
-    @IBOutlet weak var viewImagesButton: UIButton!
-    @IBOutlet weak var pitNumberOfWheels: UITextField!
-    @IBOutlet weak var pitOrganization:UISegmentedControl!
-    @IBOutlet weak var selectedImageUrl: UITextField!
     @IBOutlet weak var bottomScrollViewConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pitBumperHeight: UITextField!
-    
-    @IBOutlet weak var pitNotes: UITextField!
-    @IBOutlet weak var pitProgrammingLanguage: UISegmentedControl!
-    @IBOutlet weak var pitAvailableWeight: UITextField!
     
     var browser = MWPhotoBrowser()
     var photoManager : PhotoManager!
@@ -42,11 +32,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var firebaseKeys = [String]()
     var numberOfImagesOnFirebase = -1
     var notActuallyLeavingViewController = false
+    var activeField : UITextField? {
+        didSet {
+            scrollPositionBeforeScrollingToTextField = scrollView.contentOffset.y
+            self.scrollView.scrollRectToVisible((activeField?.frame)!, animated: true)
+        }
+    }
+    var scrollPositionBeforeScrollingToTextField : CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.imageButton.setTitle("WAIT", forState: UIControlState.Disabled)
-        self.imageButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Disabled)
+        
         //self.imageButton.setTitle(self.imageButton.titleLabel?.text, forState: UIControlState.Normal)
         //self.imageButton.setTitleColor(, forState: UIControlState.Normal)
         
@@ -57,41 +53,78 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.photoManager.callbackForPhotoCasheUpdated = { () in
             self.updateMyPhotos({})
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.imageButton.enabled = true
             })
         }
         
-        let longPress = UILongPressGestureRecognizer(target: self, action: "didLongPress:")
-        self.imageButton.addGestureRecognizer(longPress)
         self.ourTeam.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in //Updating UI
-            //self.title?.appendContentsOf(" - \(snap.childSnapshotForPath("name").value)") //Sometimes it is too long to fit
-            /*let testTextInput = PSUITextInputViewController()
             
-            testTextInput.setup("Number", firebaseRef: self.ourTeam.child("number"), initialValue: "\(snap.childSnapshotForPath("number").value as! Int)")
+            //Adding the Add Image Button to the UI
+            let addImageButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.scrollView.frame.width, height: 45)) // The width will be changed in a second.
+            addImageButton.setTitle("Add Image", forState: .Normal)
+            addImageButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
+            addImageButton.userInteractionEnabled = true
+            let tapAddImageButton = UITapGestureRecognizer(target: self, action: "didTapAddImageButton:")
+            addImageButton.addGestureRecognizer(tapAddImageButton)
+            let longPressImageButton = UILongPressGestureRecognizer(target: self, action: "didLongPressImageButton:")
+            addImageButton.addGestureRecognizer(longPressImageButton)
             
-            self.addChildViewController(testTextInput)
+            self.scrollView.addSubview(addImageButton)
+     
+            var verticalPlacement : CGFloat = addImageButton.frame.origin.y + addImageButton.frame.height
+
+            //Adding the PSUI elements.
+            let numberOfWheels = PSUITextInputViewController()
+            numberOfWheels.setup("Num. Wheels", firebaseRef: self.ourTeam.child("pitNumberOfWheels"), initialValue: snap.childSnapshotForPath("pitNumberOfWheels").value as? Int ?? -2)
+            numberOfWheels.neededType = .Int
+            
+            let availWeight = PSUITextInputViewController()
+            availWeight.setup("Avail. Weight", firebaseRef: self.ourTeam.child("pitAvailableWeight"), initialValue: snap.childSnapshotForPath("pitAvailableWeight").value as? Double ?? -2)
+            availWeight.neededType = .Float
+            
+            let programmingLanguage = PSUISegmentedViewController()
+            programmingLanguage.setup("Prog. Lang.", firebaseRef: self.ourTeam.child("pitProgrammingLanguage"), initialValue: snap.childSnapshotForPath("pitProgrammingLanguage").value as? Int ?? -2)
+            
+            let willCheesecake = PSUISwitchViewController()
+            willCheesecake.setup("Will Cheesecake", firebaseRef: self.ourTeam.child("pitWillCheesecake"), initialValue: snap.childSnapshotForPath("pitWillCheesecake").value as? Bool ?? false)
+            
+            
+            self.addChildViewController(numberOfWheels)
+            self.addChildViewController(availWeight)
+            self.addChildViewController(programmingLanguage)
+            self.addChildViewController(willCheesecake)
+            
             for childViewController in self.childViewControllers {
-            self.view.addSubview(childViewController.view)
-            }*/
-            
-            for key in self.firebaseKeys {
-                if let value = snap.childSnapshotForPath(key).value {
-                    if !self.isNull(value) {
-                        let myObj = self.valueForKey(key)
-                        if object_getClass(myObj) == object_getClass(UITextField()) {
-                            myObj?.setValue("\(value)", forKey: "text")
-                        } else if object_getClass(myObj) == object_getClass(UISegmentedControl()) {
-                            myObj?.setValue(value as! Int, forKey: "selectedSegmentIndex")
-                            myObj?.setValue(true, forKey: "selected")
-                        } else if object_getClass(myObj) == object_getClass(UISwitch()) {
-                            (myObj as! UISwitch).setOn(Bool(value as! NSNumber), animated: true)
-                        } else {
-                            print("This should not happen")
-                        }
-                    }
-                }
+                self.scrollView.addSubview(childViewController.view)
+                childViewController.view.frame.origin.y = verticalPlacement
+                
+                let width = NSLayoutConstraint(item: childViewController.view, attribute: NSLayoutAttribute.Width, relatedBy: .Equal, toItem: self.scrollView, attribute: .Width, multiplier: 1.0, constant: 0)
+                let center = NSLayoutConstraint(item: childViewController.view, attribute: NSLayoutAttribute.CenterX, relatedBy: .Equal, toItem: self.scrollView, attribute: .CenterX, multiplier: 1.0, constant: 0)
+
+                self.scrollView.addConstraints([width, center])
+                
+                verticalPlacement = childViewController.view.frame.origin.y + childViewController.view.frame.height
             }
+            
+            /* for key in self.firebaseKeys {
+            if let value = snap.childSnapshotForPath(key).value {
+            if !self.isNull(value) {
+            let myObj = self.valueForKey(key)
+            if object_getClass(myObj) == object_getClass(UITextField()) {
+            myObj?.setValue("\(value)", forKey: "text")
+            } else if object_getClass(myObj) == object_getClass(UISegmentedControl()) {
+            myObj?.setValue(value as! Int, forKey: "selectedSegmentIndex")
+            myObj?.setValue(true, forKey: "selected")
+            } else if object_getClass(myObj) == object_getClass(UISwitch()) {
+            (myObj as! UISwitch).setOn(Bool(value as! NSNumber), animated: true)
+            } else {
+            print("This should not happen")
+            }
+            }
+            }
+            }*/
         })
+        
+        
         
         self.ourTeam.child("otherImageUrls").observeEventType(.Value, withBlock: { (snap) -> Void in
             if self.numberOfImagesOnFirebase == -1 { //This is the first time that the firebase event gets called, it gets called once nomatter what when you first get here in code.
@@ -118,12 +151,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         browser.startOnGrid = false; // Whether to start on the grid of thumbnails instead of the first photo (defaults to NO)
         browser.autoPlayOnAppear = false; // Auto-play first video
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
         
         self.updatePhotoButtonText()
     }
     
+    func didTapAddImageButton(recog : UIGestureRecognizer) {
+        notActuallyLeavingViewController = true
+        let picker = UIImagePickerController()
+        
+        picker.sourceType = .Camera
+        picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.Camera)!
+        picker.delegate = self
+        presentViewController(picker, animated: true, completion: nil)
+    }
+    
+    func didLongPressImageButton(recognizer: UIGestureRecognizer) {
+        notActuallyLeavingViewController = true
+        if recognizer.state == UIGestureRecognizerState.Ended {
+            let picker = UIImagePickerController()
+            
+            picker.sourceType = .PhotoLibrary
+            picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.PhotoLibrary)!
+            picker.delegate = self
+            presentViewController(picker, animated: true, completion: nil)
+        }
+    }
+
     func updateMyPhotos(callback: ()->()) {
         self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
             self.photos.removeAll()
@@ -137,109 +191,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func updatePhotoButtonText() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewImagesButton.setTitle("View Images: (\(self.numberOfImagesOnFirebase))", forState: UIControlState.Normal)
         }
     }
     
     //MARK: Responding To UI Actions:
     //MARK: --> Text Fields
-    @IBAction func pitNotesEditingEnded(sender: UITextField) {
-        self.ourTeam?.child("pitNotes").setValue(self.pitNotes.text)
-    }
-    
-    @IBAction func numWheelsEditingEnded(sender: UITextField) {
-        if(sender.text != "") {
-            if let numWheels = Int(sender.text!) {
-                self.numberOfWheels = numWheels
-                self.ourTeam?.child("pitNumberOfWheels").setValue(self.numberOfWheels)
-            }
-        }
-    }
-    
-    @IBAction func bumperHeightDidChange(sender: UITextField) {
-        if let num = Float(self.pitBumperHeight.text!)  {
-            self.ourTeam?.child("pitBumperHeight").setValue(Float(num))
-            self.pitBumperHeight.backgroundColor = UIColor.whiteColor()
-        } else {
-            self.pitBumperHeight.backgroundColor = UIColor.redColor()
-        }
-    }
-    
-    @IBAction func selectedImageEditingEnded(sender: UITextField) {
-        self.ourTeam?.child("selectedImageUrl").setValue(self.selectedImageUrl.text)
-    }
-    
-    @IBAction func pitAvailableWeightDidChange(sender: AnyObject) {
-        if let num = Float(self.pitAvailableWeight.text!)  {
-            self.ourTeam?.child("pitAvailableWeight").setValue(Float(num))
-            self.pitAvailableWeight.backgroundColor = UIColor.whiteColor()
-        } else {
-            self.pitAvailableWeight.backgroundColor = UIColor.redColor()
-        }
-    }
     
     
-    //MARK: --> Segmented Controls
-    @IBAction func pitProgrammingLanguageDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.child("pitProgrammingLanguage").setValue(sender.selectedSegmentIndex)
-    }
     
-    @IBAction func lowBarPotentialDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.child("pitPotentialLowBarCapability").setValue(sender.selectedSegmentIndex)
-    }
-    
-    @IBAction func pitOrgValueChanged(sender: UISegmentedControl) {
-        if self.pitOrg != sender.selectedSegmentIndex {
-            self.pitOrg = sender.selectedSegmentIndex
-            self.ourTeam?.child("pitOrganization").setValue(sender.selectedSegmentIndex)
-        }
-        
-    }
-    
-    @IBAction func midlineBallCheesecakePotentialDidChange(sender: UISegmentedControl) {
-        self.ourTeam?.child("pitPotentialMidlineBallCapability").setValue(sender.selectedSegmentIndex)
-    }
-    
-    //MARK: --> Switches
-    @IBAction func lowBarTestResultChanged(sender: UISwitch) {
-        self.ourTeam.child("pitLowBarCapability").setValue(sender.on)
-    }
-    
-    //MARK: --> Buttons
-    @IBAction func cameraButtonPressed(sender: UIButton) {
-        notActuallyLeavingViewController = true
-        let picker = UIImagePickerController()
-        
-        picker.sourceType = .Camera
-        picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.Camera)!
-        picker.delegate = self
-        presentViewController(picker, animated: true, completion: nil)
-    }
-    
-    func didLongPress(recognizer: UIGestureRecognizer) {
-        notActuallyLeavingViewController = true
-        if recognizer.state == UIGestureRecognizerState.Ended {
-            let picker = UIImagePickerController()
-            
-            picker.sourceType = .PhotoLibrary
-            picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.PhotoLibrary)!
-            picker.delegate = self
-            presentViewController(picker, animated: true, completion: nil)
-        }
-    }
-    
-    @IBAction func didPressShowMeButton(sender: UIButton) {
-        notActuallyLeavingViewController = true
-        self.updateMyPhotos { [unowned self] in
-            let nav = UINavigationController(rootViewController: self.browser)
-            nav.delegate = self
-            self.presentViewController(nav, animated: true, completion: {
-                // SDImageCache
-                //                SDImageCache
-                self.browser.reloadData()
-            })
-        }
-    }
     
     func numberOfPhotosInPhotoBrowser(photoBrowser: MWPhotoBrowser!) -> UInt {
         return UInt(self.photos.count)
@@ -250,8 +209,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let i = Int(index)
             self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
                 let url = self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: i)
-                self.selectedImageUrl.text = url
-                self.selectedImageEditingEnded(self.selectedImageUrl)
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
                 self.photoManager.updateUrl(self.number, callback: {_ in })
@@ -268,7 +225,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         notActuallyLeavingViewController = false
         canViewPhotos = false
-        imageButton.enabled = false
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.photos.append(MWPhoto(image: image))
         photoManager.photoSaver.saveImage(image)
@@ -276,13 +232,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
             self.photoManager.updateUrl(self.number, callback: { [unowned self] i in
-                _ = self.firebaseStorageRef.child(self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: i)).putData(UIImagePNGRepresentation(image)!, metadata: nil) { metadata, error in
+                self.firebaseStorageRef.child(self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: i)).putData(UIImagePNGRepresentation(image)!, metadata: nil) { metadata, error in
                     if (error != nil) {
-                        // Uh-oh, an error occurred!
+                        print("ERROR: \(error)")
                     } else {
                         // Metadata contains file metadata such as size, content-type, and download URL.
-                        let downloadURL = metadata!.downloadURL
-                        print(downloadURL)
+                        let downloadURL = metadata!.downloadURL()?.absoluteString
+                        print("UPLOADED: \(downloadURL)")
                     }
                 }
                 
@@ -298,8 +254,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
         self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
             let url = self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: gallery.currentPage)
-            self.selectedImageUrl.text = url
-            self.selectedImageEditingEnded(self.selectedImageUrl)
             
             self.dismissViewControllerAnimated(true, completion: nil)
             self.photoManager.updateUrl(self.number, callback: {_ in })
@@ -322,21 +276,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return true
     }
     
-    func keyboardWillShow(notification:NSNotification){
-        
-        var userInfo = notification.userInfo!
-        var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
-        keyboardFrame = self.view.convertRect(keyboardFrame, fromView: nil)
-        
-        var contentInset:UIEdgeInsets = self.scrollView.contentInset
-        contentInset.bottom = keyboardFrame.size.height
-        self.scrollView.contentInset = contentInset
-        self.scrollView.scrollRectToVisible(self.pitNotes.frame, animated: true)
+    func textFieldDidBeginEditing(textField: UITextField)
+    {
+        activeField = textField
     }
     
     func keyboardWillHide(notification:NSNotification){
-        let contentInset:UIEdgeInsets = UIEdgeInsetsMake(50.0, 0, 0, 0) // Terrible and sketchy, but works.
-        self.scrollView.contentInset = contentInset
+        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: scrollPositionBeforeScrollingToTextField), animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -364,23 +310,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewWillDisappear(animated: Bool) {
-        if selectedImageUrl.text == "" && !notActuallyLeavingViewController && photos.count == 1 { // If there is only one image, set the selected image url to that image's url
-            self.selectedImageUrl.text = photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: 0)
-            self.selectedImageEditingEnded(self.selectedImageUrl)
-            /*self.ourTeam.child("otherImageUrls").observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-            if let v = snap.value as? [String: String] {
-            let urls = v.vals
-            if urls.count > 0 {
-            self.selectedImageUrl.text = urls[0] as? String
-            self.selectedImageEditingEnded(self.selectedImageUrl)
-            } else {
-            print("This is a problem")
-            }
-            } else {
-            
-            }
-            })*/
-        }
+        
     }
     
     override func viewDidAppear(animated: Bool) {

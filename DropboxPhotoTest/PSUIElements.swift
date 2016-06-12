@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 
-
+/// PSUI (Pit Scout User Interface) elements will subclass from this. These Elements will handle the updating of their content on firebase when the user changes the UI, they will also handle keeping themselves up to date with changes on Firebase.
 class PSUIFirebaseViewController : UIViewController {
     var initialValue : AnyObject?
     var titleText = ""
@@ -90,6 +90,7 @@ class PSUIFirebaseViewController : UIViewController {
     
 }
 
+/// Just a few customizations of the text input view for the pit scout. See the `PSUIFirebaseViewController`.
 class PSUITextInputViewController : PSUIFirebaseViewController, UITextFieldDelegate {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var textField: UITextField!
@@ -148,5 +149,31 @@ class PSUISegmentedViewController : PSUIFirebaseViewController {
     
     @IBAction func selectedSegmentChanged(sender: UISegmentedControl) {
         super.set(segmentedController.selectedSegmentIndex)
+    }
+}
+
+class PSUIButton : UIButton {
+    var press : (sender : UIButton)->() = {_ in } //This is an empty function of the type (sender : UIButton)->(). 
+    convenience init(title : String, width : Int, y: Int, buttonPressed : (sender : UIButton)->()) {
+        //Adding the Add Image Button to the UI
+        self.init(frame: CGRect(x: 0, y: y, width: width, height: 45))
+        self.press = buttonPressed
+        self.setTitle(title, forState: .Normal)
+        self.setTitleColor(UIColor.greenColor(), forState: .Normal)
+        self.userInteractionEnabled = true
+        let tapAddImageButton = UITapGestureRecognizer(target: self, action: "buttonPressed:")
+        self.addGestureRecognizer(tapAddImageButton)
+    }
+    
+    func buttonPressed(button : UIButton) {
+        self.press(sender: button)
+    }
+    
+    required override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

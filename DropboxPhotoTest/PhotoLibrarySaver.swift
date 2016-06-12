@@ -1,9 +1,9 @@
 import Photos
-
+/// Is just for saving the photos taken to the camera roll, 1678 did not write this class, we just took it from online somewhere. I had to edit it a bit though. 
 class CustomPhotoAlbum {
     
     static let albumName = "Pit Scout Photos 2016"
-
+    
     var assetCollection: PHAssetCollection!
     
     init() {
@@ -43,7 +43,7 @@ class CustomPhotoAlbum {
         
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({
             let assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-           // let assetPlaceholders = Array(arrayLiteral: )
+            // let assetPlaceholders = Array(arrayLiteral: )
             let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection)
             albumChangeRequest!.addAssets([assetChangeRequest.placeholderForCreatedAsset!])
             }, completionHandler: nil)

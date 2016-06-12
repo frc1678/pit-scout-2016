@@ -8,12 +8,7 @@
 import UIKit
 import Foundation
 import Firebase
-import firebase_schema_2016_ios
-import SwiftyDropbox
 import Haneke
-
-let dev3Token = "AEduO6VFlZKD4v10eW81u9j3ZNopr5h2R32SPpeq"
-let compToken = "qVIARBnAD93iykeZSGG8mWOwGegminXUUGF2q0ee"
 
 let firebaseKeys = ["pitNumberOfWheels", "pitOrganization", "selectedImageUrl", "pitNotes", "pitProgrammingLanguage", "pitAvailableWeight"]
 
@@ -40,12 +35,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         self.tableView.allowsSelection = false //You can select once we are done setting up the photo uploader object
         firebase = FIRDatabase.database().reference()
         firebaseStorageRef = FIRStorage.storage().referenceForURL("gs://firebase-scouting-2016.appspot.com")
-        if(Dropbox.authorizedClient == nil) {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupphotoManager", name: "dropbox_authorized", object: nil)
-            Dropbox.authorizeFromController(self)
-        } else {
-            dontNeedNotification = true
-        }
+        
         
         
         // Get a reference to the storage service, using the default Firebase App
@@ -154,7 +144,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     func setupphotoManager() {
         
         if self.photoManager == nil {
-            self.photoManager = PhotoManager(teamsFirebase: self.firebase!, teamNumbers: self.teamNums, syncButton: self.uploadPhotos)
+            self.photoManager = PhotoManager(teamsFirebase: self.firebase!, teamNumbers: self.teamNums)
         }
         for (teamNum, urls) in urlsDict {
             self.photoManager?.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(urls), key: "sharedURLs\(teamNum)")
@@ -162,7 +152,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         self.tableView.allowsSelection = true
     }
     
-    func teamHasBeenPitScouted(snap: [String: AnyObject]) -> Bool { //For some reason it wasnt working other ways
+    func teamHasBeenPitScouted(snap: [String: AnyObject]) -> Bool { //For some reason it wasn't working other ways
         for key in firebaseKeys {
             if let _ = (snap[key]) as? NSString {
             } else {
@@ -177,12 +167,10 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
     
     // MARK:  UITextFieldDelegate Methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 2 //One section is for checked cells, the other unchecked
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //print("There are \(self.scoutedTeamInfo.count) teams.")
-        
         if section == 0 {
             var numUnscouted = 0
             for teamN in self.scoutedTeamInfo {
@@ -218,7 +206,6 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             }
             text = "\(scoutedTeamNums[indexPath.row])"
         } else if indexPath.section == 0 {
-            
             let notScoutedTeamNums = NSMutableArray()
             for team in self.scoutedTeamInfo {
                 if team["hasBeenScouted"] == 0 {
@@ -293,11 +280,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
             teamViewController.number = number
             teamViewController.title = "\(number)"
             teamViewController.photoManager = self.photoManager
-            teamViewController.firebaseKeys = firebaseKeys
             teamViewController.firebaseStorageRef = self.firebaseStorageRef
-            teamFB.observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
-                teamViewController.name = snap.childSnapshotForPath("name").value as! String
-            })
         }
         else if segue.identifier == "popoverSegue" {
             let popoverViewController = segue.destinationViewController 
@@ -311,35 +294,14 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         }
     }
     
-    @IBAction func uploadPhotosPressed(sender: UIButton) {
-        self.photoManager!.checkInternetAndSync(self.timer)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        print("OH NO, MEM WARNING")
-        
-        //self.photoManager?.mayKeepWorking = false
-    }
-    
-    func isConnectedToNetwork() -> Bool  {
-        let url = NSURL(string: "https://www.google.com/")
-        let data = NSData(contentsOfURL: url!)
-        if (data != nil) {
-            return(true)
-        }
-        return(false)
-    }
-    
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.None
     }
-    
     
     override func viewWillAppear(animated: Bool) {
         if self.photoManager != nil {
             self.photoManager?.currentlyNotifyingTeamNumber = 0
         }
-        UIApplication.sharedApplication().performSelector("_performMemoryWarning")
     }
     
 }

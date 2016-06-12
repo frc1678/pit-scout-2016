@@ -110,26 +110,7 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="HpA-hb-Vid">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wTN-GO-7iY">
-                                <rect key="frame" x="534" y="7" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title="Sync">
-                                    <color key="titleColor" red="0.00030194149062290343" green="1" blue="0.055963585629307366" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                </variation>
-                                <connections>
-                                    <action selector="uploadPhotosPressed:" destination="mYo-FN-x4S" eventType="touchUpInside" id="5qZ-x6-EEZ"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="uploadPhotos" destination="wTN-GO-7iY" id="uxy-HW-baE"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="37T-Go-mc9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

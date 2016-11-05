@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PSUISegmentViewController" customModule="DropboxPhotoTest" customModuleProvider="target">
+            <connections>
+                <outlet property="label" destination="5n2-1g-bBJ" id="MKa-1e-YcW"/>
+                <outlet property="segmentedController" destination="8NG-bh-Zuu" id="ulP-w1-aw0"/>
+                <outlet property="view" destination="iN0-l3-epB" id="GzI-b2-nrC"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="368" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="8NG-bh-Zuu">
+                    <segments>
+                        <segment title="First"/>
+                        <segment title="Second"/>
+                        <segment title=""/>
+                        <segment title=""/>
+                    </segments>
+                    <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <action selector="selectedSegmentChanged:" destination="-1" eventType="valueChanged" id="4IP-rU-AhQ"/>
+                    </connections>
+                </segmentedControl>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5n2-1g-bBJ">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="8NG-bh-Zuu" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="DiT-SF-rI8"/>
+                <constraint firstAttribute="leadingMargin" secondItem="5n2-1g-bBJ" secondAttribute="leading" id="I1R-w8-NQS"/>
+                <constraint firstItem="8NG-bh-Zuu" firstAttribute="leading" secondItem="5n2-1g-bBJ" secondAttribute="trailing" constant="8" id="VUz-3t-6yx"/>
+                <constraint firstItem="5n2-1g-bBJ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="XJN-v7-KfF"/>
+                <constraint firstAttribute="trailing" secondItem="8NG-bh-Zuu" secondAttribute="trailing" constant="8" id="XvD-es-4tG"/>
+                <constraint firstItem="8NG-bh-Zuu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="Zg9-RF-K1h"/>
+                <constraint firstItem="5n2-1g-bBJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="uch-b4-B3B"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="516" y="91.5"/>
+        </view>
+    </objects>
+</document>

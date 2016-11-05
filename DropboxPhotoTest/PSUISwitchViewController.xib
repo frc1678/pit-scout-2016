@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PSUISwitchViewController" customModule="DropboxPhotoTest" customModuleProvider="target">
+            <connections>
+                <outlet property="label" destination="lch-rU-fq1" id="Bc9-oC-aic"/>
+                <outlet property="toggleSwitch" destination="wMG-uD-wCy" id="bsc-FN-f1U"/>
+                <outlet property="view" destination="iN0-l3-epB" id="6gN-mJ-0y5"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="382" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wMG-uD-wCy">
+                    <connections>
+                        <action selector="switchSwitched:" destination="-1" eventType="valueChanged" id="bZ3-W7-1de"/>
+                    </connections>
+                </switch>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lch-rU-fq1">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="wMG-uD-wCy" secondAttribute="bottom" constant="7" id="5BH-Wh-a8N"/>
+                <constraint firstItem="lch-rU-fq1" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="9Ib-NH-r2o"/>
+                <constraint firstItem="wMG-uD-wCy" firstAttribute="leading" secondItem="lch-rU-fq1" secondAttribute="trailing" constant="8" id="PPG-tf-go4"/>
+                <constraint firstItem="lch-rU-fq1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="Unc-Rx-tlX"/>
+                <constraint firstItem="lch-rU-fq1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="bbc-dN-eFK"/>
+                <constraint firstAttribute="trailingMargin" secondItem="wMG-uD-wCy" secondAttribute="trailing" id="guP-PD-sEQ"/>
+                <constraint firstItem="wMG-uD-wCy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="hzp-HX-cSf"/>
+                <constraint firstItem="wMG-uD-wCy" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="rYe-QT-51I"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="333" y="76.5"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PSUITextInputViewController" customModule="DropboxPhotoTest" customModuleProvider="target">
+            <connections>
+                <outlet property="label" destination="IbT-xH-wUH" id="Isd-kP-8MA"/>
+                <outlet property="textField" destination="SvS-gX-rJ1" id="ZQW-cp-nCI"/>
+                <outlet property="view" destination="iN0-l3-epB" id="467-iT-8ds"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="487" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IbT-xH-wUH">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SvS-gX-rJ1">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="phV-lv-0sD"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <action selector="textFieldEditingDidEnd:" destination="-1" eventType="editingDidEnd" id="XNV-ys-KLs"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="SvS-gX-rJ1" secondAttribute="bottom" id="6qb-CD-7bS"/>
+                <constraint firstItem="IbT-xH-wUH" firstAttribute="height" secondItem="SvS-gX-rJ1" secondAttribute="height" id="HhK-jY-lF3"/>
+                <constraint firstItem="SvS-gX-rJ1" firstAttribute="leading" secondItem="IbT-xH-wUH" secondAttribute="trailing" constant="10" id="R4a-Vx-I3h"/>
+                <constraint firstItem="IbT-xH-wUH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="aub-3A-Xua"/>
+                <constraint firstItem="SvS-gX-rJ1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="mOe-1p-496"/>
+                <constraint firstItem="IbT-xH-wUH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="mbU-C2-wha"/>
+                <constraint firstAttribute="trailing" secondItem="SvS-gX-rJ1" secondAttribute="trailing" constant="8" id="x3t-zi-vld"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="6qb-CD-7bS"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="176.5" y="-26.5"/>
+        </view>
+    </objects>
+</document>

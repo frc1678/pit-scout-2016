@@ -1,10 +1,17 @@
+<<<<<<< HEAD
 #SwiftyJSON
 
 [![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/SwiftyJSON.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%208.0+%20%7C%20macOS%2010.10+%20%7C%20tvOS%209.0+%20%7C%20watchOS%202.0+-333333.svg)
+=======
+#SwiftyJSON [中文介绍](http://tangplin.github.io/swiftyjson/)
+
+[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
 1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
+<<<<<<< HEAD
 2. [Requirements](#requirements)
 3. [Integration](#integration)
 4. [Usage](#usage)
@@ -23,6 +30,21 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
+=======
+1. [Requirements](#requirements)
+1. [Integration](#integration)
+1. [Usage](#usage)
+	- [Initialization](#initialization)
+	- [Subscript](#subscript)
+	- [Loop](#loop)
+	- [Error](#error)
+	- [Optional getter](#optional-getter)
+	- [Non-optional getter](#non-optional-getter)
+	- [Setter](#setter)
+	- [Raw object](#raw-object)
+	- [Literal convertibles](#literal-convertibles)
+1. [Work with Alamofire](#work-with-alamofire)
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 ##Why is the typical JSON handling in Swift NOT good?
 Swift is very strict about types. But although explicit typing is good for saving us from mistakes, it becomes painful when dealing with JSON and other areas that are, by nature, implicit about types.
@@ -82,30 +104,47 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 
 ## Requirements
 
+<<<<<<< HEAD
 - iOS 8.0+ | macOS 10.10+ | tvOS 9.0+ | watchOS 2.0+
 - Xcode 8
+=======
+- iOS 7.0+ / Mac OS X 10.9+
+- Xcode 7
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 ##Integration
 
 ####CocoaPods (iOS 8+, OS X 10.9+)
+<<<<<<< HEAD
 You can use [CocoaPods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
+=======
+You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ```ruby
 platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
+<<<<<<< HEAD
 	pod 'SwiftyJSON'
+=======
+	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 end
 ```
 Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ####Carthage (iOS 8+, OS X 10.9+)
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 ```
 github "SwiftyJSON/SwiftyJSON"
 ```
 
+<<<<<<< HEAD
 ####Swift Package Manager
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `SwiftyJSON` by adding the proper description to your `Package.swift` file:
 ```swift
@@ -122,6 +161,8 @@ let package = Package(
 
 Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more infomation checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ####Manually (iOS 7+, OS X 10.9+)
 
 To use this library in your project manually you may:  
@@ -152,12 +193,15 @@ if let dataFromString = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allow
 //Getting a double from a JSON Array
 let name = json[0].double
 ```
+<<<<<<< HEAD
 
 ```swift
 //Getting an array of string from a JSON Array
 let arrayNames =  json["users"].arrayValue.map({$0["name"].stringValue})
 ```
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ```swift
 //Getting a string from a JSON Dictionary
 let name = json["name"].stringValue
@@ -287,7 +331,11 @@ let id: Int = json["id"].intValue
 let name: String = json["name"].stringValue
 ```
 ```swift
+<<<<<<< HEAD
 //If not an Array or nil, return []
+=======
+//If not a Array or nil, return []
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 let list: Array<JSON> = json["list"].arrayValue
 ```
 ```swift
@@ -305,7 +353,11 @@ json["id"].int =  1234567890
 json["coordinate"].double =  8766.766
 json["name"].string =  "Jack"
 json.arrayObject = [1,2,3,4]
+<<<<<<< HEAD
 json.dictionaryObject = ["name":"Jack", "age":25]
+=======
+json.dictionary = ["name":"Jack", "age":25]
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ```
 
 ####Raw object
@@ -327,10 +379,17 @@ if let string = json.rawString() {
     //Do something you want
 }
 ```
+<<<<<<< HEAD
 ####Existence
 ```swift
 //shows you whether value specified in JSON or not
 if json["name"].exists()
+=======
+####Existance
+```swift
+//shows you whether value specified in JSON or not
+if json["name"].isExists()
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ```
 
 ####Literal convertibles
@@ -386,6 +445,7 @@ json["list",3,"what"] = "that"
 let path = ["list",3,"what"]
 json[path] = "that"
 ```
+<<<<<<< HEAD
 ```swift
 //With other JSON objects
 let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
@@ -395,16 +455,27 @@ let auth: JSON = [
 ]
 ````
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ##Work with Alamofire
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
 Alamofire.request(.GET, url).validate().responseJSON { response in
     switch response.result {
+<<<<<<< HEAD
     case .success(let value):
         let json = JSON(value)
         print("JSON: \(json)")
     case .failure(let error):
+=======
+    case .Success:
+        if let value = response.result.value {
+          let json = JSON(value)
+          print("JSON: \(json)")
+        }
+    case .Failure(let error):
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         print(error)
     }
 }

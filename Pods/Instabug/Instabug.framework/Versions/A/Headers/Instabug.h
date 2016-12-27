@@ -3,6 +3,7 @@
 
  Contains:   API for using Instabug's SDK.
 
+<<<<<<< HEAD
  Copyright:  (c) 2013-2016 by Instabug, Inc., all rights reserved.
 
  Version:    6.0.3
@@ -45,10 +46,51 @@ NS_ASSUME_NONNULL_BEGIN
  @brief Invokes the SDK manually with the default invocation mode.
  
  @discussion Shows a view that asks the user whether they want to start a chat, report a problem or suggest an improvement.
+=======
+ Copyright:  (c) 2014 by Instabug, Inc., all rights reserved.
+
+ Version:    5.2.2
+ */
+
+//===========================================================================================================================================
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "IBGEnums.h"
+//===========================================================================================================================================
+
+/**
+ *  This is the API for using Instabug's SDK, for more details about the SDK integration, please visit http://instabug.com/sdk-integration
+ */
+@interface Instabug : NSObject
+
+//===========================================================================================================================================
+/** @name SDK Initialization */
+//===========================================================================================================================================
+/**
+ *  Starts the SDK
+ *
+ *  This is the main SDK method that does all the magic. This is the only method that SHOULD be called.
+ *  Should be called at the end of the method application:didFinishLaunchingWithOptions:
+ *  
+ *  @param token           The token that identifies the app, you can find it on your dashboard
+ *  @param invocationEvent The event that invocates the feedback form
+ */
++ (void)startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent;
+
+//===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name SDK Manual Invocation */
+//===========================================================================================================================================
+
+/**
+ *  Shows the form with the prompt asking whether to report a bug or send feedback
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)invoke;
 
 /**
+<<<<<<< HEAD
  @brief Invokes the SDK with a specific mode.
  
  @discussion Invokes the SDK and show a specific view, instead of showing a prompt for users to choose from.
@@ -56,10 +98,16 @@ NS_ASSUME_NONNULL_BEGIN
  @param invocationMode Specifies which mode the SDK is going to start with.
  
  @see IBGInvocationMode
+=======
+ *  Invoke the SDK's either bug reporter or feedback sender UIs
+ *
+ *  @param invocationMode invocationMode
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)invokeWithInvocationMode:(IBGInvocationMode)invocationMode;
 
 /**
+<<<<<<< HEAD
  @brief Dismisses any Instabug views that are currently being shown.
  */
 + (void)dismiss;
@@ -76,30 +124,60 @@ NS_ASSUME_NONNULL_BEGIN
  The file has to be available locally at the provided path.
  
  @param fileLocation Path to a file that's going to be attached to each report.
+=======
+ *  Dismiss Instabug
+ */
++ (void)dismiss;
+
+//===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name SDK Pro Features */
+//===========================================================================================================================================
+
+/**
+ *  Attaches a new copy of this file with each bug report sent with a maximum size of 1 MB. Calling this method several times overrides the file to be attached. The file has to be stored locally at the location provided
+ *
+ *  @param fileLocation fileLocation
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setFileAttachment:(NSString *)fileLocation;
 
 /**
+<<<<<<< HEAD
  @brief Attaches user data to each report being sent.
  
  @discussion Each call to this method overrides the user data to be attached.
  Maximum size of the string is 1,000 characters.
  
  @param userData A string to be attached to each report, with a maximum size of 1,000 characters.
+=======
+ *  Sets the user data that's attached with each bug report sent. Maximum size of the string is 1000 characters
+ *
+ *  @param userData userData
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setUserData:(NSString *)userData;
 
 /**
+<<<<<<< HEAD
  @brief Adds custom logs that will be sent with each report.
  
  @discussion Can be used in a similar fashion to NSLog. For usage in Swift, see `Instabug.ibgLog()`.
  *
  *  @param format Format string.
  *  @param ... Optional varargs arguments.
+=======
+ *  Adds custom logs that will be sent with each report
+ *
+ *  @param format format
+ *  @param ...    ...
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 /**
+<<<<<<< HEAD
  @brief Adds custom logs that will be sent with each report.
  
  @param log Message to be logged.
@@ -115,10 +193,31 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  User Steps tracking is enabled by default if it's available in your current plan.
  
  @param isUserStepsEnabled A boolean to set user steps tracking to being enabled or disabled.
+=======
+ *  Adds custom logs that will be sent with each report. A convenience method for Swift, identical to IBGLog().
+ *
+ *  Put following function in your swift project:
+ *  func IBGLog(str: String, _ arguments: CVarArgType...) -> Void {
+ *      return withVaList(arguments) { Instabug.IBGLog(str, withArguments :$0) }
+ *  }
+ *  And use it like this IBGLog("%@ - %d - %0.1f", "foo", 3, 3.0)
+ *
+ *  @param format    format
+ *  @param arguments arguments
+ */
++ (void)IBGLog:(NSString *)format withArguments:(va_list)arguments;
+
+/**
+ *  Sets whether to track the user's steps while using the app or not
+ *
+ *  Default = YES
+ *  @param isUserStepsEnabled isUserStepsEnabled
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
 
 /**
+<<<<<<< HEAD
  @brief Sets whether to track and report crashes or not.
  
  @discussion When enabled, Instabug will automatically report crashes, which can be viewed later on from your dashboard.
@@ -126,10 +225,17 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  Crash reporting is enabled by default if it's available in your current plan.
  
  @param isReportingCrashes A boolean to set crash reporting to being enabled or disabled.
+=======
+ *  Sets whether to track the crashes in the app or not
+ *
+ *  Default = YES
+ *  @param isReportingCrashes isReportingCrashes
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setCrashReportingEnabled:(BOOL)isReportingCrashes;
 
 /**
+<<<<<<< HEAD
  @brief Sets whether In-App Conversations button and notifications are displayed or not.
  
  @deprecated Starting from v6.0, use `setPromptOptionsEnabled:` instead.
@@ -227,10 +333,30 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 /**
  @brief Present a view that educates the user on how to invoke the SDK with the currently set invocation event.
+=======
+ *  Sets whether In-App Conversations button and notifications are displayed or not
+ *  If set to NO it disables push notifications as well
+ *
+ *  Default = YES
+ *  @param isInAppConversationsEnabled isInAppConversationsEnabled
+ */
++ (void)setInAppConversationsEnabled:(BOOL)isInAppConversationsEnabled;
+
+/**
+ *  Sets the block of code that gets executed just before sending the bug report.
+ *
+ *  @param preSendingBlock preSendingBlock
+ */
++ (void)setPreSendingBlock:(void (^)())preSendingBlock;
+
+/**
+ * Presents a quick tip UI educating the user on how to invoke SDK with the currently set invocation event
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)showIntroMessage;
 
 /**
+<<<<<<< HEAD
  @brief Enables/disables the attachment of an initial screenshot when reporting a bug/improvement.
  
  @deprecated Starting from v6.0, use 
@@ -246,10 +372,24 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @discussion Defaults to an empty string.
 
  @param userEmail An email address to be set as the user's email.
+=======
+ * Enabled/disable the attachment of an initial screenshot when reporting a bug/imporovement
+ * @param willTakeScreenshot willTakeScreenshot
+ */
+
++ (void)setWillTakeScreenshot:(BOOL)willTakeScreenshot;
+
+/**
+ *  Sets the default value of the email field and hides the email field from the reporting UI
+ *
+ *  Default = @""
+ *  @param userEmail userEmail
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setUserEmail:(NSString *)userEmail;
 
 /**
+<<<<<<< HEAD
  @brief Sets the default value of the user's name to be included with all reports.
  
  @discussion Defaults to an empty string.
@@ -302,10 +442,31 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @param invocationEvent Event that invokes the feedback form.
  
  @see IBGInvocationEvent
+=======
+ *  Sets the user name that is used in the dashboard's contacts
+ *
+ *  Default = @""
+ *  @param userName userName
+ */
++ (void)setUserName:(NSString *)userName;
+
+//===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name SDK Settings */
+//===========================================================================================================================================
+
+/**
+ *  Sets the event that invocates the feedback form
+ *
+ *  Default is set by startWithToken:invocationEvent:
+ *  @param invocationEvent invocationEvent
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setInvocationEvent:(IBGInvocationEvent)invocationEvent;
 
 /**
+<<<<<<< HEAD
  @brief Sets the default SDK invocation mode.
  
  @deprecated Starting from v6.0, use `setPromptOptionsEnabledWithBug:feedback:chat:` instead.
@@ -329,28 +490,60 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  Defaults to YES.
  
  @param isPushNotificationsEnabled A boolean to indicate whether push notifications are enabled or disabled.
+=======
+ *  Sets the default SDK mode upon invocation
+ *
+ *  Default = IBGInvocationModeNA
+ *  @param invocationMode invocationMode
+ */
++ (void)setDefaultInvocationMode:(IBGInvocationMode)invocationMode;
+
+/**
+ *  Enable/disable SDK to use push notifications
+ *
+ *  Default = YES
+ *  @param isPushNotificationsEnabled isPushNotificationsEnabled
+ *  Note: In order to enable push notifications, UIApplicationDelegate method 
+ *  `application:didRegisterForRemoteNotificationsWithDeviceToken:` should be implemented. Also 
+ *  `application:didReceiveRemoteNotification` or `application:didReceiveRemoteNotification:fetchCompletionHandler:`
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setPushNotificationsEnabled:(BOOL)isPushNotificationsEnabled;
 
 /**
+<<<<<<< HEAD
  @brief Sets whether users are required to enter an email address or not when sending reports.
 
  @discussion Defaults to YES.
 
  @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
+=======
+ *  Sets the value of whether the email field is validated or not
+ *
+ *  Default = YES
+ *  @param isEmailFieldRequired isEmailFieldRequired
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired;
 
 /**
+<<<<<<< HEAD
  @brief Sets whether users are required to enter a comment or not when sending reports.
  
  @discussion Defaults to NO.
  
  @param isCommentFieldRequired A boolean to indicate whether comment field is required or not.
+=======
+ *  Sets whether the comment field is validated or not
+ *
+ *  Default = NO
+ *  @param isCommentFieldRequired isCommentFieldRequired
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setCommentFieldRequired:(BOOL)isCommentFieldRequired;
 
 /**
+<<<<<<< HEAD
  @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch and iPad.
  
  @discussion Default for iPhone is 2.5.
@@ -358,10 +551,19 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  
  @param iPhoneShakingThreshold Threshold for iPhone.
  @param iPadShakingThreshold Threshold for iPad.
+=======
+ *  Sets the threshold value of the shake gesture for iPhone/iPod Touch and iPad
+ *
+ *  Default iPhone = 2.5
+ *  Default iPad = 0.6
+ *  @param iPhoneShakingThreshold iPhoneShakingThreshold
+ *  @param iPadShakingThreshold iPadShakingThreshold
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setShakingThresholdForiPhone:(double)iPhoneShakingThreshold foriPad:(double)iPadShakingThreshold;
 
 /**
+<<<<<<< HEAD
  @brief Sets the default edge and offset from the top at which the floating button will be shown. Different orientations
  are already handled.
  
@@ -370,10 +572,19 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  
  @param floatingButtonEdge `CGRectMaxXEdge` to show on the right, or `CGRectMinXEdge` to show on the left.
  @param floatingButtonOffsetFromTop Top offset for floating button.
+=======
+ *  Sets the default edge and offset from the top at which the floating button will be shown. Different orientations are already handled
+ *
+ *  Default floatingButtonEdge = CGRectMaxXEdge
+ *  Default floatingButtonOffsetFromTop = 50
+ *  @param floatingButtonEdge CGRectMaxXEdge(right) or CGRectMinXEdge(left)
+ *  @param floatingButtonOffsetFromTop floatingButtonOffsetFromTop
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop;
 
 /**
+<<<<<<< HEAD
  @brief Sets the SDK's locale.
  
  @discussion Use to change the SDK's UI to different language.
@@ -382,37 +593,63 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @param locale A locale to set the SDK to.
  
  @see IBGLocale
+=======
+ *  Sets the locale used to display the strings in the correct language
+ *
+ *  Default is fetched from the device locale
+ *  @param locale locale
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setLocale:(IBGLocale)locale;
 
 /**
+<<<<<<< HEAD
  @brief Sets whether the intro message that gets shown on launching the app is enabled or not.
 
  @discussion Defaults to YES.
  
  @param isIntroMessageEnabled A boolean to indicate whether the intro message is enabled or not.
+=======
+ *  Sets the default value of the intro message that gets shown on launching the app
+ *
+ *  Default = YES
+ *  @param isIntroMessageEnabled isIntroMessageEnabled
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setIntroMessageEnabled:(BOOL)isIntroMessageEnabled;
 
 /**
+<<<<<<< HEAD
  @brief Sets the color theme of the SDK's whole UI.
 
  @param colorTheme An `IBGColorTheme` to set the SDK's UI to.
  
  @see IBGColorTheme
+=======
+ *  Sets the color theme of the whole SDK UI
+ *
+ *  @param colorTheme colorTheme
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setColorTheme:(IBGColorTheme)colorTheme;
 
 /**
+<<<<<<< HEAD
  @brief Sets the primary color of the SDK's UI.
  
  @discussion Sets the color of UI elements indicating interactivity or call to action.
 
  @param color A color to set the UI elements of the SDK to.
+=======
+ *  Sets the primary color of the SDK user interface, mostly indicating interactivity or call to action
+ *
+ *  @param color color
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 + (void)setPrimaryColor:(UIColor *)color;
 
 /**
+<<<<<<< HEAD
  @brief Sets a block of code that is used to capture a screenshot.
  
  @deprecated Starting from v6.0, use `setScreenshotCapturingHandler:` instead.
@@ -600,3 +837,37 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 @end
 NS_ASSUME_NONNULL_END
+=======
+ *  Manually sets how to capture a screenshot, use it only if you're using OpenGL
+ *
+ *  @param screenshotCapturingBlock screenshotCapturingBlock
+ */
++ (void)setScreenshotCapturingBlock:(CGImageRef (^)())screenshotCapturingBlock;
+
+//===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name SDK Reporting */
+//===========================================================================================================================================
+
+/**
+ *  Manually reports an exception
+ *  @param exception exception(required)
+ */
++ (void)reportException:(NSException *)exception;
+
+//===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name In-App Conversations */
+//===========================================================================================================================================
+
+/**
+ *  Open conversations view
+ */
++ (void)invokeConversations;
+
+//===========================================================================================================================================
+
+@end
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f

@@ -118,6 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL persistenceEnabled;
 
 /**
+<<<<<<< HEAD
  * By default the Firebase Database client will use up to 10MB of disk space to cache data. If the cache grows beyond
  * this size, the client will start removing data that hasn't been recently used. If you find that your application
  * caches too little or too much data, call this method to change the cache size. This property must be set before
@@ -129,6 +130,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSUInteger persistenceCacheSizeBytes;
 
 /**
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  * Sets the dispatch queue on which all events are raised. The default queue is the main queue.
  *
  * Note that this must be set before creating your first Database reference.

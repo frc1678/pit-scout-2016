@@ -13,7 +13,11 @@
 static NSString *const kProgressCallbackKey = @"progress";
 static NSString *const kCompletedCallbackKey = @"completed";
 
+<<<<<<< HEAD
 @interface SDWebImageDownloader () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
+=======
+@interface SDWebImageDownloader ()
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 @property (strong, nonatomic) NSOperationQueue *downloadQueue;
 @property (weak, nonatomic) NSOperation *lastAddedOperation;
@@ -23,9 +27,12 @@ static NSString *const kCompletedCallbackKey = @"completed";
 // This queue is used to serialize the handling of the network responses of all the download operation in a single queue
 @property (SDDispatchQueueSetterSementics, nonatomic) dispatch_queue_t barrierQueue;
 
+<<<<<<< HEAD
 // The session in which data tasks will run
 @property (strong, nonatomic) NSURLSession *session;
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 @end
 
 @implementation SDWebImageDownloader
@@ -69,7 +76,10 @@ static NSString *const kCompletedCallbackKey = @"completed";
         _executionOrder = SDWebImageDownloaderFIFOExecutionOrder;
         _downloadQueue = [NSOperationQueue new];
         _downloadQueue.maxConcurrentOperationCount = 6;
+<<<<<<< HEAD
         _downloadQueue.name = @"com.hackemist.SDWebImageDownloader";
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         _URLCallbacks = [NSMutableDictionary new];
 #ifdef SD_WEBP
         _HTTPHeaders = [@{@"Accept": @"image/webp,image/*;q=0.8"} mutableCopy];
@@ -78,6 +88,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
 #endif
         _barrierQueue = dispatch_queue_create("com.hackemist.SDWebImageDownloaderBarrierQueue", DISPATCH_QUEUE_CONCURRENT);
         _downloadTimeout = 15.0;
+<<<<<<< HEAD
 
         NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
         sessionConfig.timeoutIntervalForRequest = _downloadTimeout;
@@ -90,14 +101,19 @@ static NSString *const kCompletedCallbackKey = @"completed";
         self.session = [NSURLSession sessionWithConfiguration:sessionConfig
                                                      delegate:self
                                                 delegateQueue:nil];
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     }
     return self;
 }
 
 - (void)dealloc {
+<<<<<<< HEAD
     [self.session invalidateAndCancel];
     self.session = nil;
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     [self.downloadQueue cancelAllOperations];
     SDDispatchQueueRelease(_barrierQueue);
 }
@@ -152,7 +168,10 @@ static NSString *const kCompletedCallbackKey = @"completed";
             request.allHTTPHeaderFields = wself.HTTPHeaders;
         }
         operation = [[wself.operationClass alloc] initWithRequest:request
+<<<<<<< HEAD
                                                         inSession:self.session
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                                                           options:options
                                                          progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                                              SDWebImageDownloader *sself = wself;
@@ -249,6 +268,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
     [self.downloadQueue setSuspended:suspended];
 }
 
+<<<<<<< HEAD
 - (void)cancelAllDownloads {
     [self.downloadQueue cancelAllOperations];
 }
@@ -315,4 +335,6 @@ didReceiveResponse:(NSURLResponse *)response
     [dataOperation URLSession:session task:task didReceiveChallenge:challenge completionHandler:completionHandler];
 }
 
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 @end

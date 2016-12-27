@@ -37,6 +37,7 @@
     return instance;
 }
 
+<<<<<<< HEAD
 - (instancetype)init {
     SDImageCache *cache = [SDImageCache sharedImageCache];
     SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
@@ -47,12 +48,19 @@
     if ((self = [super init])) {
         _imageCache = cache;
         _imageDownloader = downloader;
+=======
+- (id)init {
+    if ((self = [super init])) {
+        _imageCache = [self createCache];
+        _imageDownloader = [SDWebImageDownloader sharedDownloader];
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         _failedURLs = [NSMutableSet new];
         _runningOperations = [NSMutableArray new];
     }
     return self;
 }
 
+<<<<<<< HEAD
 - (NSString *)cacheKeyForURL:(NSURL *)url {
     if (!url) {
         return @"";
@@ -61,6 +69,17 @@
     if (self.cacheKeyFilter) {
         return self.cacheKeyFilter(url);
     } else {
+=======
+- (SDImageCache *)createCache {
+    return [SDImageCache sharedImageCache];
+}
+
+- (NSString *)cacheKeyForURL:(NSURL *)url {
+    if (self.cacheKeyFilter) {
+        return self.cacheKeyFilter(url);
+    }
+    else {
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         return [url absoluteString];
     }
 }

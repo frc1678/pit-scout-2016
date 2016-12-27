@@ -32,11 +32,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+<<<<<<< HEAD
 /**
  * A FIRDatabaseHandle is used to identify listeners of Firebase Database events. These handles
  * are returned by observeEventType: and and can later be passed to removeObserverWithHandle: to
  * stop receiving updates.
  */
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 typedef NSUInteger FIRDatabaseHandle;
 
 /**
@@ -49,7 +52,11 @@ typedef NSUInteger FIRDatabaseHandle;
 @interface FIRDatabaseQuery : NSObject
 
 
+<<<<<<< HEAD
 /** @name Attach observers to read data */
+=======
+/** @name Attaching observers to read data */
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 /**
  * observeEventType:withBlock: is used to listen for data changes at a particular location.
@@ -312,7 +319,11 @@ typedef NSUInteger FIRDatabaseHandle;
 
 
 /**
+<<<<<<< HEAD
 * Gets a FIRDatabaseReference for the location of this query.
+=======
+* Get a FIRDatabaseReference for the location of this query.
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 *
 * @return A FIRDatabaseReference for the location of this query.
 */

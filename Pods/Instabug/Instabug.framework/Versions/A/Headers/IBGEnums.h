@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, IBGColorTheme) {
  */
 typedef NS_ENUM(NSInteger, IBGInvocationMode) {
     IBGInvocationModeNA,
+<<<<<<< HEAD
     IBGInvocationModeBugReporter __attribute__((deprecated)),
     IBGInvocationModeFeedbackSender __attribute__((deprecated)),
     IBGInvocationModeNewBug,
@@ -89,6 +90,10 @@ typedef NS_ENUM(NSInteger, IBGDismissType) {
     IBGDismissTypeCancel,
     // Dismissed while taking screenshot
     IBGDismissTypeAddAttachment
+=======
+    IBGInvocationModeBugReporter,
+    IBGInvocationModeFeedbackSender
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 };
 
 /**
@@ -97,10 +102,14 @@ typedef NS_ENUM(NSInteger, IBGDismissType) {
 typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleArabic,
     IBGLocaleChineseSimplified,
+<<<<<<< HEAD
     IBGLocaleChineseTaiwan,
     IBGLocaleChineseTraditional,
     IBGLocaleCzech,
     IBGLocaleDanish,
+=======
+    IBGLocaleChineseTraditional,
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     IBGLocaleEnglish,
     IBGLocaleFrench,
     IBGLocaleGerman,
@@ -108,14 +117,20 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleJapanese,
     IBGLocaleKorean,
     IBGLocalePolish,
+<<<<<<< HEAD
     IBGLocalePortugese,
     IBGLocalePortugueseBrazil,
     IBGLocaleRussian,
     IBGLocaleSlovak,
+=======
+    IBGLocalePortugueseBrazil,
+    IBGLocaleRussian,
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     IBGLocaleSpanish,
     IBGLocaleSwedish,
     IBGLocaleTurkish
 };
+<<<<<<< HEAD
 
 /**
  *  Instabug strings
@@ -192,4 +207,6 @@ typedef NS_ENUM(NSInteger, IBGString) {
     //"Image"
     IBGStringImage
 };
+=======
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 //===========================================================================================================================================

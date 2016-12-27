@@ -47,7 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** @name Navigating and inspecting a snapshot */
 
 /**
+<<<<<<< HEAD
  * Gets a FIRDataSnapshot for the location at the specified relative path.
+=======
+ * Get a FIRDataSnapshot for the location at the specified relative path.
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  * The relative path can either be a simple child key (e.g. 'fred') 
  * or a deeper slash-separated path (e.g. 'fred/name/first'). If the child
  * location has no data, an empty FIRDataSnapshot is returned.
@@ -62,7 +66,11 @@ NS_ASSUME_NONNULL_BEGIN
  * Return YES if the specified child exists.
  *
  * @param childPathString A relative path to the location of a potential child.
+<<<<<<< HEAD
  * @return YES if data exists at the specified childPathString, else NO.
+=======
+ * @return YES if data exists at the specified childPathString, else false.
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 - (BOOL) hasChild:(NSString *)childPathString;
 
@@ -78,7 +86,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Return YES if the DataSnapshot contains a non-null value.
  *
+<<<<<<< HEAD
  * @return YES if this snapshot contains a non-null value, else NO.
+=======
+ * @return YES if this snapshot contains a non-null value, otherwise NO.
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  */
 - (BOOL) exists;
 
@@ -111,7 +123,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
+<<<<<<< HEAD
  * Gets the number of children for this DataSnapshot.
+=======
+ * Get the number of children for this DataSnapshot.
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  *
  * @return An integer indicating the number of children.
  */
@@ -119,7 +135,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
+<<<<<<< HEAD
  * Gets a FIRDatabaseReference for the location that this data came from
+=======
+ * Get a FIRDatabaseReference for the location that this data came from
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  *
  * @return A FIRDatabaseReference instance for the location of this data
  */

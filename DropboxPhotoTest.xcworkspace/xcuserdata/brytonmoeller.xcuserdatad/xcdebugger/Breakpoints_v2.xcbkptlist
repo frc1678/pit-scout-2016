@@ -282,13 +282,21 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/TableViewController.swift"
+<<<<<<< HEAD
             timestampString = "500571131.236118"
+=======
+            timestampString = "487383496.87057"
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
             endingLineNumber = "97"
             landmarkName = "setup(_:)"
+<<<<<<< HEAD
             landmarkType = "7">
+=======
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -298,13 +306,21 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/TableViewController.swift"
+<<<<<<< HEAD
             timestampString = "500571131.236118"
+=======
+            timestampString = "487383496.87057"
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "108"
             endingLineNumber = "108"
             landmarkName = "setup(_:)"
+<<<<<<< HEAD
             landmarkType = "7">
+=======
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -314,13 +330,21 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
+<<<<<<< HEAD
             timestampString = "499914071.577271"
+=======
+            timestampString = "486347834.228251"
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "106"
             endingLineNumber = "106"
             landmarkName = "makeFilenameForTeamNumAndIndex(_:imageIndex:)"
+<<<<<<< HEAD
             landmarkType = "7">
+=======
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -330,6 +354,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
+<<<<<<< HEAD
             timestampString = "499753131.941664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -337,6 +362,15 @@
             endingLineNumber = "64"
             landmarkName = "updateUrl(_:callback:)"
             landmarkType = "7">
+=======
+            timestampString = "486347834.228251"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "updateUrl(_:callback:)"
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -352,6 +386,7 @@
             startingLineNumber = "51"
             endingLineNumber = "51"
             landmarkName = "updateWithText(_:color:)"
+<<<<<<< HEAD
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -401,6 +436,9 @@
             endingLineNumber = "89"
             landmarkName = "putPhotoLinkToFirebase(_:teamNumber:selectedImage:)"
             landmarkType = "7">
+=======
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -410,6 +448,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropboxPhotoTest/PhotoManagement.swift"
+<<<<<<< HEAD
             timestampString = "499914071.577271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -417,6 +456,15 @@
             endingLineNumber = "91"
             landmarkName = "putPhotoLinkToFirebase(_:teamNumber:selectedImage:)"
             landmarkType = "7">
+=======
+            timestampString = "486347834.228251"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "putPhotoLinkToFirebase(_:teamNumber:selectedImage:)"
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -425,6 +473,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "DropboxPhotoTest/ViewController.swift"
             timestampString = "500572479.004063"
             startingColumnNumber = "9223372036854775807"
@@ -465,6 +514,16 @@
                   offsetFromSymbolStart = "28">
                </Location>
             </Locations>
+=======
+            filePath = "DropboxPhotoTest/TableViewController.swift"
+            timestampString = "487383800.807709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
+            landmarkName = "prepareForSegue(_:sender:)"
+            landmarkType = "5">
+>>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -28,11 +28,7 @@ class DropboxPhotoTestTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-<<<<<<< HEAD
         self.measure {
-=======
-        self.measureBlock {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             // Put the code you want to measure the time of here.
         }
     }

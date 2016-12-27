@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import Firebase
+//import SwiftyDropbox
 //import SwiftPhotoGallery
 import MWPhotoBrowser
 
@@ -41,7 +42,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         
         self.ourTeam.observeSingleEvent(of: .value, with: { (snap) -> Void in //Updating UI
-
             
             //Adding the PSUI Elements
             //Buttons
@@ -59,7 +59,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             var verticalPlacement : CGFloat = addImageButton.frame.origin.y + addImageButton.frame.height
             
             let longPressImageButton = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.didLongPressImageButton(_:)))
-
             addImageButton.addGestureRecognizer(longPressImageButton)
             
             self.scrollView.addSubview(addImageButton)
@@ -70,7 +69,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     let nav = UINavigationController(rootViewController: self.browser)
                     nav.delegate = self
                     self.present(nav, animated: true, completion: {
-
                         self.browser.reloadData()
                     })
                 }
@@ -105,7 +103,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.addChildViewController(self.selectedImageURL)
             //self.addChildViewController(programmingLanguage)
             //self.addChildViewController(willCheesecake)
-
+            
             for childViewController in self.childViewControllers {
                 self.scrollView.addSubview(childViewController.view)
                 childViewController.view.frame.origin.y = verticalPlacement
@@ -124,7 +122,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
         self.ourTeam.child("otherImageUrls").observe(.value, with: { (snap) -> Void in
-
             if self.numberOfImagesOnFirebase == -1 { //This is the first time that the firebase event gets called, it gets called once nomatter what when you first get here in code.
                 self.numberOfImagesOnFirebase = Int(snap.childrenCount)
                 self.updateMyPhotos({})
@@ -163,7 +160,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.photos.removeAll()
             for url in urls! {
                 self.photos.append(MWPhoto(url: URL(string: url as! String)))
-
             }
             callback()
         }
@@ -179,7 +175,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.dismiss(animated: true, completion: nil)
                 self.photoManager.updateUrl(self.number, callback: { i in
                     self.selectedImageURL.set(self.photoManager.makeURLForTeamNumAndImageIndex(self.number, imageIndex: i) as AnyObject)
-
                 })
             }
         }
@@ -203,7 +198,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 let name = self.photoManager.makeFilenameForTeamNumAndIndex(self.number, imageIndex: i)
 
                 self.firebaseStorageRef.child(name).put(UIImagePNGRepresentation(image)!, metadata: nil) { metadata, error in
-
                     
                     if (error != nil) {
                         print("ERROR: \(error)")
@@ -211,7 +205,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         // Metadata contains file metadata such as size, content-type, and download URL.
                         let downloadURL = metadata!.downloadURL()?.absoluteString
                         self.photoManager.putPhotoLinkToFirebase(downloadURL!, teamNumber: self.number, selectedImage: false)
-
 
                         print("UPLOADED: \(downloadURL)")
                     }
@@ -223,24 +216,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     
-    func galleryDidTapToClose(gallery:SwiftPhotoGallery) {
-        self.photoManager.getSharedURLsForTeam(self.number) { (urls) -> () in
-            self.dismissViewControllerAnimated(true, completion: nil)
-            self.photoManager.updateUrl(self.number, callback: {_ in })
-        }
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool { // So that the scroll view can scroll so you can see the text field you are editing
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool { // So that the scroll view can scroll so you can see the text field you are editing
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField)
+    func textFieldDidBeginEditing(_ textField: UITextField)
     {
         activeField = textField
     }
     
-    func keyboardWillHide(notification:NSNotification){
+    func keyboardWillHide(_ notification:Notification){
         scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: scrollPositionBeforeScrollingToTextField), animated: true)
     }
     
@@ -249,7 +235,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
-    func isNull(object: AnyObject?) -> Bool {
+    func isNull(_ object: AnyObject?) -> Bool {
         if object_getClass(object) == object_getClass(NSNull()) {
             return true
         }

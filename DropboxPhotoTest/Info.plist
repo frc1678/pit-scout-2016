@@ -59,12 +59,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-<<<<<<< HEAD
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This is a temporary description of photo library </string>
-	<key>NSCameraUsageDescription</key>
-	<string>This is a description of why we use the camera.</string>
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 </dict>
 </plist>

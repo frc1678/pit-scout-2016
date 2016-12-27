@@ -137,7 +137,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Enables verbose diagnostic logging.
- *
  * @param enabled YES to enable logging, NO to disable.
  */
 + (void) setLoggingEnabled:(BOOL)enabled;

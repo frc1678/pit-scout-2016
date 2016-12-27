@@ -12,11 +12,7 @@ class CustomPhotoAlbum {
             
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "title = %@", CustomPhotoAlbum.albumName)
-<<<<<<< HEAD
             let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-=======
-            let collection = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: fetchOptions)
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             
             if let firstObject: AnyObject = collection.firstObject {
                 return firstObject as! PHAssetCollection
@@ -30,13 +26,8 @@ class CustomPhotoAlbum {
             return
         }
         
-<<<<<<< HEAD
         PHPhotoLibrary.shared().performChanges({
             PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: CustomPhotoAlbum.albumName)
-=======
-        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-            PHAssetCollectionChangeRequest.creationRequestForAssetCollectionWithTitle(CustomPhotoAlbum.albumName)
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             }) { success, _ in
                 if success {
                     self.assetCollection = fetchAssetCollectionForAlbum()
@@ -44,17 +35,11 @@ class CustomPhotoAlbum {
         }
     }
     
-<<<<<<< HEAD
     func saveImage(_ image: UIImage) {
-=======
-    func saveImage(image: UIImage) {
-        
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         if assetCollection == nil {
             return   // If there was an error upstream, skip the save.
         }
         
-<<<<<<< HEAD
         
         
         PHPhotoLibrary.shared().performChanges({
@@ -72,15 +57,3 @@ class CustomPhotoAlbum {
     
 }
 
-=======
-        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-            let assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-            // let assetPlaceholders = Array(arrayLiteral: )
-            let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection)
-            albumChangeRequest!.addAssets([assetChangeRequest.placeholderForCreatedAsset!])
-            }, completionHandler: nil)
-    }
-    
-    
-}
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f

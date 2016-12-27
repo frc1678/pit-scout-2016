@@ -681,11 +681,11 @@ Apache License
 
 ## Instabug
 
-        Copyright (C) 2014 Instabug
+            Copyright (C) 2014 Instabug
 
-        Permission is hereby granted to use this framework as is, modification are not allowed.
+            Permission is hereby granted to use this framework as is, modification are not allowed.
 
-        All rights reserved.
+            All rights reserved.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

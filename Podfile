@@ -15,7 +15,6 @@ target 'DropboxPhotoTest' do
             end
         end
     end
-
     pod 'Firebase/Core'
     pod 'Firebase/Storage'
     pod 'Firebase/Database'
@@ -25,7 +24,6 @@ target 'DropboxPhotoTest' do
     #pod 'SwiftyDropbox'
     pod 'HanekeSwift', :git => 'https://github.com/Haneke/HanekeSwift', :branch => 'feature/swift-3'
     #pod 'SwiftPhotoGallery'
-
     pod 'Instabug'
     pod 'MWPhotoBrowser'
     

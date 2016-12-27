@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mjW-bw-bM2">
     <dependencies>
@@ -7,15 +6,6 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-=======
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mjW-bw-bM2">
-    <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     </dependencies>
     <scenes>
         <!--Missing Data-->
@@ -31,21 +21,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Missing Data:" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRg-MD-hVH">
-<<<<<<< HEAD
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-=======
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
                             </textView>
                         </subviews>
-<<<<<<< HEAD
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-=======
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="dRg-MD-hVH" secondAttribute="bottom" constant="20" symbolic="YES" id="3He-bm-OUM"/>
                             <constraint firstItem="dRg-MD-hVH" firstAttribute="top" secondItem="ksZ-Xo-Zx1" secondAttribute="bottom" constant="8" symbolic="YES" id="XGL-cd-izU"/>
@@ -93,7 +74,6 @@
             <objects>
                 <tableViewController id="mYo-FN-x4S" customClass="TableViewController" customModule="DropboxPhotoTest" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="q8j-E1-aYw">
-<<<<<<< HEAD
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -103,17 +83,6 @@
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rkc-uB-DlR" id="as6-8G-A65">
                                     <frame key="frameInset" width="375" height="43"/>
-=======
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="teamCell" id="rkc-uB-DlR">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rkc-uB-DlR" id="as6-8G-A65">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
@@ -129,17 +98,10 @@
                     <navigationItem key="navigationItem" title="Teams" id="gNv-ZL-D3l">
                         <barButtonItem key="leftBarButtonItem" title="Data" style="plain" id="64u-nE-uhA">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CGF-vP-WW2">
-<<<<<<< HEAD
                                 <rect key="frame" x="16" y="7" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Data">
                                     <color key="titleColor" red="0.38823529411764707" green="0.83921568627450982" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-=======
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Data">
-                                    <color key="titleColor" red="0.38823529411764707" green="0.83921568627450982" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                                 </state>
                                 <connections>
                                     <segue destination="DjH-PD-EBO" kind="popoverPresentation" identifier="popoverSegue" popoverAnchorView="CGF-vP-WW2" id="Zwz-t1-sLd">
@@ -179,18 +141,10 @@
                         <viewControllerLayoutGuide type="bottom" id="wOz-0N-Nb2"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TtS-Uy-tCI">
-<<<<<<< HEAD
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="qah-pQ-L5G">
-=======
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="qah-pQ-L5G">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="642"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                                 <constraints>
                                     <constraint firstAttribute="height" constant="648" id="Ckx-uJ-sME"/>
                                     <constraint firstAttribute="width" constant="400" id="ocn-0a-Lez"/>
@@ -212,11 +166,7 @@
                                 </variation>
                             </scrollView>
                         </subviews>
-<<<<<<< HEAD
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-=======
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                         <constraints>
                             <constraint firstItem="qah-pQ-L5G" firstAttribute="bottom" secondItem="wOz-0N-Nb2" secondAttribute="top" id="1ne-9u-cDR"/>
                             <constraint firstAttribute="trailing" secondItem="qah-pQ-L5G" secondAttribute="trailing" id="4r7-xo-GTx"/>
@@ -260,10 +210,6 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
-<<<<<<< HEAD
-=======
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
                     <connections>
                         <outlet property="bottomScrollViewConstraint" destination="1ne-9u-cDR" id="aPW-Hu-1vo"/>
                         <outlet property="scrollView" destination="qah-pQ-L5G" id="H2y-Wr-Rjb"/>

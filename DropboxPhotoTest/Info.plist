@@ -61,5 +61,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This is a temporary description of photo library </string>
+	<key>NSCameraUsageDescription</key>
+	<string>This is a description of why we use the camera.</string>
 </dict>
 </plist>

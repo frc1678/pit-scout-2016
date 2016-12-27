@@ -25,21 +25,12 @@ It provides:
 - Use GCD and ARC
 - Arm64 support
 
-<<<<<<< HEAD
 NOTE: Version 3.8 of SDWebImage requires iOS 7 or later (because of NSURLSession). 
 Versions 3.7 to 3.0 requires iOS 5.1.1. If you need iOS < 5.0 support, please use the last [2.0 version](https://github.com/rs/SDWebImage/tree/2.0-compat).
 
 [How is SDWebImage better than X?](https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F)
 
 Who Uses It
-=======
-NOTE: The version 3.0 of SDWebImage isn't fully backward compatible with 2.0 and requires iOS 5.1.1
-minimum deployment version. If you need iOS < 5.0 support, please use the last [2.0 version](https://github.com/rs/SDWebImage/tree/2.0-compat).
-
-[How is SDWebImage better than X?](https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F)
-
-Who Use It
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ----------
 
 Find out [who uses SDWebImage](https://github.com/rs/SDWebImage/wiki/Who-Uses-SDWebImage) and add your app to the list.
@@ -222,11 +213,7 @@ Installation
 ------------
 
 There are three ways to use SDWebImage in your project:
-<<<<<<< HEAD
 - using CocoaPods
-=======
-- using Cocoapods
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 - copying all the files into your project
 - importing the project as a static library
 
@@ -236,13 +223,8 @@ There are three ways to use SDWebImage in your project:
 
 #### Podfile
 ```
-<<<<<<< HEAD
 platform :ios, '7.0'
 pod 'SDWebImage', '~>3.8'
-=======
-platform :ios, '6.1'
-pod 'SDWebImage', '~>3.7'
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 ```
 
 If you are using Swift, be sure to add `use_frameworks!` and set your target to iOS 8+:

@@ -262,13 +262,10 @@ static char TAG_ACTIVITY_SHOW;
     }];
 }
 
-<<<<<<< HEAD
 - (void)sd_setImageWithPreviousCachedImageWithURL:(NSURL *)url andPlaceholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletionBlock)completedBlock {
     [self sd_setImageWithPreviousCachedImageWithURL:url placeholderImage:placeholder options:options progress:progressBlock completed:completedBlock];
 }
 
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 - (void)cancelCurrentArrayLoad {
     [self sd_cancelCurrentAnimationImagesLoad];
 }

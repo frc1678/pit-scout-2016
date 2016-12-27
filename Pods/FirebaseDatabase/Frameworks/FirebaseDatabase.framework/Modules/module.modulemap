@@ -3,7 +3,6 @@ framework module FirebaseDatabase {
 
   export *
   module * { export * }
-<<<<<<< HEAD
 
   link framework "CFNetwork"
   link framework "Security"
@@ -11,6 +10,4 @@ framework module FirebaseDatabase {
 
   link "c++"
   link "icucore"
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 }

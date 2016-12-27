@@ -18,10 +18,7 @@
     BOOL _loadingInProgress;
     id <SDWebImageOperation> _webImageOperation;
     PHImageRequestID _assetRequestID;
-<<<<<<< HEAD
     PHImageRequestID _assetVideoRequestID;
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         
 }
 
@@ -61,10 +58,7 @@
 - (id)init {
     if ((self = [super init])) {
         self.emptyImage = YES;
-<<<<<<< HEAD
         [self setup];
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     }
     return self;
 }
@@ -72,10 +66,7 @@
 - (id)initWithImage:(UIImage *)image {
     if ((self = [super init])) {
         self.image = image;
-<<<<<<< HEAD
         [self setup];
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     }
     return self;
 }
@@ -83,10 +74,7 @@
 - (id)initWithURL:(NSURL *)url {
     if ((self = [super init])) {
         self.photoURL = url;
-<<<<<<< HEAD
         [self setup];
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     }
     return self;
 }
@@ -96,10 +84,7 @@
         self.asset = asset;
         self.assetTargetSize = targetSize;
         self.isVideo = asset.mediaType == PHAssetMediaTypeVideo;
-<<<<<<< HEAD
         [self setup];
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     }
     return self;
 }
@@ -109,15 +94,11 @@
         self.videoURL = url;
         self.isVideo = YES;
         self.emptyImage = YES;
-<<<<<<< HEAD
         [self setup];
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     }
     return self;
 }
 
-<<<<<<< HEAD
 - (void)setup {
     _assetRequestID = PHInvalidImageRequestID;
     _assetVideoRequestID = PHInvalidImageRequestID;
@@ -127,8 +108,6 @@
     [self cancelAnyLoading];
 }
 
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 #pragma mark - Video
 
 - (void)setVideoURL:(NSURL *)videoURL {
@@ -140,7 +119,6 @@
     if (_videoURL) {
         completion(_videoURL);
     } else if (_asset && _asset.mediaType == PHAssetMediaTypeVideo) {
-<<<<<<< HEAD
         [self cancelVideoRequest]; // Cancel any existing
         PHVideoRequestOptions *options = [PHVideoRequestOptions new];
         options.networkAccessAllowed = YES;
@@ -151,25 +129,14 @@
             typeof(self) strongSelf = weakSelf;
             if (!strongSelf) return;
             strongSelf->_assetVideoRequestID = PHInvalidImageRequestID;
-=======
-        PHVideoRequestOptions *options = [PHVideoRequestOptions new];
-        options.networkAccessAllowed = YES;
-        [[PHImageManager defaultManager] requestAVAssetForVideo:_asset options:options resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             if ([asset isKindOfClass:[AVURLAsset class]]) {
                 completion(((AVURLAsset *)asset).URL);
             } else {
                 completion(nil);
             }
-<<<<<<< HEAD
             
         }];
     }
-=======
-        }];
-    }
-    return completion(nil);
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 }
 
 #pragma mark - MWPhoto Protocol Methods
@@ -366,7 +333,6 @@
     if (_webImageOperation != nil) {
         [_webImageOperation cancel];
         _loadingInProgress = NO;
-<<<<<<< HEAD
     }
     [self cancelImageRequest];
     [self cancelVideoRequest];
@@ -374,15 +340,11 @@
 
 - (void)cancelImageRequest {
     if (_assetRequestID != PHInvalidImageRequestID) {
-=======
-    } else if (_assetRequestID != PHInvalidImageRequestID) {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         [[PHImageManager defaultManager] cancelImageRequest:_assetRequestID];
         _assetRequestID = PHInvalidImageRequestID;
     }
 }
 
-<<<<<<< HEAD
 - (void)cancelVideoRequest {
     if (_assetVideoRequestID != PHInvalidImageRequestID) {
         [[PHImageManager defaultManager] cancelImageRequest:_assetVideoRequestID];
@@ -390,6 +352,4 @@
     }
 }
 
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 @end

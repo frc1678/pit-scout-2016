@@ -16,11 +16,7 @@ public struct Format<T> {
     
     public var transform : ((T) -> (T))?
     
-<<<<<<< HEAD
     public var convertToData : ((T) -> Data)?
-=======
-    public var convertToData : (T -> NSData)?
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
     public init(name: String, diskCapacity : UInt64 = UINT64_MAX, transform: ((T) -> (T))? = nil) {
         self.name = name
@@ -28,11 +24,7 @@ public struct Format<T> {
         self.transform = transform
     }
     
-<<<<<<< HEAD
     public func apply(_ value : T) -> T {
-=======
-    public func apply(value : T) -> T {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         var transformed = value
         if let transform = self.transform {
             transformed = transform(value)
@@ -62,22 +54,14 @@ public struct ImageResizer {
     
     public let compressionQuality : Float
     
-<<<<<<< HEAD
     public init(size: CGSize = CGSize.zero, scaleMode: ScaleMode = .None, allowUpscaling: Bool = true, compressionQuality: Float = 1.0) {
-=======
-    public init(size: CGSize = CGSizeZero, scaleMode: ScaleMode = .None, allowUpscaling: Bool = true, compressionQuality: Float = 1.0) {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         self.size = size
         self.scaleMode = scaleMode
         self.allowUpscaling = allowUpscaling
         self.compressionQuality = compressionQuality
     }
     
-<<<<<<< HEAD
     public func resizeImage(_ image: UIImage) -> UIImage {
-=======
-    public func resizeImage(image: UIImage) -> UIImage {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         var resizeToSize: CGSize
         switch self.scaleMode {
         case .Fill:
@@ -103,11 +87,7 @@ public struct ImageResizer {
             return image
         }
         
-<<<<<<< HEAD
         let resizedImage = image.hnk_imageByScaling(toSize: resizeToSize)
-=======
-        let resizedImage = image.hnk_imageByScalingToSize(resizeToSize)
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         return resizedImage
     }
 }

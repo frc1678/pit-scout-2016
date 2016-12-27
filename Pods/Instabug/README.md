@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Instabug.svg)
 ![Twitter](https://img.shields.io/badge/twitter-@Instabug-blue.svg)
 
@@ -26,15 +25,7 @@ $ pod install
 
 1. [Download the Instabug SDK](https://s3.amazonaws.com/instabug-pro/sdk_releases/Instabug.zip)
 
-2. Extract it then drag & drop the Instabug.framework and Instabug.bundle files to your project, and make sure that the "Copy items if needed" checkbox is checked.
-
-3. Make sure your project links to the following system frameworks. You can add these under your project's Build Phases tab, under Link Binary With Libraries.
-	* AVFoundation.framework
-	* CoreGraphics.framework
-	* CoreMotion.framework
-	* CoreTelephony.framework
-	* SystemConfiguration.framework
-	* UIKit.framework
+2. Extract it then drag & drop the Instabug.framework files to your project, and make sure that the "Copy items if needed" checkbox is checked
 
 ## Usage
 
@@ -54,13 +45,13 @@ $ pod install
 	
 	```swift
 	// Swift
-	Instabug.startWithToken("{{app_token}}", invocationEvent: IBGInvocationEvent.Shake)
+	Instabug.start(withToken: <#app token#>, invocationEvent: .shake)
 	```
 	```objective-c
 	// Objective-C
-	[Instabug startWithToken:@"{{app_token}}" invocationEvent:IBGInvocationEventShake];
+	[Instabug startWithToken:<#app token#> invocationEvent:IBGInvocationEventShake];
 	```
-	Make sure to replace `{{app_token}}` with your application token. Find it [here](https://instabug.com/app/sdk/).
+	Make sure to replace `app_token` with your application token. Find it [here](https://instabug.com/app/sdk/).
 
 ## Notes
 Instabug needs access to the microphone and photo library. Starting from iOS 10, apps that don’t provide a usage description for those 2 permissions would be rejected when submitted to the App Store.
@@ -80,10 +71,3 @@ If your app doesn’t already access the microphone or photo library, we recomme
 ## More
 
 You can also check out our [API Reference](https://instabug.com/public/ios-api-reference/Classes/Instabug.html) for more detailed information about our SDK.
-=======
-Instabug iOS SDK
-----------------
-Instant bug reporting for iOS apps.
-<br/>
-For integration steps check http://instabug.com/sdk-integration
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f

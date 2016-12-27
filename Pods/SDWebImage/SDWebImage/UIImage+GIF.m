@@ -32,12 +32,9 @@
 
         for (size_t i = 0; i < count; i++) {
             CGImageRef image = CGImageSourceCreateImageAtIndex(source, i, NULL);
-<<<<<<< HEAD
             if (!image) {
                 continue;
             }
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
             duration += [self sd_frameDurationAtIndex:i source:source];
 

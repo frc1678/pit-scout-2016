@@ -4,38 +4,22 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-<<<<<<< HEAD
 		<key>DACircularProgress.xcscheme</key>
-=======
-		<key>Alamofire.xcscheme</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-<<<<<<< HEAD
 		<key>GTMSessionFetcher.xcscheme</key>
-=======
-		<key>DACircularProgress.xcscheme</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-<<<<<<< HEAD
 		<key>GoogleToolboxForMac.xcscheme</key>
-=======
-		<key>HanekeSwift.xcscheme</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-<<<<<<< HEAD
 		<key>HanekeSwift.xcscheme</key>
-=======
-		<key>JSONHelper.xcscheme</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -60,30 +44,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-<<<<<<< HEAD
 		<key>Pods-DropboxPhotoTestUITests.xcscheme</key>
-=======
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-<<<<<<< HEAD
-		<key>SDWebImage.xcscheme</key>
-=======
-		<key>SwiftPhotoGallery-SwiftPhotoGallery.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SwiftPhotoGallery.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SwiftyDropbox.xcscheme</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -96,78 +62,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-<<<<<<< HEAD
-=======
-		<key>0FF0A636C8D2DFDBAFDB364EAB54ADB4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<key>14E6E2E2484806AB62B60CA2EAD41F9B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>23BA9083ED0D2392A167A8AFA04427FA</key>
-=======
-		<key>210044EA8515040BC006B67617F1AE56</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>2C2B1953A91633859BF7AD238FF567A0</key>
-=======
-		<key>24FB1BB0AB4B68388EB65B09AB3B9A67</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>418C535DA47D268455E91D545231222B</key>
-=======
-		<key>2584DAFBD22EF9B6D822B4D77811CC40</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>61292EFC647D6DD12DE7DDBFB4D0EB70</key>
-=======
-		<key>2E17D13FF267A29D21F060FE3F9F4605</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>6461FF73E606AC17ECB9C28944E4F30F</key>
-=======
-		<key>4B2F30D90D85A544E9EFE2A49D392C25</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>662435F8E9F0A9094AE736400FD964CC</key>
-=======
-		<key>597A68E6F0EEB8D8CDAED5036386B172</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
 		<key>7D04535608058A2FABC0D16935868FB9</key>
-=======
-		<key>6461FF73E606AC17ECB9C28944E4F30F</key>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,14 +112,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
-=======
-		<key>CA2690C2E95E6A1C25F0D0A77F22BB0B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
 		<dict>
 			<key>primary</key>

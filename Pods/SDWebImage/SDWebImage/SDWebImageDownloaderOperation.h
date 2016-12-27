@@ -15,7 +15,6 @@ extern NSString *const SDWebImageDownloadReceiveResponseNotification;
 extern NSString *const SDWebImageDownloadStopNotification;
 extern NSString *const SDWebImageDownloadFinishNotification;
 
-<<<<<<< HEAD
 @interface SDWebImageDownloaderOperation : NSOperation <SDWebImageOperation, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
 /**
@@ -28,31 +27,14 @@ extern NSString *const SDWebImageDownloadFinishNotification;
  */
 @property (strong, nonatomic, readonly) NSURLSessionTask *dataTask;
 
-=======
-@interface SDWebImageDownloaderOperation : NSOperation <SDWebImageOperation>
-
-/**
- * The request used by the operation's connection.
- */
-@property (strong, nonatomic, readonly) NSURLRequest *request;
-
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 @property (assign, nonatomic) BOOL shouldDecompressImages;
 
 /**
-<<<<<<< HEAD
  *  Was used to determine whether the URL connection should consult the credential storage for authenticating the connection.
  *  @deprecated Not used for a couple of versions
  */
 @property (nonatomic, assign) BOOL shouldUseCredentialStorage __deprecated_msg("Property deprecated. Does nothing. Kept only for backwards compatibility");
-=======
- * Whether the URL connection should consult the credential storage for authenticating the connection. `YES` by default.
- *
- * This is the value that is returned in the `NSURLConnectionDelegate` method `-connectionShouldUseCredentialStorage:`.
- */
-@property (nonatomic, assign) BOOL shouldUseCredentialStorage;
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 
 /**
  * The credential used for authentication challenges in `-connection:didReceiveAuthenticationChallenge:`.
@@ -82,10 +64,7 @@ extern NSString *const SDWebImageDownloadFinishNotification;
  *  @see SDWebImageDownloaderOperation
  *
  *  @param request        the URL request
-<<<<<<< HEAD
  *  @param session        the URL session in which this operation will run
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
  *  @param options        downloader options
  *  @param progressBlock  the block executed when a new chunk of data arrives. 
  *                        @note the progress block is executed on a background queue
@@ -96,16 +75,12 @@ extern NSString *const SDWebImageDownloadFinishNotification;
  *  @return the initialized instance
  */
 - (id)initWithRequest:(NSURLRequest *)request
-<<<<<<< HEAD
             inSession:(NSURLSession *)session
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
               options:(SDWebImageDownloaderOptions)options
              progress:(SDWebImageDownloaderProgressBlock)progressBlock
             completed:(SDWebImageDownloaderCompletedBlock)completedBlock
             cancelled:(SDWebImageNoParamsBlock)cancelBlock;
 
-<<<<<<< HEAD
 /**
  *  Initializes a `SDWebImageDownloaderOperation` object
  *
@@ -128,6 +103,4 @@ extern NSString *const SDWebImageDownloadFinishNotification;
             cancelled:(SDWebImageNoParamsBlock)cancelBlock
 __deprecated_msg("Method deprecated. Use `initWithRequest:inSession:options:progress:completed:cancelled`");
 
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 @end

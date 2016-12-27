@@ -12,11 +12,7 @@ public extension HanekeGlobals {
     
     public struct UIKit {
         
-<<<<<<< HEAD
         static func formatWithSize(_ size : CGSize, scaleMode : ImageResizer.ScaleMode, allowUpscaling: Bool = true) -> Format<UIImage> {
-=======
-        static func formatWithSize(size : CGSize, scaleMode : ImageResizer.ScaleMode, allowUpscaling: Bool = true) -> Format<UIImage> {
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             let name = "auto-\(size.width)x\(size.height)-\(scaleMode.rawValue)"
             let cache = Shared.imageCache
             if let (format,_,_) = cache.formats[name] {
@@ -31,32 +27,20 @@ public extension HanekeGlobals {
                         compressionQuality: HanekeGlobals.UIKit.DefaultFormat.CompressionQuality)
                     return resizer.resizeImage($0)
             }
-<<<<<<< HEAD
             format.convertToData = {(image : UIImage) -> Data in
                 image.hnk_data(compressionQuality: HanekeGlobals.UIKit.DefaultFormat.CompressionQuality) as Data
-=======
-            format.convertToData = {(image : UIImage) -> NSData in
-                image.hnk_data(compressionQuality: HanekeGlobals.UIKit.DefaultFormat.CompressionQuality)
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             }
             return format
         }
         
         public struct DefaultFormat {
             
-<<<<<<< HEAD
             public static let DiskCapacity : UInt64 = 50 * 1024 * 1024
-=======
-            public static let DiskCapacity : UInt64 = 10 * 1024 * 1024
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
             public static let CompressionQuality : Float = 0.75
             
         }
         
-<<<<<<< HEAD
         static var SetImageAnimationDuration = 0.1
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         static var SetImageFetcherKey = 0
         static var SetBackgroundImageFetcherKey = 1
     }

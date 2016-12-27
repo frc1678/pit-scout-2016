@@ -126,11 +126,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
             _fileManager = [NSFileManager new];
         });
 
-<<<<<<< HEAD
 #if TARGET_OS_IOS
-=======
-#if TARGET_OS_IPHONE
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         // Subscribe to app events
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(clearMemory)
@@ -245,27 +241,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 #endif
             }
 
-<<<<<<< HEAD
             [self storeImageDataToDisk:data forKey:key];
-=======
-            if (data) {
-                if (![_fileManager fileExistsAtPath:_diskCachePath]) {
-                    [_fileManager createDirectoryAtPath:_diskCachePath withIntermediateDirectories:YES attributes:nil error:NULL];
-                }
-
-                // get cache Path for image key
-                NSString *cachePathForKey = [self defaultCachePathForKey:key];
-                // transform to NSUrl
-                NSURL *fileURL = [NSURL fileURLWithPath:cachePathForKey];
-
-                [_fileManager createFileAtPath:cachePathForKey contents:data attributes:nil];
-
-                // disable iCloud backup
-                if (self.shouldDisableiCloud) {
-                    [fileURL setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:nil];
-                }
-            }
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         });
     }
 }
@@ -278,7 +254,6 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     [self storeImage:image recalculateFromImage:YES imageData:nil forKey:key toDisk:toDisk];
 }
 
-<<<<<<< HEAD
 - (void)storeImageDataToDisk:(NSData *)imageData forKey:(NSString *)key {
     
     if (!imageData) {
@@ -302,8 +277,6 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     }
 }
 
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 - (BOOL)diskImageExistsWithKey:(NSString *)key {
     BOOL exists = NO;
     

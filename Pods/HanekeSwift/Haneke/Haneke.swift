@@ -24,17 +24,10 @@ public struct Shared {
         return Static.cache
     }
     
-<<<<<<< HEAD
     public static var dataCache : Cache<Data> {
         struct Static {
             static let name = "shared-data"
             static let cache = Cache<Data>(name: name)
-=======
-    public static var dataCache : Cache<NSData> {
-        struct Static {
-            static let name = "shared-data"
-            static let cache = Cache<NSData>(name: name)
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
         }
         return Static.cache
     }
@@ -54,19 +47,9 @@ public struct Shared {
         }
         return Static.cache
     }
-<<<<<<< HEAD
 }
 
 func errorWithCode(_ code: Int, description: String) -> Error {
     let userInfo = [NSLocalizedDescriptionKey: description]
     return NSError(domain: HanekeGlobals.Domain, code: code, userInfo: userInfo) as Error
-=======
-    
-    
-}
-
-func errorWithCode(code: Int, description: String) -> NSError {
-    let userInfo = [NSLocalizedDescriptionKey: description]
-    return NSError(domain: HanekeGlobals.Domain, code: code, userInfo: userInfo)
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
 }

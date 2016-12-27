@@ -78,12 +78,9 @@
 }
 
 - (void)dealloc {
-<<<<<<< HEAD
     if ([_photo respondsToSelector:@selector(cancelAnyLoading)]) {
         [_photo cancelAnyLoading];
     }
-=======
->>>>>>> 04784bb15bc29e5d700d0a18eb1f6a8cdd98e03f
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

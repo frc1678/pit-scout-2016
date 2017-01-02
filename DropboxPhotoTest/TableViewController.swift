@@ -137,6 +137,7 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         //self.cache.set(value: NSKeyedArchiver.archivedDataWithRootObject(scoutedTeamInfo), key: "scoutedTeamInfo")
         
         //})
+        self.tableView.reloadData()
         
     }
     
@@ -303,4 +304,24 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
         }
     }
     
+    @IBAction func myShareButton(sender: UIBarButtonItem) {
+        self.firebase?.observeSingleEvent(of: FIRDataEventType.value, with: { (snap) -> Void in
+            var shareContent = "{\n"
+            for i in 0..<self.teams.count {
+                let team = self.teams[i] as! [String: AnyObject]
+                var sTeam = [String: String]()
+                for (key, val) in team {
+                    sTeam[key] = String(describing: val)
+                }
+                shareContent.append(String(describing: (self.teams[i] as! [String: AnyObject])["number"]))
+                shareContent.append(" : ")
+                shareContent.append(team.FIRJSONString)
+                shareContent.append("\n")
+            }
+            shareContent.append("}")
+            let activityViewController = UIActivityViewController(activityItems: [shareContent], applicationActivities: nil)
+            self.present(activityViewController, animated: true, completion: {})
+        })
+        
+    }
 }

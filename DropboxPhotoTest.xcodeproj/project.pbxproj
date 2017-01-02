@@ -18,6 +18,7 @@
 		194587941C7D326D00507019 /* PhotoLibrarySaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194587931C7D326D00507019 /* PhotoLibrarySaver.swift */; };
 		197788C31CFA6ED700D632AD /* PSUISegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 197788C21CFA6ED700D632AD /* PSUISegmentedViewController.xib */; };
 		197872261CEEBBA40036F118 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 197872251CEEBBA40036F118 /* GoogleService-Info.plist */; };
+		19855CB51E130D83009E97B5 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19855CB41E130D83009E97B5 /* Reachability.swift */; };
 		19A286201C6916160039C0A4 /* PhotoManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A2861F1C6916160039C0A4 /* PhotoManagement.swift */; };
 		19A6697C1C51E9D60044D1F2 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697B1C51E9D60044D1F2 /* libc++.tbd */; };
 		19A6697E1C51E9E50044D1F2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */; };
@@ -71,6 +72,7 @@
 		19498EDF1CAE174600CF5236 /* DropboxPhotoTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DropboxPhotoTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		197788C21CFA6ED700D632AD /* PSUISegmentedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PSUISegmentedViewController.xib; sourceTree = "<group>"; };
 		197872251CEEBBA40036F118 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		19855CB41E130D83009E97B5 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		19A2861F1C6916160039C0A4 /* PhotoManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoManagement.swift; sourceTree = "<group>"; };
 		19A6697B1C51E9D60044D1F2 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		19A6697D1C51E9E50044D1F2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -162,6 +164,7 @@
 				192BEAC51C3463B900992A8A /* Main.storyboard */,
 				192BEAC11C3463B900992A8A /* AppDelegate.swift */,
 				192BEAC31C3463B900992A8A /* ViewController.swift */,
+				19855CB41E130D83009E97B5 /* Reachability.swift */,
 				194587931C7D326D00507019 /* PhotoLibrarySaver.swift */,
 				19E2FB361C4DB3D900BA4075 /* TableViewController.swift */,
 				19EEDCCF1CE583470057AA96 /* PSUIElements.swift */,
@@ -454,6 +457,7 @@
 				194587941C7D326D00507019 /* PhotoLibrarySaver.swift in Sources */,
 				19A286201C6916160039C0A4 /* PhotoManagement.swift in Sources */,
 				192BEAC21C3463B900992A8A /* AppDelegate.swift in Sources */,
+				19855CB51E130D83009E97B5 /* Reachability.swift in Sources */,
 				19EEDCD01CE583470057AA96 /* PSUIElements.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

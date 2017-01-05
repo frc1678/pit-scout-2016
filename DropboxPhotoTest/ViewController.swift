@@ -314,10 +314,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 
 extension Dictionary {
-    var vals : [AnyObject] {
-        var v = [AnyObject]()
+    var vals : [AnyObject?] {
+        var v = [AnyObject?]()
         for (_, value) in self {
-            v.append(value as AnyObject)
+            v.append(value as AnyObject?)
         }
         return v
     }
@@ -332,10 +332,14 @@ extension Dictionary {
         //if self.keys[0] as? String != nil && self.vals[0] as? String != nil {
             var JSONString = "{\n"
             for i in 0..<self.keys.count {
-                JSONString.append(keys[i] as! String)
-                JSONString.append(" : ")
-                JSONString.append(String(describing: vals[i]))
-                JSONString.append("\n")
+                if vals[i] != nil {
+                    JSONString.append("\"")
+                    JSONString.append(keys[i] as! String)
+                    JSONString.append("\"")
+                    JSONString.append(" : ")
+                    JSONString.append(String(describing: vals[i]!))
+                    JSONString.append(",\n")
+                }
             }
             JSONString.append("}")
             return JSONString

@@ -302,7 +302,7 @@
 				TargetAttributes = {
 					192BEABD1C3463B900992A8A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = J3MNNM5PHM;
+						DevelopmentTeam = RA9U2VS7DS;
 						LastSwiftMigration = 0800;
 					};
 					192BEAD11C3463BA00992A8A = {
@@ -616,6 +616,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = RA9U2VS7DS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
@@ -623,7 +624,7 @@
 				INFOPLIST_FILE = DropboxPhotoTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.citruscircuits.DropboxPhotoTest;
+				PRODUCT_BUNDLE_IDENTIFIER = org.citruscircuits.DropboxPhotoTest1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DropboxPhotoTest/DropboxPhotoTest-Bridging-Header.h";
@@ -643,6 +644,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = RA9U2VS7DS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
@@ -650,7 +652,7 @@
 				INFOPLIST_FILE = DropboxPhotoTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.citruscircuits.DropboxPhotoTest;
+				PRODUCT_BUNDLE_IDENTIFIER = org.citruscircuits.DropboxPhotoTest1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DropboxPhotoTest/DropboxPhotoTest-Bridging-Header.h";

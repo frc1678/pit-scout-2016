@@ -313,10 +313,12 @@ class TableViewController: UITableViewController, UIPopoverPresentationControlle
                 for (key, val) in team {
                     sTeam[key] = String(describing: val)
                 }
-                shareContent.append(String(describing: (self.teams[i] as! [String: AnyObject])["number"]))
+                shareContent.append(String(describing: (self.teams[i] as! [String: AnyObject])["number"]!))
                 shareContent.append(" : ")
+                
                 shareContent.append(team.FIRJSONString)
                 shareContent.append("\n")
+                //shareContent.append(",")
             }
             shareContent.append("}")
             let activityViewController = UIActivityViewController(activityItems: [shareContent], applicationActivities: nil)

@@ -2,6 +2,8 @@ import SystemConfiguration
 import Foundation
 //I got this from here: https://stackoverflow.com/questions/25398664/check-for-internet-connection-availability-in-swift
 
+
+//Checks internet connection
 public class Reachability {
     
     class func isConnectedToNetwork() -> Bool {

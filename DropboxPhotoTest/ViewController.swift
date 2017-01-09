@@ -43,7 +43,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // Dismisses keyboard when tapping outside of keyboard
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
         self.ourTeam.observeSingleEvent(of: .value, with: { (snap) -> Void in //Updating UI
             
             //Adding the PSUI Elements
@@ -81,30 +84,44 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
             verticalPlacement = viewImagesButton.frame.origin.y + viewImagesButton.frame.height
             
-            //Text Input
+            /* Text Input
             let numberOfWheels = PSUITextInputViewController()
             numberOfWheels.setup("Num. Wheels", firebaseRef: self.ourTeam.child("pitNumberOfWheels"), initialValue: snap.childSnapshot(forPath: "pitNumberOfWheels").value)
-            numberOfWheels.neededType = .int
+            numberOfWheels.neededType = .int */
             
-            /*let availWeight = PSUITextInputViewController()
-            availWeight.setup("Avail. Weight", firebaseRef: self.ourTeam.child("pitAvailableWeight"), initialValue: snap.childSnapshot(forPath: "pitAvailableWeight").value)
-            availWeight.neededType = .float
-            */
             self.selectedImageURL.setup("Selected Image", firebaseRef: self.ourTeam.child("selectedImageUrl"), initialValue: snap.childSnapshot(forPath: "selectedImageUrl").value)
             self.selectedImageURL.neededType = .string
             
             //Segmented Control
-           /* let programmingLanguage = PSUISegmentedViewController()
+            let programmingLanguage = PSUISegmentedViewController()
             programmingLanguage.setup("Prog. Lang.", firebaseRef: self.ourTeam.child("pitProgrammingLanguage"), initialValue: snap.childSnapshot(forPath: "pitProgrammingLanguage").value)
-            programmingLanguage.segments = ["Java", "C++", "Labview", "Other"]            //Switch
-            let willCheesecake = PSUISwitchViewController()
-            willCheesecake.setup("Will Cheesecake", firebaseRef: self.ourTeam.child("pitWillCheesecake"), initialValue: snap.childSnapshot(forPath: "pitWillCheesecake").value)
-            */
+            programmingLanguage.segments = ["Java", "C++", "Labview", "Other"]
             
-            self.addChildViewController(numberOfWheels)
-            //self.addChildViewController(availWeight)
+            //Switch
+            let tankTread = PSUISwitchViewController()
+            tankTread.setup("Has Tank Tread", firebaseRef: self.ourTeam.child("pitTankTread"), initialValue: snap.childSnapshot(forPath: "pitTankTread").value)
+            
+            // Segmented Control
+            let pitOrganization = PSUISegmentedViewController()
+            pitOrganization.setup("Pit Organization", firebaseRef: self.ourTeam.child("pitOrganization"), initialValue: snap.childSnapshot(forPath: "pitOrganization").value)
+            pitOrganization.segments = ["Terrible", "Bad", "Okay", "Good", "Great"]
+
+            // Segmented Control
+            let availableWeight = PSUITextInputViewController()
+            availableWeight.setup("Available Weight", firebaseRef: self.ourTeam.child("pitAvailableWeight"), initialValue: snap.childSnapshot(forPath: "pitAvailableWeight").value)
+            availableWeight.neededType = .int
+            
+            
+            /* //Switch
+            let willCheesecake = PSUISwitchViewController()
+            willCheesecake.setup("Will Cheesecake", firebaseRef: self.ourTeam.child("pitWillCheesecake"), initialValue: snap.childSnapshot(forPath: "pitWillCheesecake").value) */
+            
+            // self.addChildViewController(numberOfWheels)
             self.addChildViewController(self.selectedImageURL)
-            //self.addChildViewController(programmingLanguage)
+            self.addChildViewController(programmingLanguage)
+            self.addChildViewController(tankTread)
+            self.addChildViewController(pitOrganization)
+            self.addChildViewController(availableWeight)
             //self.addChildViewController(willCheesecake)
             
             for childViewController in self.childViewControllers {
@@ -118,7 +135,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 
                 verticalPlacement = childViewController.view.frame.origin.y + childViewController.view.frame.height
             }
-            
         })
         
         scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: scrollPositionBeforeScrollingToTextField), animated: true)
@@ -308,6 +324,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    func dismissKeyboard () {
+        view.endEditing(true)
+    }
     
 }
 

@@ -11,6 +11,7 @@ import Firebase
 
 /// PSUI (Pit Scout User Interface) elements will subclass from this. These Elements will handle the updating of their content on firebase when the user changes the UI, they will also handle keeping themselves up to date with changes on Firebase.
 class PSUIFirebaseViewController : UIViewController {
+    let red = UIColor(colorLiteralRed: 243/255, green: 32/255, blue: 5/255, alpha: 1)
     var initialValue : Any?
     var titleText = ""
     var neededType : NeededType? {
@@ -30,7 +31,7 @@ class PSUIFirebaseViewController : UIViewController {
     }
     var firebaseRef : FIRDatabaseReference?
     
-    func setup(_ titleText : String, firebaseRef : FIRDatabaseReference, initialValue : Any) {
+    func setup(_ titleText : String, firebaseRef : FIRDatabaseReference, initialValue : Any?) {
         self.titleText = titleText
         self.initialValue = initialValue
         self.firebaseRef = firebaseRef
@@ -53,7 +54,7 @@ class PSUIFirebaseViewController : UIViewController {
         if neededType != nil {
             if neededType == .int {
                 if Int(String(describing: value)) == nil {
-                    self.view.backgroundColor = UIColor.red
+                    self.view.backgroundColor = red
                 } else {
                     self.view.backgroundColor = UIColor.white
                     self.firebaseRef?.setValue(Int(String(describing: value)))
@@ -61,7 +62,7 @@ class PSUIFirebaseViewController : UIViewController {
                 }
             } else if neededType == .float {
                 if Float(String(describing: value)) == nil {
-                    self.view.backgroundColor = UIColor.red
+                    self.view.backgroundColor = red
                 } else {
                     self.view.backgroundColor = UIColor.white
                     self.firebaseRef?.setValue(Float(String(describing: value)))
@@ -69,7 +70,7 @@ class PSUIFirebaseViewController : UIViewController {
                 }
             } else if neededType == .string {
                 if value as? String == nil {
-                    self.view.backgroundColor = UIColor.red
+                    self.view.backgroundColor = red
                 } else {
                     self.view.backgroundColor = UIColor.white
                     self.firebaseRef?.setValue(String(describing: value))
@@ -77,7 +78,7 @@ class PSUIFirebaseViewController : UIViewController {
                 }
             } else if neededType == .bool {
                 if value as? Bool == nil {
-                    self.view.backgroundColor = UIColor.red
+                    self.view.backgroundColor = red
                 } else {
                     self.view.backgroundColor = UIColor.white
                     self.firebaseRef?.setValue(value as! Bool)
@@ -163,8 +164,9 @@ class PSUISegmentedViewController : PSUIFirebaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //self.segmentedController.numberOfSegments = segments.count
+        segmentedController.removeAllSegments()
         for i in 0..<segments.count {
-            self.segmentedController.setTitle(segments[i], forSegmentAt: i)
+            self.segmentedController.insertSegment(withTitle: segments[i], at: i, animated: true)
         }
         self.neededType = .int
         self.segmentedController.selectedSegmentIndex = super.initialValue as? Int ?? 0
@@ -182,6 +184,7 @@ class PSUISegmentedViewController : PSUIFirebaseViewController {
 }
 
 class PSUIButton : UIButton {
+    let green = UIColor(colorLiteralRed: 91/255, green: 227/255, blue: 0/255, alpha: 1)
     var press : (_ sender : UIButton)->() = {_ in } //This is an empty function of the type (sender : UIButton)->().
     convenience init(title : String, width : Int, y: Int, buttonPressed : @escaping (_ sender : UIButton)->()) {
         //Adding the Add Image Button to the UI
@@ -189,7 +192,7 @@ class PSUIButton : UIButton {
         self.press = buttonPressed
         self.titleLabel?.font = UIFont.systemFont(ofSize: 32)
         self.setTitle(title, for: UIControlState())
-        self.setTitleColor(UIColor.green, for: UIControlState())
+        self.setTitleColor(green, for: UIControlState())
         self.isUserInteractionEnabled = true
         let tapAddImageButton = UITapGestureRecognizer(target: self, action: #selector(PSUIButton.buttonPressed(_:)))
         self.addGestureRecognizer(tapAddImageButton)
